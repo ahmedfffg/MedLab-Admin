@@ -2,496 +2,1318 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إدارة المرضى | MEDLAB</title>
-    <link rel="icon" href="../images/logo.png" type="image/x-icon">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+    <title>إدارة الحجوزات | MEDLAB</title>
+
+    <link rel="icon" href="logo.png" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* =========================================================
+           MEDLAB APPOINTMENTS
+           Professional Medical Dashboard
+           ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
         :root {
-            --primary: #0879b9;
-            --primary-dark: #075b8d;
-            --primary-light: #eaf8ff;
-            --bg: #f4f9fc;
+            --primary: #0796d8;
+            --primary-dark: #0575ad;
+            --primary-deep: #075783;
+            --primary-light: #e9f8ff;
+            --primary-soft: #f2fbff;
+
+            --cyan: #12b8d8;
+            --cyan-light: #e9fcff;
+
             --white: #ffffff;
-            --text: #17384d;
-            --muted: #718795;
-            --border: #dcecf4;
-            --success: #16864a;
-            --success-bg: #e9f8ef;
-            --warning: #a56a00;
-            --warning-bg: #fff6df;
-            --danger: #c62828;
-            --danger-bg: #fff0f0;
-            --shadow: 0 8px 30px rgba(24, 102, 145, 0.09);
-            --radius: 16px;
+            --bg: #f4faff;
+            --bg-soft: #f8fcff;
+
+            --text: #12394f;
+            --text-dark: #0a3047;
+            --muted: #78909d;
+            --muted-light: #9aacb6;
+
+            --border: #dceef6;
+            --border-light: #eaf4f8;
+
+            --success: #13a56b;
+            --success-bg: #eafaf3;
+
+            --warning: #e59b16;
+            --warning-bg: #fff8e8;
+
+            --danger: #e34b4b;
+            --danger-bg: #fff1f1;
+
+            --purple: #7658d9;
+            --purple-bg: #f2efff;
+
+            --shadow-xs: 0 2px 8px rgba(19, 105, 145, .04);
+            --shadow-sm: 0 5px 18px rgba(19, 105, 145, .07);
+            --shadow: 0 12px 35px rgba(19, 105, 145, .09);
+            --shadow-lg: 0 22px 65px rgba(13, 76, 108, .14);
+
+            --radius-sm: 10px;
+            --radius: 17px;
+            --radius-lg: 23px;
+
+            --header-height: 76px;
+
+            --transition: .25s cubic-bezier(.4, 0, .2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--bg);
         }
 
         body {
-            font-family: Arial, Tahoma, sans-serif;
-            background: var(--bg);
+            font-family: "Cairo", Tahoma, Arial, sans-serif;
+            background:
+                radial-gradient(circle at 90% 0%, rgba(18,184,216,.07), transparent 25%),
+                radial-gradient(circle at 0% 20%, rgba(7,150,216,.045), transparent 25%),
+                var(--bg);
             color: var(--text);
             min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        button, input, select { font-family: inherit; }
-        button { cursor: pointer; }
+        body::before {
+            content: "";
+            position: fixed;
+            width: 420px;
+            height: 420px;
+            border-radius: 50%;
+            background: rgba(18,184,216,.025);
+            top: 15%;
+            right: -220px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        button,
+        input,
+        select {
+            font-family: inherit;
+        }
+
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        ::selection {
+            background: rgba(7,150,216,.18);
+            color: var(--text-dark);
+        }
+
+        /* =========================================================
+           TOPBAR
+           ========================================================= */
 
         .topbar {
-            height: 70px;
-            background: linear-gradient(135deg, #0a4179, #2186c4);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 25px;
+            height: var(--header-height);
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 18px rgba(0, 55, 100, 0.15);
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding:
+                0
+                max(18px, env(safe-area-inset-right))
+                0
+                max(18px, env(safe-area-inset-left));
+
+            color: white;
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #064c76 0%,
+                    #057aae 48%,
+                    #08a6d2 100%
+                );
+
+            box-shadow:
+                0 7px 28px rgba(0,72,108,.15);
+
+            isolation: isolate;
+        }
+
+        .topbar::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+
+            background:
+                radial-gradient(
+                    circle at 85% 50%,
+                    rgba(255,255,255,.13),
+                    transparent 27%
+                ),
+                linear-gradient(
+                    90deg,
+                    transparent,
+                    rgba(255,255,255,.025),
+                    transparent
+                );
+
+            pointer-events: none;
+        }
+
+        .topbar::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,255,255,.45),
+                transparent
+            );
+            opacity: .65;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 13px;
+            min-width: 0;
         }
 
-        .brand img {
-            width: 45px;
-            height: 45px;
+        .brand-logo {
+            width: 48px;
+            height: 48px;
+
+            flex-shrink: 0;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: rgba(255,255,255,.96);
+            border: 1px solid rgba(255,255,255,.7);
+            border-radius: 14px;
+
+            padding: 4px;
+
+            box-shadow:
+                0 6px 20px rgba(0,0,0,.12),
+                inset 0 0 0 1px rgba(0,100,150,.05);
+
+            transition: var(--transition);
+        }
+
+        .brand-logo:hover {
+            transform: translateY(-1px) rotate(-1deg);
+        }
+
+        .brand-logo img {
+            width: 100%;
+            height: 100%;
             object-fit: contain;
-            background: white;
-            border-radius: 10px;
-            padding: 3px;
         }
 
         .brand-text {
             display: flex;
             flex-direction: column;
+            min-width: 0;
         }
 
         .brand-text strong {
             font-size: 21px;
+            line-height: 1.1;
             letter-spacing: 1px;
+            font-weight: 800;
         }
 
         .brand-text span {
+            margin-top: 4px;
             font-size: 11px;
-            opacity: 0.85;
-            margin-top: 2px;
+            opacity: .78;
+            white-space: nowrap;
         }
 
         .topbar-right {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 9px;
         }
 
         .admin-label {
-            font-size: 14px;
-            background: rgba(255,255,255,0.13);
-            padding: 8px 13px;
-            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 9px 14px;
+
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 11px;
+
+            background: rgba(255,255,255,.095);
+
+            font-size: 13px;
+            font-weight: 600;
+
+            backdrop-filter: blur(8px);
+        }
+
+        .admin-label i {
+            font-size: 12px;
+            opacity: .8;
         }
 
         .logout-btn {
-            border: 1px solid rgba(255,255,255,0.25);
-            background: rgba(255,255,255,0.10);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            border: 1px solid rgba(255,255,255,.2);
+            background: rgba(255,255,255,.10);
             color: white;
+
             padding: 9px 14px;
-            border-radius: 9px;
-            transition: 0.2s;
+            min-height: 40px;
+
+            border-radius: 11px;
+
+            font-size: 12px;
+            font-weight: 700;
+
+            transition: var(--transition);
+            backdrop-filter: blur(8px);
         }
 
-        .logout-btn:hover { background: rgba(255,255,255,0.20); }
+        .logout-btn:hover {
+            background: rgba(255,255,255,.18);
+            transform: translateY(-1px);
+        }
+
+        .logout-btn:active {
+            transform: translateY(0);
+        }
+
+        /* =========================================================
+           PAGE
+           ========================================================= */
 
         .page {
-            max-width: 1450px;
-            margin: auto;
-            padding: 28px 22px 50px;
+            width: min(100% - 36px, 1540px);
+            margin: 0 auto;
+            padding: 32px 0 65px;
         }
 
         .page-header {
             display: flex;
-            align-items: center;
+            align-items: flex-end;
             justify-content: space-between;
-            gap: 20px;
+            gap: 25px;
             margin-bottom: 25px;
         }
 
+        .page-title {
+            position: relative;
+        }
+
+        .page-title .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+
+            margin-bottom: 8px;
+
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: .3px;
+        }
+
+        .page-title .eyebrow::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--cyan);
+            box-shadow: 0 0 0 5px rgba(18,184,216,.09);
+        }
+
         .page-title h1 {
-            color: #0b5685;
-            font-size: 29px;
-            margin-bottom: 7px;
+            color: var(--text-dark);
+            font-size: clamp(25px, 2.2vw, 34px);
+            line-height: 1.2;
+            font-weight: 800;
+            letter-spacing: -.5px;
         }
 
         .page-title p {
+            margin-top: 7px;
             color: var(--muted);
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.8;
         }
 
         .refresh-btn {
-            border: none;
-            background: white;
-            color: var(--primary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+
+            min-height: 45px;
+            padding: 0 17px;
+
             border: 1px solid var(--border);
-            padding: 11px 17px;
-            border-radius: 10px;
-            font-weight: bold;
-            transition: 0.2s;
+            border-radius: 12px;
+
+            background: white;
+            color: var(--primary-dark);
+
+            font-size: 12px;
+            font-weight: 800;
+
+            box-shadow: var(--shadow-xs);
+            transition: var(--transition);
         }
 
-        .refresh-btn:hover { background: var(--primary-light); }
+        .refresh-btn:hover {
+            background: var(--primary-soft);
+            border-color: #c4e8f7;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .refresh-btn:active {
+            transform: translateY(0);
+        }
+
+        .refresh-btn i {
+            font-size: 13px;
+        }
+
+        /* =========================================================
+           STATS
+           ========================================================= */
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 16px;
-            margin-bottom: 22px;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 20px;
-            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+
+            min-height: 112px;
+
             display: flex;
             align-items: center;
             gap: 15px;
+
+            padding: 19px;
+
+            background: rgba(255,255,255,.95);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+
+            box-shadow: var(--shadow-sm);
+
+            transition: var(--transition);
+        }
+
+        .stat-card::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            left: -60px;
+            bottom: -75px;
+            background: rgba(7,150,216,.035);
+            pointer-events: none;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            border-color: #c8e9f6;
+            box-shadow: var(--shadow);
         }
 
         .stat-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 13px;
-            background: var(--primary-light);
-            color: var(--primary);
+            width: 53px;
+            height: 53px;
+            flex: 0 0 53px;
+
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 23px;
-            flex-shrink: 0;
+
+            border-radius: 15px;
+
+            background: linear-gradient(
+                145deg,
+                #effaff,
+                #e4f6fd
+            );
+
+            border: 1px solid #d7eef8;
+            color: var(--primary);
+
+            font-size: 20px;
+
+            box-shadow:
+                inset 0 1px 0 rgba(255,255,255,.8);
+        }
+
+        .stat-card:nth-child(2) .stat-icon {
+            color: var(--cyan);
+            background: var(--cyan-light);
+        }
+
+        .stat-card:nth-child(3) .stat-icon {
+            color: var(--success);
+            background: var(--success-bg);
+        }
+
+        .stat-card:nth-child(4) .stat-icon {
+            color: var(--purple);
+            background: var(--purple-bg);
+        }
+
+        .stat-content {
+            min-width: 0;
         }
 
         .stat-content span {
             display: block;
+            margin-bottom: 4px;
+
             color: var(--muted);
-            font-size: 13px;
-            margin-bottom: 5px;
+            font-size: 11px;
+            font-weight: 600;
         }
 
         .stat-content strong {
             display: block;
-            font-size: 24px;
-            color: #174d6c;
+
+            color: var(--text-dark);
+            font-size: clamp(20px, 2vw, 26px);
+            line-height: 1.2;
+            font-weight: 800;
+
+            white-space: nowrap;
         }
 
+        /* =========================================================
+           FILTERS
+           ========================================================= */
+
         .filters-card {
-            background: white;
+            background: rgba(255,255,255,.96);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            box-shadow: var(--shadow);
+            box-shadow: var(--shadow-sm);
             padding: 20px;
-            margin-bottom: 22px;
+            margin-bottom: 20px;
+        }
+
+        .filters-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 16px;
+        }
+
+        .filters-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .filters-title-icon {
+            width: 35px;
+            height: 35px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            color: var(--primary);
+            background: var(--primary-light);
+
+            font-size: 13px;
         }
 
         .filters-title {
-            color: #175778;
-            font-size: 17px;
-            font-weight: bold;
-            margin-bottom: 15px;
+            color: var(--text-dark);
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .filters-subtitle {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 2px;
         }
 
         .filters {
             display: grid;
-            grid-template-columns: 1.1fr 0.8fr 1fr auto;
-            gap: 12px;
+            grid-template-columns: minmax(220px, 1.3fr) minmax(180px, .8fr) minmax(180px, .9fr) auto;
+            gap: 11px;
             align-items: end;
         }
 
+        .field {
+            min-width: 0;
+        }
+
         .field label {
-            display: block;
-            color: #456574;
-            font-size: 13px;
-            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
             margin-bottom: 7px;
+
+            color: #466878;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .field label i {
+            color: #70a7bf;
+            font-size: 10px;
         }
 
         .field input,
         .field select {
             width: 100%;
-            height: 44px;
-            border: 1px solid #cfe3ed;
-            border-radius: 10px;
+            height: 45px;
+
+            border: 1px solid #d7eaf2;
+            border-radius: 11px;
+
             background: #fbfeff;
-            padding: 0 12px;
-            color: #234;
+            color: var(--text);
+
+            padding: 0 13px;
+
             outline: none;
+
+            font-size: 12px;
+            font-weight: 600;
+
+            transition: var(--transition);
+        }
+
+        .field input::placeholder {
+            color: #a1b1b9;
+            font-weight: 500;
+        }
+
+        .field input:hover,
+        .field select:hover {
+            border-color: #bddfea;
         }
 
         .field input:focus,
         .field select:focus {
-            border-color: #5aafd9;
-            box-shadow: 0 0 0 3px rgba(90,175,217,0.12);
+            border-color: #62b9da;
+            background: white;
+
+            box-shadow:
+                0 0 0 4px rgba(7,150,216,.08);
         }
 
         .clear-btn {
-            height: 44px;
-            border: none;
-            background: #eef7fb;
-            color: #196184;
-            padding: 0 17px;
-            border-radius: 10px;
-            font-weight: bold;
+            height: 45px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+
+            border: 1px solid #dbeef5;
+            background: #f2faff;
+            color: #23708f;
+
+            padding: 0 16px;
+            border-radius: 11px;
+
+            font-size: 11px;
+            font-weight: 800;
+
+            white-space: nowrap;
+
+            transition: var(--transition);
         }
 
-        .clear-btn:hover { background: #e1f2fa; }
+        .clear-btn:hover {
+            background: #e7f7fd;
+            border-color: #c7e7f2;
+            transform: translateY(-1px);
+        }
+
+        /* =========================================================
+           TABLE CARD
+           ========================================================= */
 
         .table-card {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
             overflow: hidden;
+
+            background: rgba(255,255,255,.98);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+
+            box-shadow: var(--shadow);
+
+            animation: fadeUp .45s ease both;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .table-header {
-            padding: 18px 20px;
-            border-bottom: 1px solid var(--border);
+            min-height: 69px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 15px;
+
+            padding: 14px 20px;
+
+            border-bottom: 1px solid var(--border-light);
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(247,252,255,.9),
+                    white
+                );
+        }
+
+        .table-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-title-icon {
+            width: 37px;
+            height: 37px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: var(--primary-light);
+            color: var(--primary);
+
+            font-size: 13px;
         }
 
         .table-header h2 {
-            color: #175778;
-            font-size: 19px;
+            color: var(--text-dark);
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .table-header p {
+            color: var(--muted);
+            font-size: 10px;
+            margin-top: 1px;
         }
 
         .results-count {
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .table-wrapper { overflow-x: auto; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            min-width: 1050px;
-        }
-
-        th {
-            background: #f4fbff;
-            color: #416779;
-            font-size: 13px;
-            text-align: right;
-            padding: 14px 13px;
-            border-bottom: 1px solid var(--border);
-            white-space: nowrap;
-        }
-
-        td {
-            padding: 14px 13px;
-            border-bottom: 1px solid #edf4f7;
-            color: #294e61;
-            font-size: 13px;
-            vertical-align: middle;
-        }
-
-        tbody tr:hover { background: #fbfeff; }
-
-        .patient-number {
-            width: 35px;
-            height: 35px;
-            border-radius: 10px;
-            background: #e8f6fd;
-            color: #0879b9;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+
+            min-height: 30px;
+            padding: 0 11px;
+
+            border: 1px solid #dceff6;
+            border-radius: 9px;
+
+            background: #f5fbfe;
+            color: #538093;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #b9dce9 transparent;
+        }
+
+        .table-wrapper::-webkit-scrollbar {
+            height: 7px;
+        }
+
+        .table-wrapper::-webkit-scrollbar-track {
+            background: #f3f9fc;
+        }
+
+        .table-wrapper::-webkit-scrollbar-thumb {
+            background: #b8dce9;
+            border-radius: 50px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1100px;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        th {
+            position: sticky;
+            top: 0;
+            z-index: 2;
+
+            background: #f7fcfe;
+            color: #557686;
+
+            padding: 13px 14px;
+
+            border-bottom: 1px solid var(--border);
+
+            text-align: right;
+            white-space: nowrap;
+
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        td {
+            padding: 13px 14px;
+
+            color: #315567;
+
+            border-bottom: 1px solid #edf5f8;
+
+            font-size: 11px;
+            vertical-align: middle;
+
+            background: white;
+
+            transition: background .2s ease;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr:hover td {
+            background: #fbfeff;
+        }
+
+        /* =========================================================
+           TABLE ELEMENTS
+           ========================================================= */
+
+        .patient-number {
+            width: 34px;
+            height: 34px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 10px;
+
+            background: linear-gradient(
+                145deg,
+                #eaf8ff,
+                #ddf4fc
+            );
+
+            border: 1px solid #d3edf7;
+
+            color: var(--primary);
+
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .booking-number {
+            display: inline-flex;
+            align-items: center;
+
+            padding: 5px 8px;
+
+            border-radius: 7px;
+
+            background: #f0faff;
+            border: 1px solid #dceff6;
+
+            color: var(--primary-dark);
+
+            font-size: 10px;
+            font-weight: 800;
         }
 
         .patient-name {
-            font-weight: bold;
-            color: #164f6e;
+            color: #174c66;
+            font-size: 12px;
+            font-weight: 800;
             margin-bottom: 3px;
         }
 
         .patient-phone {
-            color: #7a919d;
+            color: #7d96a2;
             direction: ltr;
             text-align: right;
+            font-size: 10px;
         }
 
-        .tests-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            max-width: 290px;
-        }
+        .patient-code {
+            display: inline-block;
+            margin-top: 3px;
 
-        .test-tag {
-            background: #f0f8fc;
-            color: #28627e;
-            border: 1px solid #dceef6;
-            padding: 4px 7px;
-            border-radius: 6px;
-            font-size: 11px;
-        }
-
-        .more-tests {
-            color: #0879b9;
-            font-size: 11px;
-            padding: 4px;
-        }
-
-        .total-price {
-            font-weight: bold;
-            color: #0879b9;
-            white-space: nowrap;
+            color: #a4b2b9;
+            font-size: 9px;
         }
 
         .sample-badge,
         .status-badge {
-            display: inline-block;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+
             padding: 6px 9px;
-            border-radius: 7px;
-            font-size: 11px;
-            font-weight: bold;
+
+            border-radius: 8px;
+
+            font-size: 9px;
+            font-weight: 800;
             white-space: nowrap;
         }
 
-        .sample-lab { background: #e8f7ff; color: #086a9f; }
-        .sample-home { background: #edf9ef; color: #21733d; }
+        .sample-badge::before,
+        .status-badge::before {
+            content: "";
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: .75;
+        }
 
-        .sync-synced { background: #e9f8ef; color: #19733e; }
-        .sync-pending { background: #fff6df; color: #996600; }
-        .sync-failed { background: #fff0f0; color: #b62929; }
+        .sample-lab {
+            background: #e9f8ff;
+            color: #0871a6;
+        }
+
+        .sample-home {
+            background: #ebfaf1;
+            color: #247946;
+        }
+
+        .sync-synced {
+            background: #e9f8ef;
+            color: #19733e;
+        }
+
+        .sync-pending {
+            background: #fff7e4;
+            color: #996600;
+        }
+
+        .sync-failed {
+            background: #fff0f0;
+            color: #b62929;
+        }
+
+        .total-price {
+            display: inline-block;
+            color: #0879b9;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
 
         .actions {
             display: flex;
-            gap: 6px;
+            align-items: center;
+            gap: 5px;
             flex-wrap: wrap;
         }
 
         .action-btn {
+            min-height: 30px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+
             border: none;
-            padding: 7px 9px;
-            border-radius: 7px;
-            font-size: 11px;
-            font-weight: bold;
+            padding: 0 9px;
+
+            border-radius: 8px;
+
+            font-size: 9px;
+            font-weight: 800;
+
+            transition: var(--transition);
+            text-decoration: none;
+            white-space: nowrap;
         }
 
-        .details-btn { background: #e9f7ff; color: #0871a8; }
-        .upload-btn { background: #e9f8ef; color: #19733e; text-decoration: none; }
-        .delete-btn { background: #fff0f0; color: #b72c2c; }
+        .action-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(.97);
+        }
 
-        .action-btn:hover { filter: brightness(0.96); }
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        .details-btn {
+            background: #eaf8ff;
+            color: #0871a8;
+        }
+
+        .upload-btn {
+            background: #eaf9f0;
+            color: #19733e;
+        }
+
+        .delete-btn {
+            background: #fff0f0;
+            color: #b72c2c;
+        }
+
+        /* =========================================================
+           STATE
+           ========================================================= */
 
         .state-box {
-            text-align: center;
-            padding: 55px 20px;
+            min-height: 300px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+
+            padding: 50px 20px;
+
             color: var(--muted);
+            text-align: center;
         }
 
         .state-icon {
-            font-size: 42px;
-            margin-bottom: 12px;
+            width: 65px;
+            height: 65px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 15px;
+
+            border-radius: 20px;
+
+            background: var(--primary-light);
+            color: var(--primary);
+
+            font-size: 25px;
         }
 
         .state-box h3 {
-            color: #4d6877;
-            margin-bottom: 7px;
+            color: #456878;
+            font-size: 15px;
+            margin-bottom: 5px;
         }
+
+        .state-box p {
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* =========================================================
+           MODAL
+           ========================================================= */
 
         .modal-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(10, 40, 60, 0.48);
             z-index: 2000;
+
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+
+            padding:
+                max(18px, env(safe-area-inset-top))
+                max(18px, env(safe-area-inset-right))
+                max(18px, env(safe-area-inset-bottom))
+                max(18px, env(safe-area-inset-left));
+
+            background: rgba(5, 39, 57, .52);
+
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+
+            animation: overlayIn .2s ease;
         }
 
-        .modal-overlay.show { display: flex; }
+        .modal-overlay.show {
+            display: flex;
+        }
+
+        @keyframes overlayIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
         .modal {
-            width: min(850px, 100%);
-            max-height: 90vh;
-            overflow-y: auto;
+            width: min(900px, 100%);
+            max-height: min(90vh, 900px);
+
+            overflow: hidden;
+
+            display: flex;
+            flex-direction: column;
+
             background: white;
-            border-radius: 18px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+
+            border: 1px solid rgba(255,255,255,.7);
+            border-radius: 23px;
+
+            box-shadow: var(--shadow-lg);
+
+            animation: modalIn .3s cubic-bezier(.2,.8,.2,1);
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px) scale(.985);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
 
         .modal-header {
-            padding: 19px 22px;
-            border-bottom: 1px solid var(--border);
+            min-height: 70px;
+
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 15px;
+
+            padding: 14px 20px;
+
+            border-bottom: 1px solid var(--border-light);
+
+            background:
+                linear-gradient(
+                    120deg,
+                    #f4fbfe,
+                    #ffffff
+                );
+        }
+
+        .modal-title-wrap {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+        }
+
+        .modal-title-icon {
+            width: 39px;
+            height: 39px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 11px;
+
+            background: var(--primary-light);
+            color: var(--primary);
+
+            font-size: 14px;
         }
 
         .modal-header h2 {
-            color: #145779;
-            font-size: 21px;
+            color: var(--text-dark);
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        .modal-header p {
+            color: var(--muted);
+            font-size: 9px;
+            margin-top: 1px;
         }
 
         .close-modal {
-            width: 35px;
-            height: 35px;
-            border: none;
-            background: #eef7fb;
-            color: #316277;
-            border-radius: 8px;
-            font-size: 20px;
+            width: 36px;
+            height: 36px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: 1px solid #e0eef3;
+            background: #f3f9fc;
+            color: #557482;
+
+            border-radius: 10px;
+
+            font-size: 17px;
+
+            transition: var(--transition);
         }
 
-        .modal-body { padding: 22px; }
+        .close-modal:hover {
+            background: #eaf6fb;
+            color: var(--primary-dark);
+            transform: rotate(4deg);
+        }
+
+        .modal-body {
+            padding: 21px;
+            overflow-y: auto;
+
+            scrollbar-width: thin;
+            scrollbar-color: #bddde8 transparent;
+        }
 
         .details-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            margin-bottom: 22px;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
         .detail-box {
-            border: 1px solid #e3eef3;
-            border-radius: 11px;
-            padding: 13px;
-            background: #fbfeff;
+            position: relative;
+
+            min-width: 0;
+
+            border: 1px solid #e2eef3;
+            border-radius: 12px;
+
+            padding: 12px 13px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #ffffff,
+                    #fafdff
+                );
+
+            transition: var(--transition);
         }
 
-        .detail-box.full { grid-column: 1 / -1; }
+        .detail-box:hover {
+            border-color: #cce7f1;
+            box-shadow: var(--shadow-xs);
+        }
+
+        .detail-box.full {
+            grid-column: 1 / -1;
+        }
 
         .detail-box label {
             display: block;
-            color: #80949e;
-            font-size: 11px;
-            margin-bottom: 5px;
+
+            color: #8a9da6;
+            font-size: 9px;
+            font-weight: 600;
+
+            margin-bottom: 4px;
         }
 
         .detail-box strong {
+            display: block;
+
             color: #234f68;
-            font-size: 14px;
-            line-height: 1.6;
+
+            font-size: 12px;
+            font-weight: 800;
+
+            line-height: 1.65;
+            word-break: break-word;
         }
 
-        .modal-section { margin-top: 20px; }
+        .modal-section {
+            margin-top: 21px;
+        }
 
-        .modal-section h3 {
+        .modal-section > h3 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
             color: #176084;
-            font-size: 16px;
+
+            font-size: 13px;
+            font-weight: 800;
+
             margin-bottom: 10px;
+        }
+
+        .modal-section > h3::before {
+            content: "";
+            width: 4px;
+            height: 18px;
+            border-radius: 4px;
+            background: linear-gradient(
+                to bottom,
+                var(--primary),
+                var(--cyan)
+            );
         }
 
         .modal-tests {
@@ -504,638 +1326,2900 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 12px;
+
             padding: 10px 12px;
-            background: #f6fbfd;
-            border: 1px solid #e3f0f5;
-            border-radius: 9px;
+
+            border: 1px solid #e2eff4;
+            border-radius: 10px;
+
+            background: #f8fcfe;
         }
 
-        .modal-test-name { color: #31586c; font-size: 13px; }
-        .modal-test-price { color: #0879b9; font-weight: bold; white-space: nowrap; }
+        .modal-test-name {
+            color: #31586c;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .modal-test-price {
+            color: #0879b9;
+            font-size: 11px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
 
         .modal-footer {
-            padding: 16px 22px;
-            border-top: 1px solid var(--border);
+            min-height: 65px;
+
             display: flex;
+            align-items: center;
             justify-content: flex-end;
             gap: 8px;
+
+            padding: 12px 20px;
+
+            border-top: 1px solid var(--border-light);
+            background: #fbfdfe;
         }
+
+        /* =========================================================
+           TOAST
+           ========================================================= */
 
         .toast {
             position: fixed;
-            left: 20px;
-            bottom: 20px;
+
+            left: max(18px, env(safe-area-inset-left));
+            bottom: max(18px, env(safe-area-inset-bottom));
+
             z-index: 3000;
-            min-width: 280px;
-            max-width: 430px;
-            padding: 14px 17px;
-            border-radius: 11px;
-            background: #17384d;
+
+            width: min(410px, calc(100vw - 36px));
+
+            min-height: 50px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 12px 16px;
+
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 13px;
+
+            background: #12394f;
             color: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.20);
-            transform: translateY(120px);
+
+            box-shadow: 0 15px 45px rgba(0,35,55,.2);
+
+            font-size: 11px;
+            font-weight: 700;
+
+            transform: translateY(130px);
             opacity: 0;
-            transition: 0.3s ease;
+
+            pointer-events: none;
+
+            transition:
+                transform .35s cubic-bezier(.2,.8,.2,1),
+                opacity .35s ease;
         }
 
-        .toast.show { transform: translateY(0); opacity: 1; }
-        .toast.success { background: #177441; }
-        .toast.error { background: #b92c2c; }
-
-        @media (max-width: 1050px) {
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .filters { grid-template-columns: 1fr 1fr; }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
         }
+
+        .toast.success {
+            background: #167a4c;
+        }
+
+        .toast.error {
+            background: #b92e2e;
+        }
+
+        /* =========================================================
+           LARGE SCREENS
+           ========================================================= */
+
+        @media (min-width: 1800px) {
+            :root {
+                --header-height: 84px;
+            }
+
+            .page {
+                width: min(92vw, 1780px);
+                padding-top: 42px;
+            }
+
+            .brand-logo {
+                width: 54px;
+                height: 54px;
+            }
+
+            .brand-text strong {
+                font-size: 24px;
+            }
+
+            .page-title h1 {
+                font-size: 39px;
+            }
+
+            .page-title p {
+                font-size: 15px;
+            }
+
+            .stat-card {
+                min-height: 130px;
+                padding: 24px;
+            }
+
+            .stat-icon {
+                width: 60px;
+                height: 60px;
+                flex-basis: 60px;
+                font-size: 23px;
+            }
+
+            .stat-content span {
+                font-size: 13px;
+            }
+
+            .stat-content strong {
+                font-size: 30px;
+            }
+
+            th {
+                font-size: 12px;
+                padding: 16px;
+            }
+
+            td {
+                font-size: 13px;
+                padding: 16px;
+            }
+        }
+
+        /* =========================================================
+           TABLET / SMALL LAPTOP
+           ========================================================= */
+
+        @media (max-width: 1100px) {
+            .page {
+                width: min(100% - 28px, 1400px);
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .filters {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .clear-btn {
+                width: 100%;
+            }
+        }
+
+        /* =========================================================
+           MOBILE
+           ========================================================= */
 
         @media (max-width: 700px) {
-            .topbar { height: 62px; padding: 0 13px; }
-            .brand img { width: 39px; height: 39px; }
-            .brand-text strong { font-size: 18px; }
-            .brand-text span { display: none; }
-            .admin-label { display: none; }
-            .logout-btn { padding: 8px 10px; font-size: 12px; }
-            .page { padding: 20px 12px 35px; }
-            .page-header { align-items: flex-start; flex-direction: column; }
-            .page-title h1 { font-size: 25px; }
-            .refresh-btn { width: 100%; }
-            .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .stat-card { padding: 14px; gap: 10px; }
-            .stat-icon { width: 42px; height: 42px; font-size: 19px; }
-            .stat-content strong { font-size: 20px; }
-            .stat-content span { font-size: 11px; }
-            .filters { grid-template-columns: 1fr; }
-            .filters-card { padding: 15px; }
-            .table-header { padding: 15px; }
-            .details-grid { grid-template-columns: 1fr; }
-            .detail-box.full { grid-column: auto; }
-            .modal-body { padding: 15px; }
-            .modal-footer { padding: 13px 15px; }
-            .toast { left: 12px; right: 12px; bottom: 12px; min-width: auto; }
+            :root {
+                --header-height: 64px;
+            }
+
+            .topbar {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .brand {
+                gap: 9px;
+            }
+
+            .brand-logo {
+                width: 40px;
+                height: 40px;
+                border-radius: 11px;
+            }
+
+            .brand-text strong {
+                font-size: 17px;
+            }
+
+            .brand-text span {
+                display: none;
+            }
+
+            .admin-label {
+                display: none;
+            }
+
+            .logout-btn {
+                min-height: 37px;
+                padding: 0 10px;
+                border-radius: 9px;
+                font-size: 10px;
+            }
+
+            .logout-btn i {
+                font-size: 11px;
+            }
+
+            .page {
+                width: min(100% - 20px, 650px);
+                padding: 21px 0 40px;
+            }
+
+            .page-header {
+                align-items: stretch;
+                flex-direction: column;
+                gap: 14px;
+                margin-bottom: 17px;
+            }
+
+            .page-title .eyebrow {
+                font-size: 9px;
+            }
+
+            .page-title h1 {
+                font-size: 24px;
+            }
+
+            .page-title p {
+                font-size: 10px;
+                margin-top: 5px;
+            }
+
+            .refresh-btn {
+                width: 100%;
+                min-height: 43px;
+            }
+
+            .stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 9px;
+                margin-bottom: 13px;
+            }
+
+            .stat-card {
+                min-height: 92px;
+                padding: 12px;
+                gap: 9px;
+                border-radius: 14px;
+            }
+
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                flex-basis: 40px;
+                border-radius: 11px;
+                font-size: 16px;
+            }
+
+            .stat-content span {
+                font-size: 8px;
+                margin-bottom: 3px;
+            }
+
+            .stat-content strong {
+                font-size: 18px;
+            }
+
+            .filters-card {
+                padding: 14px;
+                border-radius: 15px;
+                margin-bottom: 14px;
+            }
+
+            .filters-heading {
+                margin-bottom: 13px;
+            }
+
+            .filters-title-icon {
+                width: 31px;
+                height: 31px;
+                border-radius: 9px;
+                font-size: 11px;
+            }
+
+            .filters-title {
+                font-size: 13px;
+            }
+
+            .filters-subtitle {
+                font-size: 8px;
+            }
+
+            .filters {
+                grid-template-columns: 1fr;
+                gap: 9px;
+            }
+
+            .field label {
+                font-size: 9px;
+            }
+
+            .field input,
+            .field select,
+            .clear-btn {
+                height: 43px;
+            }
+
+            .table-card {
+                border-radius: 15px;
+            }
+
+            .table-header {
+                min-height: 61px;
+                padding: 11px 13px;
+            }
+
+            .table-title-icon {
+                width: 33px;
+                height: 33px;
+                border-radius: 9px;
+                font-size: 11px;
+            }
+
+            .table-header h2 {
+                font-size: 13px;
+            }
+
+            .table-header p {
+                display: none;
+            }
+
+            .results-count {
+                min-height: 27px;
+                padding: 0 8px;
+                font-size: 8px;
+            }
+
+            .state-box {
+                min-height: 250px;
+            }
+
+            .modal-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
+
+            .modal {
+                width: 100%;
+                max-height: 94vh;
+                border-radius: 21px 21px 0 0;
+            }
+
+            .modal-header {
+                min-height: 62px;
+                padding: 11px 14px;
+            }
+
+            .modal-title-icon {
+                width: 34px;
+                height: 34px;
+            }
+
+            .modal-header h2 {
+                font-size: 14px;
+            }
+
+            .modal-header p {
+                display: none;
+            }
+
+            .close-modal {
+                width: 34px;
+                height: 34px;
+            }
+
+            .modal-body {
+                padding: 14px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-bottom: 16px;
+            }
+
+            .detail-box.full {
+                grid-column: auto;
+            }
+
+            .detail-box {
+                padding: 10px 11px;
+            }
+
+            .detail-box label {
+                font-size: 8px;
+            }
+
+            .detail-box strong {
+                font-size: 11px;
+            }
+
+            .modal-section {
+                margin-top: 17px;
+            }
+
+            .modal-section > h3 {
+                font-size: 11px;
+            }
+
+            .modal-footer {
+                min-height: 59px;
+                padding: 10px 14px;
+            }
+
+            .modal-footer .clear-btn {
+                width: auto;
+                min-width: 90px;
+            }
+
+            .toast {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                width: auto;
+                font-size: 10px;
+            }
         }
+
+        /* =========================================================
+           VERY SMALL PHONES
+           ========================================================= */
+
+        @media (max-width: 380px) {
+            .page {
+                width: calc(100% - 14px);
+            }
+
+            .stats {
+                gap: 7px;
+            }
+
+            .stat-card {
+                padding: 10px;
+                gap: 7px;
+            }
+
+            .stat-icon {
+                width: 35px;
+                height: 35px;
+                flex-basis: 35px;
+                font-size: 14px;
+            }
+
+            .stat-content strong {
+                font-size: 16px;
+            }
+
+            .stat-content span {
+                font-size: 7px;
+            }
+
+            .brand-text strong {
+                font-size: 15px;
+            }
+
+            .logout-btn span {
+                display: none;
+            }
+
+            .logout-btn {
+                width: 37px;
+                padding: 0;
+            }
+        }
+
+        /* =========================================================
+           FOLDABLE / NARROW WIDTH
+           ========================================================= */
+
+        @media (max-width: 330px) {
+            .stats {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                min-height: 75px;
+            }
+
+            .page-title h1 {
+                font-size: 21px;
+            }
+        }
+
+        /* =========================================================
+           LANDSCAPE MOBILE
+           ========================================================= */
+
+        @media (max-height: 520px) and (orientation: landscape) {
+            .topbar {
+                height: 58px;
+            }
+
+            .page {
+                padding-top: 17px;
+            }
+
+            .modal {
+                max-height: 96vh;
+            }
+
+            .modal-body {
+                padding: 12px;
+            }
+        }
+
+        /* =========================================================
+           REDUCED MOTION
+           ========================================================= */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* =========================================================
+           PRINT
+           ========================================================= */
+
+        @media print {
+            .topbar,
+            .page-header,
+            .filters-card,
+            .actions,
+            .modal-overlay,
+            .toast {
+                display: none !important;
+            }
+
+            body {
+                background: white;
+            }
+
+            .page {
+                width: 100%;
+                padding: 0;
+            }
+
+            .table-card {
+                border: none;
+                box-shadow: none;
+            }
+        }
+        .home-admin-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    height: 44px;
+    padding: 0 17px;
+    border-radius: 12px;
+    border: 1px solid #cfe8f5;
+    background: linear-gradient(135deg, #ffffff, #f2fbff);
+    color: #086b9f;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 5px 16px rgba(8, 121, 185, 0.08);
+    transition: all 0.25s ease;
+}
+
+.home-admin-icon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #e7f6fd;
+    color: #0879b9;
+    font-size: 18px;
+    transition: 0.25s ease;
+}
+
+.home-admin-btn:hover {
+    transform: translateY(-2px);
+    border-color: #9ed5ec;
+    background: linear-gradient(135deg, #f5fcff, #e8f8ff);
+    box-shadow: 0 8px 22px rgba(8, 121, 185, 0.14);
+}
+
+.home-admin-btn:hover .home-admin-icon {
+    background: #0879b9;
+    color: #fff;
+    transform: scale(1.08);
+}
+
+.home-admin-btn:active {
+    transform: translateY(0);
+}
     </style>
 </head>
 
 <body>
 
-    <header class="topbar">
-        <div class="brand">
-            <img src="../images/logo.png" alt="MEDLAB">
-            <div class="brand-text">
-                <strong>MEDLAB</strong>
-                <span>نظام إدارة المعمل</span>
-            </div>
+<header class="topbar">
+
+    <div class="brand">
+
+        <div class="brand-logo">
+            <img src="logo.png" alt="MEDLAB">
         </div>
 
-        <div class="topbar-right">
-            <div class="admin-label">إدارة المرضى</div>
-            <button class="logout-btn" id="logoutBtn" type="button">تسجيل الخروج</button>
-        </div>
-    </header>
-
-    <main class="page">
-
-        <div class="page-header">
-            <div class="page-title">
-                <h1>إدارة المرضى والحجوزات</h1>
-                <p>عرض ومتابعة جميع المرضى المسجلين في المعمل</p>
-            </div>
-            <button class="refresh-btn" id="refreshBtn" type="button">↻ تحديث البيانات</button>
+        <div class="brand-text">
+            <strong>MEDLAB</strong>
+            <span>نظام إدارة المعمل</span>
         </div>
 
-        <section class="stats">
-            <div class="stat-card">
-                <div class="stat-icon">👥</div>
-                <div class="stat-content">
-                    <span>إجمالي المرضى</span>
-                    <strong id="totalPatients">0</strong>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">📅</div>
-                <div class="stat-content">
-                    <span>مرضى اليوم</span>
-                    <strong id="todayPatients">0</strong>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">🏠</div>
-                <div class="stat-content">
-                    <span>عينات منزلية</span>
-                    <strong id="homePatients">0</strong>
-                </div>
-            </div>
-
-            <div class="stat-card">
-                <div class="stat-icon">✓</div>
-                <div class="stat-content">
-                    <span>تمت مزامنتهم</span>
-                    <strong id="syncedPatients">0</strong>
-                </div>
-            </div>
-        </section>
-
-        <section class="filters-card">
-            <div class="filters-title">البحث والتصفية</div>
-
-            <div class="filters">
-                <div class="field">
-                    <label for="searchInput">البحث</label>
-                    <input type="search" id="searchInput" placeholder="اسم المريض أو رقم الهاتف...">
-                </div>
-
-                <div class="field">
-                    <label for="dateFilter">تاريخ الزيارة</label>
-                    <input type="date" id="dateFilter">
-                </div>
-
-                <div class="field">
-                    <label for="sampleFilter">نوع العينة</label>
-                    <select id="sampleFilter">
-                        <option value="">كل الأنواع</option>
-                        <option value="lab">عينة في المعمل</option>
-                        <option value="home">عينة منزلية</option>
-                    </select>
-                </div>
-
-                <button class="clear-btn" id="clearFiltersBtn" type="button">مسح البحث</button>
-            </div>
-        </section>
-
-        <section class="table-card">
-            <div class="table-header">
-                <h2>قائمة المرضى</h2>
-                <span class="results-count" id="resultsCount">0 نتيجة</span>
-            </div>
-
-            <div class="table-wrapper" id="tableContainer">
-                <div class="state-box">
-                    <div class="state-icon">⏳</div>
-                    <h3>جاري تحميل البيانات</h3>
-                    <p>برجاء الانتظار...</p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- DETAILS MODAL -->
-    <div class="modal-overlay" id="detailsModal">
-        <div class="modal">
-            <div class="modal-header">
-                <h2>تفاصيل المريض</h2>
-                <button class="close-modal" id="closeModalBtn" type="button">×</button>
-            </div>
-            <div class="modal-body" id="modalBody"></div>
-            <div class="modal-footer">
-                <button class="clear-btn" id="closeModalFooterBtn" type="button">إغلاق</button>
-            </div>
-        </div>
     </div>
 
-    <div class="toast" id="toast"></div>
+    <div class="topbar-right">
 
-    <!-- SCRIPTS -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/lab-stornge.js"></script>
+        <div class="admin-label">
+            <i class="fa-solid fa-calendar-check"></i>
+            <span>إدارة الحجوزات</span>
+        </div>
 
-    <script>
-    (function () {
-        'use strict';
+        <button class="logout-btn" id="logoutBtn" type="button">
+            <i class="fa-solid fa-right-from-bracket"></i>
+            <span>تسجيل الخروج</span>
+        </button>
 
-        const SUPABASE_NEW_URL = 'https://goxcnnzhgubggfjionyr.supabase.co';
-        const SUPABASE_NEW_KEY = 'sb_publishable_RpiQEsotdu9DifsKBf2tOA_qMzNiBge';
-        window.supabaseNew = window.supabase.createClient(SUPABASE_NEW_URL, SUPABASE_NEW_KEY);
+    </div>
 
-        const $ = id => document.getElementById(id);
+<a href="admin.html" class="home-admin-btn">
+    <span class="home-admin-icon">⌂</span>
+    <span>العودة إلى الرئيسية</span>
+</a>
 
-        const tableContainer = $('tableContainer');
-        const searchInput = $('searchInput');
-        const dateFilter = $('dateFilter');
-        const sampleFilter = $('sampleFilter');
-        const resultsCount = $('resultsCount');
-        const detailsModal = $('detailsModal');
-        const modalBody = $('modalBody');
-        const toast = $('toast');
+</header>
 
-        let patients = [];
-        let filteredPatients = [];
 
-        /* ============================================
-           HELPERS
-        ============================================ */
-        function getTodayDate() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            return `${year}-${month}-${day}`;
-        }
+<main class="page">
 
-        function escapeHtml(value) {
-            if (value === null || value === undefined) return '';
-            return String(value)
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&#039;');
-        }
+    <!-- PAGE HEADER -->
 
-        function formatDate(dateString) {
-            if (!dateString) return '-';
-            const parts = String(dateString).split('-');
-            if (parts.length !== 3) return dateString;
-            return `${parts[2]}/${parts[1]}/${parts[0]}`;
-        }
+    <div class="page-header">
 
-        function formatMoney(value) {
-            const number = Number(value || 0);
-            return `${number.toLocaleString('ar-EG')} جنيه`;
-        }
+        <div class="page-title">
 
-        function getSampleText(location) {
-            if (location === 'home') return 'عينة منزلية';
-            return 'عينة في المعمل';
-        }
+            <div class="eyebrow">
+                <i class="fa-solid fa-chart-line"></i>
+                لوحة الإدارة
+            </div>
 
-        function getSyncText(status) {
-            const map = {
-                'synced': 'تمت المزامنة',
-                'pending': 'في الانتظار',
-                'failed': 'فشلت المزامنة'
-            };
-            return map[status] || 'غير معروف';
-        }
+            <h1>إدارة الحجوزات</h1>
 
-        function getSyncClass(status) {
-            return 'sync-' + (status || 'pending');
-        }
+            <p>
+                عرض ومتابعة وتنظيم جميع الحجوزات المسجلة في المعمل
+            </p>
 
-        let toastTimer = null;
-        function showToast(message, type = '') {
-            toast.textContent = message;
-            toast.className = 'toast ' + type + ' show';
-            clearTimeout(toastTimer);
-            toastTimer = setTimeout(() => {
-                toast.classList.remove('show');
-            }, 3500);
-        }
+        </div>
 
-        /* ============================================
-           LOAD PATIENTS
-        ============================================ */
-        async function loadPatients() {
-            tableContainer.innerHTML = `
-                <div class="state-box">
-                    <div class="state-icon">⏳</div>
-                    <h3>جاري تحميل البيانات</h3>
-                    <p>برجاء الانتظار...</p>
+        <button class="refresh-btn" id="refreshBtn" type="button">
+            <i class="fa-solid fa-rotate"></i>
+            تحديث البيانات
+        </button>
+
+    </div>
+
+
+    <!-- STATISTICS -->
+
+    <section class="stats">
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>إجمالي الحجوزات</span>
+                <strong id="totalAppointments">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-calendar-day"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>حجوزات اليوم</span>
+                <strong id="todayAppointments">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-house-medical"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>عينات منزلية</span>
+                <strong id="homeAppointments">0</strong>
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                <i class="fa-solid fa-coins"></i>
+            </div>
+
+            <div class="stat-content">
+                <span>إجمالي الإيرادات</span>
+                <strong id="totalRevenue">0</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FILTERS -->
+
+    <section class="filters-card">
+
+        <div class="filters-heading">
+
+            <div class="filters-title-wrap">
+
+                <div class="filters-title-icon">
+                    <i class="fa-solid fa-filter"></i>
                 </div>
-            `;
 
-            try {
-                await window.LabStorage.init();
-                
-                patients = await window.LabStorage.getAllPatients();
-                
-                // ترتيب حسب created_at تنازلياً
-                patients.sort((a, b) => {
-                    const dateA = new Date(a.created_at || 0).getTime();
-                    const dateB = new Date(b.created_at || 0).getTime();
-                    return dateB - dateA;
-                });
-
-                updateStatistics();
-                applyFilters();
-
-            } catch (error) {
-                console.error('Load patients error:', error);
-                tableContainer.innerHTML = `
-                    <div class="state-box">
-                        <div class="state-icon">⚠️</div>
-                        <h3>تعذر تحميل البيانات</h3>
-                        <p>${escapeHtml(error.message)}</p>
+                <div>
+                    <div class="filters-title">
+                        البحث والتصفية
                     </div>
-                `;
-                showToast(error.message || 'حدث خطأ', 'error');
+
+                    <div class="filters-subtitle">
+                        استخدم أي فلتر للوصول إلى الحجز المطلوب بسرعة
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="filters">
+
+            <div class="field">
+
+                <label for="searchInput">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    البحث
+                </label>
+
+                <input
+                    type="search"
+                    id="searchInput"
+                    placeholder="اسم المريض، الهاتف، أو كود الحجز..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="dateFilter">
+                    <i class="fa-regular fa-calendar"></i>
+                    تاريخ الزيارة
+                </label>
+
+                <input
+                    type="date"
+                    id="dateFilter"
+                >
+
+            </div>
+
+
+            <div class="field">
+
+                <label for="sampleFilter">
+                    <i class="fa-solid fa-vial"></i>
+                    نوع العينة
+                </label>
+
+                <select id="sampleFilter">
+
+                    <option value="">
+                        كل الأنواع
+                    </option>
+
+                    <option value="lab">
+                        عينة في المعمل
+                    </option>
+
+                    <option value="home">
+                        عينة منزلية
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                class="clear-btn"
+                id="clearFiltersBtn"
+                type="button"
+            >
+                <i class="fa-solid fa-rotate-left"></i>
+                مسح البحث
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- TABLE -->
+
+    <section class="table-card">
+
+        <div class="table-header">
+
+            <div class="table-title-wrap">
+
+                <div class="table-title-icon">
+                    <i class="fa-solid fa-list-check"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        قائمة الحجوزات
+                    </h2>
+
+                    <p>
+                        جميع الحجوزات المسجلة في النظام
+                    </p>
+
+                </div>
+
+            </div>
+
+            <span
+                class="results-count"
+                id="resultsCount"
+            >
+                0 نتيجة
+            </span>
+
+        </div>
+
+
+        <div
+            class="table-wrapper"
+            id="tableContainer"
+        >
+
+            <div class="state-box">
+
+                <div class="state-icon">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                </div>
+
+                <h3>
+                    جاري تحميل البيانات
+                </h3>
+
+                <p>
+                    برجاء الانتظار...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+</main>
+
+
+<!-- =========================================================
+     DETAILS MODAL
+     ========================================================= -->
+
+<div
+    class="modal-overlay"
+    id="detailsModal"
+>
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <div class="modal-title-wrap">
+
+                <div class="modal-title-icon">
+                    <i class="fa-solid fa-file-medical"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        تفاصيل الحجز
+                    </h2>
+
+                    <p>
+                        بيانات المريض والحجز والتفاصيل المالية
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <button
+                class="close-modal"
+                id="closeModalBtn"
+                type="button"
+                aria-label="إغلاق"
+            >
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+        </div>
+
+
+        <div
+            class="modal-body"
+            id="modalBody"
+        ></div>
+
+
+        <div class="modal-footer">
+
+            <button
+                class="clear-btn"
+                id="closeModalFooterBtn"
+                type="button"
+            >
+                <i class="fa-solid fa-xmark"></i>
+                إغلاق
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- TOAST -->
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+
+<!-- SUPABASE SDK -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+(function () {
+
+    'use strict';
+
+
+    /* =========================================================
+       SUPABASE
+       ========================================================= */
+
+    const SUPABASE_URL =
+        'https://rlkqifdteyccagpdtdmu.supabase.co';
+
+    const SUPABASE_KEY =
+        'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
+
+
+    const sb = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY,
+        {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+                detectSessionInUrl: false,
+                storageKey: 'medlab-admin-appointments'
             }
         }
+    );
 
-        /* ============================================
-           STATISTICS
-        ============================================ */
-        function updateStatistics() {
-            const today = getTodayDate();
 
-            $('totalPatients').textContent = patients.length;
-            $('todayPatients').textContent = patients.filter(p => p.visit_date === today).length;
-            $('homePatients').textContent = patients.filter(p => p.sample_location === 'home').length;
-            $('syncedPatients').textContent = patients.filter(p => p.sync_status === 'synced').length;
+    /* =========================================================
+       HELPERS
+       ========================================================= */
+
+    const $ = id =>
+        document.getElementById(id);
+
+
+    const tableContainer =
+        $('tableContainer');
+
+    const searchInput =
+        $('searchInput');
+
+    const dateFilter =
+        $('dateFilter');
+
+    const sampleFilter =
+        $('sampleFilter');
+
+    const resultsCount =
+        $('resultsCount');
+
+    const detailsModal =
+        $('detailsModal');
+
+    const modalBody =
+        $('modalBody');
+
+    const toast =
+        $('toast');
+
+
+    let appointments = [];
+
+    let filteredAppointments = [];
+
+
+    /* =========================================================
+       TODAY
+       ========================================================= */
+
+    function getTodayDate() {
+
+        const now = new Date();
+
+        const y =
+            now.getFullYear();
+
+        const m =
+            String(now.getMonth() + 1)
+                .padStart(2, '0');
+
+        const d =
+            String(now.getDate())
+                .padStart(2, '0');
+
+        return `${y}-${m}-${d}`;
+    }
+
+
+    /* =========================================================
+       ESCAPE HTML
+       ========================================================= */
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return '';
         }
 
-        /* ============================================
-           FILTERS
-        ============================================ */
-        function applyFilters() {
-            const search = searchInput.value.trim().toLowerCase();
-            const date = dateFilter.value;
-            const sample = sampleFilter.value;
+        return String(value)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
 
-            filteredPatients = patients.filter(p => {
-                // بحث
-                if (search) {
-                    const values = [
-                        p.full_name,
-                        p.phone,
-                        p.referring_doctor,
-                        p.referral_source
-                    ].filter(Boolean).join(' ').toLowerCase();
 
-                    if (!values.includes(search)) return false;
-                }
+    /* =========================================================
+       DATE
+       ========================================================= */
 
-                // تاريخ
-                if (date && p.visit_date !== date) return false;
+    function formatDate(dateString) {
 
-                // نوع العينة
-                if (sample && p.sample_location !== sample) return false;
-
-                return true;
-            });
-
-            renderTable();
+        if (!dateString) {
+            return '-';
         }
 
-        /* ============================================
-           RENDER TABLE
-        ============================================ */
-        function renderTable() {
-            resultsCount.textContent = `${filteredPatients.length} نتيجة`;
+        const parts =
+            String(dateString)
+                .split('T')[0]
+                .split('-');
 
-            if (!filteredPatients.length) {
-                tableContainer.innerHTML = `
-                    <div class="state-box">
-                        <div class="state-icon">🔍</div>
-                        <h3>لا توجد نتائج</h3>
-                        <p>${patients.length === 0 ? 'لم يتم تسجيل مرضى بعد' : 'لم يتم العثور على مرضى مطابقين للبحث'}</p>
-                    </div>
-                `;
+        if (parts.length !== 3) {
+            return dateString;
+        }
+
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+
+
+    /* =========================================================
+       MONEY
+       ========================================================= */
+
+    function formatMoney(value) {
+
+        return `${Number(value || 0)
+            .toLocaleString('ar-EG')} جنيه`;
+    }
+
+
+    /* =========================================================
+       SAMPLE
+       ========================================================= */
+
+    function getSampleText(location) {
+
+        return location === 'home'
+            ? 'عينة منزلية'
+            : 'عينة في المعمل';
+    }
+
+
+    /* =========================================================
+       GENDER
+       ========================================================= */
+
+    function getGenderText(gender) {
+
+        if (gender === 'male') {
+            return 'ذكر';
+        }
+
+        if (gender === 'female') {
+            return 'أنثى';
+        }
+
+        return '-';
+    }
+
+
+    /* =========================================================
+       STATUS
+       ========================================================= */
+
+    function getStatusText(status) {
+
+        const map = {
+
+            'new':
+                'جديد',
+
+            'in_progress':
+                'قيد التنفيذ',
+
+            'completed':
+                'مكتمل',
+
+            'cancelled':
+                'ملغي',
+
+            'pending':
+                'في الانتظار',
+
+            'synced':
+                'تمت المزامنة',
+
+            'failed':
+                'فشل'
+        };
+
+        return map[status]
+            || status
+            || 'غير معروف';
+    }
+
+
+    function getStatusClass(status) {
+
+        const map = {
+
+            'completed':
+                'sync-synced',
+
+            'cancelled':
+                'sync-failed',
+
+            'pending':
+                'sync-pending',
+
+            'new':
+                'sync-pending',
+
+            'in_progress':
+                'sync-pending'
+        };
+
+        return map[status]
+            || 'sync-pending';
+    }
+
+
+    /* =========================================================
+       TOAST
+       ========================================================= */
+
+    let toastTimer = null;
+
+
+    function showToast(
+        message,
+        type = ''
+    ) {
+
+        toast.textContent =
+            message;
+
+        toast.className =
+            'toast ' +
+            type +
+            ' show';
+
+        clearTimeout(toastTimer);
+
+        toastTimer =
+            setTimeout(
+                () => {
+                    toast.classList.remove('show');
+                },
+                3500
+            );
+    }
+
+
+    /* =========================================================
+       LOAD APPOINTMENTS
+       ========================================================= */
+
+    async function loadAppointments() {
+
+        tableContainer.innerHTML = `
+
+            <div class="state-box">
+
+                <div class="state-icon">
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+                </div>
+
+                <h3>
+                    جاري تحميل البيانات
+                </h3>
+
+                <p>
+                    برجاء الانتظار...
+                </p>
+
+            </div>
+        `;
+
+
+        try {
+
+            /* =====================================================
+               1) APPOINTMENTS
+               ===================================================== */
+
+            const {
+                data: appts,
+                error: apptErr
+            } = await sb
+                .from('appointments')
+                .select('*')
+                .order(
+                    'created_at',
+                    {
+                        ascending: false
+                    }
+                );
+
+
+            if (apptErr) {
+                throw apptErr;
+            }
+
+
+            console.log(
+                '📦 Raw appointments:',
+                appts
+            );
+
+
+            if (
+                !appts ||
+                appts.length === 0
+            ) {
+
+                appointments = [];
+
+                updateStatistics();
+
+                applyFilters();
+
                 return;
             }
 
-            let html = `
-                <table>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>المريض</th>
-                            <th>تاريخ الزيارة</th>
-                            <th>نوع العينة</th>
-                            <th>التحاليل</th>
-                            <th>الإجمالي</th>
-                            <th>المزامنة</th>
-                            <th>الإجراءات</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
 
-            filteredPatients.forEach((p, index) => {
-                const tests = p.tests || [];
-                const visibleTests = tests.slice(0, 3);
-                const remaining = Math.max(0, tests.length - 3);
+            /* =====================================================
+               2) PATIENT IDS
+               ===================================================== */
 
-                const testsHtml = visibleTests.map(test =>
-                    `<span class="test-tag">${escapeHtml(test.name || 'تحليل')}</span>`
-                ).join('');
+            const patientIds =
+                [
+                    ...new Set(
+                        appts
+                            .map(
+                                a =>
+                                    a.patient_id
+                            )
+                            .filter(Boolean)
+                    )
+                ];
 
-                const moreHtml = remaining > 0
-                    ? `<span class="more-tests">+${remaining} أخرى</span>`
-                    : '';
 
-                html += `
-                    <tr>
-                        <td>
-                            <span class="patient-number">${index + 1}</span>
-                        </td>
-                        <td>
-                            <div class="patient-name">${escapeHtml(p.full_name || 'غير مسجل')}</div>
-                            <div class="patient-phone">${escapeHtml(p.phone || '-')}</div>
-                        </td>
-                        <td>${formatDate(p.visit_date)}</td>
-                        <td>
-                            <span class="sample-badge ${p.sample_location === 'home' ? 'sample-home' : 'sample-lab'}">
-                                ${getSampleText(p.sample_location)}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="tests-list">
-                                ${testsHtml || '<span style="color:#a4b2b9;font-size:12px;">لا توجد تحاليل</span>'}
-                                ${moreHtml}
-                            </div>
-                        </td>
-                        <td>
-                            <span class="total-price">${formatMoney(p.total)}</span>
-                        </td>
-                        <td>
-                            <span class="status-badge ${getSyncClass(p.sync_status)}">
-                                ${getSyncText(p.sync_status)}
-                            </span>
-                        </td>
-                        <td>
-                            <div class="actions">
-                                <button type="button" class="action-btn details-btn" onclick="window.showDetails('${escapeHtml(p.local_id)}')">
-                                    التفاصيل
-                                </button>
-                               <a href="samples-admin.html?phone=${encodeURIComponent(p.phone || '')}" class="action-btn upload-btn">
-                                     رفع نتيجة
-                                </a>
-                                <button type="button" class="action-btn delete-btn" onclick="window.deletePatient('${escapeHtml(p.local_id)}', '${escapeHtml(p.full_name || '')}')">
-                                    حذف
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
+            console.log(
+                '👥 Patient IDs to fetch:',
+                patientIds
+            );
 
-            html += `</tbody></table>`;
-            tableContainer.innerHTML = html;
-        }
 
-        /* ============================================
-           SHOW DETAILS
-        ============================================ */
-        window.showDetails = function (localId) {
-            const p = patients.find(x => x.local_id === localId);
-            if (!p) return;
+            let patientsMap = {};
 
-            const tests = p.tests || [];
-            const results = p.results || [];
 
-            const testsHtml = tests.length
-                ? tests.map(test => `
-                    <div class="modal-test">
-                        <span class="modal-test-name">${escapeHtml(test.name || 'تحليل')}</span>
-                        <span class="modal-test-price">${formatMoney(test.price)}</span>
-                    </div>
-                `).join('')
-                : `<p style="color:var(--muted);">لا توجد تحاليل مسجلة.</p>`;
+            /* =====================================================
+               3) PATIENTS
+               ===================================================== */
 
-            modalBody.innerHTML = `
-                <div class="details-grid">
-                    <div class="detail-box">
-                        <label>الاسم الكامل</label>
-                        <strong>${escapeHtml(p.full_name || '-')}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>رقم الهاتف</label>
-                        <strong dir="ltr">${escapeHtml(p.phone || '-')}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>العمر</label>
-                        <strong>${p.age ? escapeHtml(p.age) + ' سنة' : '-'}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>الجنس</label>
-                        <strong>${p.gender === 'male' ? 'ذكر' : p.gender === 'female' ? 'أنثى' : '-'}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>تاريخ الزيارة</label>
-                        <strong>${formatDate(p.visit_date)}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>نوع العينة</label>
-                        <strong>${getSampleText(p.sample_location)}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>الطبيب المحول</label>
-                        <strong>${escapeHtml(p.referring_doctor || '-')}</strong>
-                    </div>
-                    <div class="detail-box">
-                        <label>مصدر الإحالة</label>
-                        <strong>${escapeHtml(p.referral_source || '-')}</strong>
-                    </div>
-                    ${p.notes ? `
-                        <div class="detail-box full">
-                            <label>ملاحظات</label>
-                            <strong>${escapeHtml(p.notes)}</strong>
-                        </div>
-                    ` : ''}
-                </div>
+            if (
+                patientIds.length > 0
+            ) {
 
-                <div class="modal-section">
-                    <h3>التحاليل (${tests.length})</h3>
-                    <div class="modal-tests">${testsHtml}</div>
-                </div>
+                const {
+                    data: patients,
+                    error: patErr
+                } = await sb
+                    .from('patients')
+                    .select(
+                        'id, patient_code, full_name, phone, email, age, gender, created_at'
+                    )
+                    .in(
+                        'id',
+                        patientIds
+                    );
 
-                <div class="modal-section">
-                    <h3>الحساب</h3>
-                    <div class="details-grid">
-                        <div class="detail-box">
-                            <label>عدد التحاليل</label>
-                            <strong>${p.tests_count || 0}</strong>
-                        </div>
-                        <div class="detail-box">
-                            <label>الإجمالي</label>
-                            <strong style="color:#0879b9;font-size:18px;">${formatMoney(p.total)}</strong>
-                        </div>
-                        <div class="detail-box">
-                            <label>عدد النتائج</label>
-                            <strong>${results.length}</strong>
-                        </div>
-                        <div class="detail-box">
-                            <label>حالة المزامنة</label>
-                            <strong>${getSyncText(p.sync_status)}</strong>
-                        </div>
-                    </div>
-                </div>
-            `;
 
-            detailsModal.classList.add('show');
-        };
+                if (patErr) {
 
-        /* ============================================
-           DELETE PATIENT
-        ============================================ */
-        window.deletePatient = async function (localId, name) {
-            const confirmed = confirm(`هل أنت متأكد من حذف المريض "${name}"؟\n\nسيتم حذف جميع بياناته ونتائجه.`);
-            if (!confirmed) return;
+                    console.warn(
+                        '⚠️ Could not load patients:',
+                        patErr
+                    );
 
-            try {
-                await window.LabStorage.deletePatient(localId);
-                
-                patients = patients.filter(p => p.local_id !== localId);
-                updateStatistics();
-                applyFilters();
-                
-                showToast('✅ تم حذف المريض بنجاح', 'success');
-            } catch (error) {
-                console.error(error);
-                showToast('فشل الحذف: ' + error.message, 'error');
+                } else {
+
+                    (patients || [])
+                        .forEach(
+                            p => {
+
+                                patientsMap[p.id] =
+                                    p;
+                            }
+                        );
+
+
+                    console.log(
+                        '✅ Patients loaded:',
+                        patients.length
+                    );
+                }
             }
-        };
 
-        /* ============================================
-           MODAL CONTROLS
-        ============================================ */
-        function closeModal() {
-            detailsModal.classList.remove('show');
+
+            /* =====================================================
+               4) MERGE
+               ===================================================== */
+
+            appointments =
+                appts.map(
+                    a => ({
+
+                        ...a,
+
+                        patient:
+                            patientsMap[
+                                a.patient_id
+                            ] || null
+
+                    })
+                );
+
+
+            updateStatistics();
+
+            applyFilters();
+
+
+            console.log(
+                `✅ Loaded ${appointments.length} appointments`
+            );
+
+
+            console.log(
+                '📋 Sample:',
+                appointments[0]
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                '❌ Load error:',
+                error
+            );
+
+
+            tableContainer.innerHTML = `
+
+                <div class="state-box">
+
+                    <div
+                        class="state-icon"
+                        style="background:#fff0f0;color:#c62828;"
+                    >
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                    </div>
+
+                    <h3>
+                        تعذر تحميل البيانات
+                    </h3>
+
+                    <p>
+                        ${escapeHtml(
+                            error.message ||
+                            'خطأ غير معروف'
+                        )}
+                    </p>
+
+                </div>
+            `;
+
+
+            showToast(
+                error.message ||
+                'حدث خطأ',
+                'error'
+            );
+        }
+    }
+
+
+    /* =========================================================
+       STATISTICS
+       ========================================================= */
+
+    function updateStatistics() {
+
+        const today =
+            getTodayDate();
+
+
+        $('totalAppointments')
+            .textContent =
+            appointments.length;
+
+
+        $('todayAppointments')
+            .textContent =
+            appointments.filter(
+                p =>
+                    String(
+                        p.appointment_date || ''
+                    ).split('T')[0]
+                    === today
+            ).length;
+
+
+        $('homeAppointments')
+            .textContent =
+            appointments.filter(
+                p =>
+                    p.sample_location ===
+                    'home'
+            ).length;
+
+
+        const revenue =
+            appointments.reduce(
+                (sum, p) =>
+                    sum +
+                    Number(p.total || 0),
+                0
+            );
+
+
+        $('totalRevenue')
+            .textContent =
+            revenue.toLocaleString(
+                'ar-EG'
+            ) + ' ج';
+    }
+
+
+    /* =========================================================
+       FILTERS
+       ========================================================= */
+
+    function applyFilters() {
+
+        const search =
+            searchInput.value
+                .trim()
+                .toLowerCase();
+
+
+        const date =
+            dateFilter.value;
+
+
+        const sample =
+            sampleFilter.value;
+
+
+        filteredAppointments =
+            appointments.filter(
+                p => {
+
+                    if (search) {
+
+                        const patient =
+                            p.patient || {};
+
+
+                        const values = [
+
+                            patient.full_name,
+
+                            patient.phone,
+
+                            patient.patient_code,
+
+                            p.booking_number,
+
+                            p.referring_doctor,
+
+                            p.referral_source
+
+                        ]
+                            .filter(Boolean)
+                            .join(' ')
+                            .toLowerCase();
+
+
+                        if (
+                            !values.includes(search)
+                        ) {
+                            return false;
+                        }
+                    }
+
+
+                    if (date) {
+
+                        const visitDate =
+                            String(
+                                p.appointment_date || ''
+                            ).split('T')[0];
+
+
+                        if (
+                            visitDate !== date
+                        ) {
+                            return false;
+                        }
+                    }
+
+
+                    if (
+                        sample &&
+                        p.sample_location !== sample
+                    ) {
+                        return false;
+                    }
+
+
+                    return true;
+                }
+            );
+
+
+        renderTable();
+    }
+
+
+    /* =========================================================
+       TABLE
+       ========================================================= */
+
+    function renderTable() {
+
+        resultsCount.textContent =
+            `${filteredAppointments.length} نتيجة`;
+
+
+        if (
+            !filteredAppointments.length
+        ) {
+
+            tableContainer.innerHTML = `
+
+                <div class="state-box">
+
+                    <div class="state-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <h3>
+                        لا توجد نتائج
+                    </h3>
+
+                    <p>
+                        ${
+                            appointments.length === 0
+                                ? 'لم يتم تسجيل حجوزات بعد'
+                                : 'لم يتم العثور على حجوزات مطابقة للبحث'
+                        }
+                    </p>
+
+                </div>
+            `;
+
+            return;
         }
 
-        $('closeModalBtn').addEventListener('click', closeModal);
-        $('closeModalFooterBtn').addEventListener('click', closeModal);
 
-        detailsModal.addEventListener('click', function (event) {
-            if (event.target === detailsModal) closeModal();
-        });
+        let html = `
 
-        document.addEventListener('keydown', function (event) {
-            if (event.key === 'Escape') closeModal();
-        });
+            <table>
 
-        /* ============================================
-           EVENTS
-        ============================================ */
-        searchInput.addEventListener('input', applyFilters);
-        dateFilter.addEventListener('change', applyFilters);
-        sampleFilter.addEventListener('change', applyFilters);
+                <thead>
 
-        $('clearFiltersBtn').addEventListener('click', function () {
-            searchInput.value = '';
-            dateFilter.value = '';
-            sampleFilter.value = '';
-            applyFilters();
-        });
+                    <tr>
 
-        $('refreshBtn').addEventListener('click', function () {
-            loadPatients();
-            showToast('تم التحديث', 'success');
-        });
+                        <th>#</th>
 
-      $('logoutBtn').addEventListener('click', function () {
-    if (confirm('هل تريد تسجيل الخروج؟')) {
-        sessionStorage.removeItem('medlab_admin_logged_in');
-        sessionStorage.removeItem('medlab_admin_username');
-        window.location.href = 'login.html';  // الآن الملف موجود ✅
+                        <th>
+                            رقم الحجز
+                        </th>
+
+                        <th>
+                            المريض
+                        </th>
+
+                        <th>
+                            تاريخ الزيارة
+                        </th>
+
+                        <th>
+                            الوقت
+                        </th>
+
+                        <th>
+                            نوع العينة
+                        </th>
+
+                        <th>
+                            الإجمالي
+                        </th>
+
+                        <th>
+                            الحالة
+                        </th>
+
+                        <th>
+                            الإجراءات
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+        `;
+
+
+        filteredAppointments
+            .forEach(
+                (p, index) => {
+
+                    const patient =
+                        p.patient || {};
+
+
+                    const patientName =
+                        patient.full_name ||
+                        'غير معروف';
+
+
+                    const patientPhone =
+                        patient.phone ||
+                        '-';
+
+
+                    const patientCode =
+                        patient.patient_code ||
+                        '-';
+
+
+                    const visitDate =
+                        String(
+                            p.appointment_date || ''
+                        ).split('T')[0];
+
+
+                    const visitTime =
+                        p.appointment_time
+                            ? p.appointment_time.slice(0, 5)
+                            : '-';
+
+
+                    html += `
+
+                        <tr>
+
+                            <td>
+
+                                <span class="patient-number">
+
+                                    ${escapeHtml(
+                                        p.daily_number ||
+                                        (index + 1)
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="booking-number">
+
+                                    <i
+                                        class="fa-solid fa-hashtag"
+                                        style="font-size:8px;"
+                                    ></i>
+
+                                    ${escapeHtml(
+                                        p.booking_number ||
+                                        '-'
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="patient-name">
+
+                                    ${escapeHtml(
+                                        patientName
+                                    )}
+
+                                </div>
+
+                                <div class="patient-phone">
+
+                                    ${escapeHtml(
+                                        patientPhone
+                                    )}
+
+                                </div>
+
+                                <div class="patient-code">
+
+                                    ${escapeHtml(
+                                        patientCode
+                                    )}
+
+                                </div>
+
+                            </td>
+
+
+                            <td>
+                                ${formatDate(visitDate)}
+                            </td>
+
+
+                            <td
+                                dir="ltr"
+                                style="text-align:right;"
+                            >
+
+                                <span
+                                    style="
+                                        display:inline-flex;
+                                        align-items:center;
+                                        gap:5px;
+                                    "
+                                >
+
+                                    <i
+                                        class="fa-regular fa-clock"
+                                        style="
+                                            color:#8aadb9;
+                                            font-size:9px;
+                                        "
+                                    ></i>
+
+                                    ${escapeHtml(
+                                        visitTime
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="
+                                        sample-badge
+                                        ${
+                                            p.sample_location === 'home'
+                                                ? 'sample-home'
+                                                : 'sample-lab'
+                                        }
+                                    "
+                                >
+
+                                    ${
+                                        p.sample_location === 'home'
+                                            ? '<i class="fa-solid fa-house"></i>'
+                                            : '<i class="fa-solid fa-flask"></i>'
+                                    }
+
+                                    ${getSampleText(
+                                        p.sample_location
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span class="total-price">
+
+                                    ${formatMoney(
+                                        p.total
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <span
+                                    class="
+                                        status-badge
+                                        ${getStatusClass(
+                                            p.status
+                                        )}
+                                    "
+                                >
+
+                                    ${escapeHtml(
+                                        getStatusText(
+                                            p.status
+                                        )
+                                    )}
+
+                                </span>
+
+                            </td>
+
+
+                            <td>
+
+                                <div class="actions">
+
+                                    <button
+                                        type="button"
+                                        class="action-btn details-btn"
+                                        data-action="details"
+                                        data-id="${p.id}"
+                                    >
+
+                                        <i class="fa-solid fa-eye"></i>
+                                        التفاصيل
+
+                                    </button>
+
+
+                                    <a
+                                        href="samples-admin.html?phone=${encodeURIComponent(
+                                            patientPhone
+                                        )}"
+                                        class="action-btn upload-btn"
+                                    >
+
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                        رفع نتيجة
+
+                                    </a>
+
+
+                                    <button
+                                        type="button"
+                                        class="action-btn delete-btn"
+                                        data-action="delete"
+                                        data-id="${p.id}"
+                                        data-name="${escapeHtml(
+                                            patientName
+                                        )}"
+                                    >
+
+                                        <i class="fa-solid fa-trash-can"></i>
+                                        حذف
+
+                                    </button>
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    `;
+                }
+            );
+
+
+        html += `
+
+                </tbody>
+
+            </table>
+        `;
+
+
+        tableContainer.innerHTML =
+            html;
+
+
+        /* DETAILS */
+
+        tableContainer
+            .querySelectorAll(
+                '[data-action="details"]'
+            )
+            .forEach(
+                btn => {
+
+                    btn.addEventListener(
+                        'click',
+                        () => {
+
+                            showDetails(
+                                Number(
+                                    btn.dataset.id
+                                )
+                            );
+                        }
+                    );
+                }
+            );
+
+
+        /* DELETE */
+
+        tableContainer
+            .querySelectorAll(
+                '[data-action="delete"]'
+            )
+            .forEach(
+                btn => {
+
+                    btn.addEventListener(
+                        'click',
+                        () => {
+
+                            deleteAppointment(
+                                Number(
+                                    btn.dataset.id
+                                ),
+                                btn.dataset.name
+                            );
+                        }
+                    );
+                }
+            );
     }
-});
 
-        /* ============================================
-           INIT
-        ============================================ */
-        loadPatients();
 
-        console.log('✅ Admin Patients page ready (IndexedDB mode)');
+    /* =========================================================
+       SHOW DETAILS
+       ========================================================= */
 
-    })();
-    </script>
+    function showDetails(id) {
+
+        const p =
+            appointments.find(
+                x => x.id === id
+            );
+
+
+        if (!p) {
+            return;
+        }
+
+
+        const patient =
+            p.patient || {};
+
+
+        const isHome =
+            p.sample_location ===
+            'home';
+
+
+        const homeSection =
+            isHome
+                ? `
+
+                    <div class="modal-section">
+
+                        <h3>
+                            <i class="fa-solid fa-house-medical"></i>
+                            عنوان الزيارة المنزلية
+                        </h3>
+
+                        <div class="details-grid">
+
+                            <div class="detail-box">
+
+                                <label>
+                                    المحافظة
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.home_governorate ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box">
+
+                                <label>
+                                    المركز / المدينة
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.home_district ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box">
+
+                                <label>
+                                    المنطقة التفصيلية
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.home_detailed_area ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box">
+
+                                <label>
+                                    رقم المبنى
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.home_building_number ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box full">
+
+                                <label>
+                                    علامة مميزة
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.home_landmark ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box">
+
+                                <label>
+                                    رسوم الزيارة المنزلية
+                                </label>
+
+                                <strong
+                                    style="color:#0879b9;"
+                                >
+                                    ${formatMoney(
+                                        p.home_visit_fee
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box">
+
+                                <label>
+                                    حالة رسوم الزيارة
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.home_visit_fee_status ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `
+                : '';
+
+
+        const packageSection =
+            p.package_id
+                ? `
+
+                    <div class="modal-section">
+
+                        <h3>
+                            <i class="fa-solid fa-box-open"></i>
+                            الباقة
+                        </h3>
+
+                        <div class="details-grid">
+
+                            <div class="detail-box">
+
+                                <label>
+                                    اسم الباقة
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.package_name_snapshot ||
+                                        '-'
+                                    )}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="detail-box">
+
+                                <label>
+                                    سعر الباقة
+                                </label>
+
+                                <strong
+                                    style="color:#0879b9;"
+                                >
+                                    ${formatMoney(
+                                        p.package_price
+                                    )}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                `
+                : '';
+
+
+        modalBody.innerHTML = `
+
+            <div class="details-grid">
+
+                <div class="detail-box">
+
+                    <label>
+                        رقم الحجز
+                    </label>
+
+                    <strong
+                        style="color:#0879b9;"
+                    >
+                        ${escapeHtml(
+                            p.booking_number ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        الرقم اليومي
+                    </label>
+
+                    <strong>
+                        ${escapeHtml(
+                            p.daily_number ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        اسم المريض
+                    </label>
+
+                    <strong>
+                        ${escapeHtml(
+                            patient.full_name ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        رقم الهاتف
+                    </label>
+
+                    <strong dir="ltr">
+                        ${escapeHtml(
+                            patient.phone ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        كود المريض
+                    </label>
+
+                    <strong>
+                        ${escapeHtml(
+                            patient.patient_code ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        البريد الإلكتروني
+                    </label>
+
+                    <strong
+                        dir="ltr"
+                        style="font-size:11px;"
+                    >
+                        ${escapeHtml(
+                            patient.email ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        العمر
+                    </label>
+
+                    <strong>
+                        ${
+                            patient.age
+                                ? escapeHtml(
+                                    patient.age
+                                ) + ' سنة'
+                                : '-'
+                        }
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        الجنس
+                    </label>
+
+                    <strong>
+                        ${getGenderText(
+                            patient.gender
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        تاريخ الزيارة
+                    </label>
+
+                    <strong>
+                        ${formatDate(
+                            p.appointment_date
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        وقت الزيارة
+                    </label>
+
+                    <strong dir="ltr">
+                        ${escapeHtml(
+                            p.appointment_time ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        نوع العينة
+                    </label>
+
+                    <strong>
+                        ${getSampleText(
+                            p.sample_location
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        الحالة
+                    </label>
+
+                    <strong>
+                        ${getStatusText(
+                            p.status
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        الطبيب المحول
+                    </label>
+
+                    <strong>
+                        ${escapeHtml(
+                            p.referring_doctor ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box">
+
+                    <label>
+                        مصدر الإحالة
+                    </label>
+
+                    <strong>
+                        ${escapeHtml(
+                            p.referral_source ||
+                            '-'
+                        )}
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-box full">
+
+                    <label>
+                        تاريخ إنشاء الحجز
+                    </label>
+
+                    <strong>
+
+                        ${
+                            p.created_at
+                                ? formatDate(
+                                    p.created_at
+                                )
+                                + ' ' +
+                                String(
+                                    p.created_at
+                                )
+                                .split('T')[1]
+                                .slice(0, 5)
+                                : '-'
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                ${
+                    p.notes
+                        ? `
+
+                            <div class="detail-box full">
+
+                                <label>
+                                    ملاحظات
+                                </label>
+
+                                <strong>
+                                    ${escapeHtml(
+                                        p.notes
+                                    )}
+                                </strong>
+
+                            </div>
+
+                        `
+                        : ''
+                }
+
+            </div>
+
+
+            ${homeSection}
+
+            ${packageSection}
+
+
+            <div class="modal-section">
+
+                <h3>
+                    <i class="fa-solid fa-wallet"></i>
+                    الحساب
+                </h3>
+
+
+                <div class="details-grid">
+
+                    <div class="detail-box">
+
+                        <label>
+                            إجمالي التحاليل
+                        </label>
+
+                        <strong>
+                            ${formatMoney(
+                                p.tests_total
+                            )}
+                        </strong>
+
+                    </div>
+
+
+                    ${
+                        isHome
+                            ? `
+
+                                <div class="detail-box">
+
+                                    <label>
+                                        رسوم الزيارة المنزلية
+                                    </label>
+
+                                    <strong>
+                                        ${formatMoney(
+                                            p.home_visit_fee
+                                        )}
+                                    </strong>
+
+                                </div>
+
+                            `
+                            : ''
+                    }
+
+
+                    <div class="detail-box full">
+
+                        <label>
+                            الإجمالي النهائي
+                        </label>
+
+                        <strong
+                            style="
+                                color:#0879b9;
+                                font-size:20px;
+                            "
+                        >
+                            ${formatMoney(
+                                p.total
+                            )}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+        `;
+
+
+        detailsModal.classList.add(
+            'show'
+        );
+
+
+        document.body.style.overflow =
+            'hidden';
+    }
+
+
+    /* =========================================================
+       DELETE
+       ========================================================= */
+
+    async function deleteAppointment(
+        id,
+        name
+    ) {
+
+        if (
+            !confirm(
+                `هل أنت متأكد من حذف حجز "${name}"؟\n\nسيتم حذف الحجز فقط، وليس المريض.`
+            )
+        ) {
+            return;
+        }
+
+
+        try {
+
+            const {
+                error
+            } = await sb
+                .from('appointments')
+                .delete()
+                .eq('id', id);
+
+
+            if (error) {
+                throw error;
+            }
+
+
+            appointments =
+                appointments.filter(
+                    p => p.id !== id
+                );
+
+
+            updateStatistics();
+
+            applyFilters();
+
+
+            showToast(
+                'تم حذف الحجز بنجاح',
+                'success'
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                error
+            );
+
+
+            showToast(
+                'فشل الحذف: ' +
+                error.message,
+                'error'
+            );
+        }
+    }
+
+
+    /* =========================================================
+       MODAL CONTROLS
+       ========================================================= */
+
+    function closeModal() {
+
+        detailsModal.classList.remove(
+            'show'
+        );
+
+        document.body.style.overflow =
+            '';
+    }
+
+
+    $('closeModalBtn')
+        .addEventListener(
+            'click',
+            closeModal
+        );
+
+
+    $('closeModalFooterBtn')
+        .addEventListener(
+            'click',
+            closeModal
+        );
+
+
+    detailsModal
+        .addEventListener(
+            'click',
+            e => {
+
+                if (
+                    e.target ===
+                    detailsModal
+                ) {
+                    closeModal();
+                }
+            }
+        );
+
+
+    document
+        .addEventListener(
+            'keydown',
+            e => {
+
+                if (
+                    e.key ===
+                    'Escape'
+                ) {
+                    closeModal();
+                }
+            }
+        );
+
+
+    /* =========================================================
+       EVENTS
+       ========================================================= */
+
+    searchInput
+        .addEventListener(
+            'input',
+            applyFilters
+        );
+
+
+    dateFilter
+        .addEventListener(
+            'change',
+            applyFilters
+        );
+
+
+    sampleFilter
+        .addEventListener(
+            'change',
+            applyFilters
+        );
+
+
+    $('clearFiltersBtn')
+        .addEventListener(
+            'click',
+            () => {
+
+                searchInput.value =
+                    '';
+
+                dateFilter.value =
+                    '';
+
+                sampleFilter.value =
+                    '';
+
+                applyFilters();
+            }
+        );
+
+
+    $('refreshBtn')
+        .addEventListener(
+            'click',
+            async () => {
+
+                const icon =
+                    $('refreshBtn')
+                        .querySelector('i');
+
+
+                icon.classList.add(
+                    'fa-spin'
+                );
+
+
+                await loadAppointments();
+
+
+                setTimeout(
+                    () => {
+                        icon.classList.remove(
+                            'fa-spin'
+                        );
+                    },
+                    350
+                );
+
+
+                showToast(
+                    'تم تحديث البيانات',
+                    'success'
+                );
+            }
+        );
+
+
+    /* =========================================================
+       LOGOUT
+       ========================================================= */
+
+    $('logoutBtn')
+        .addEventListener(
+            'click',
+            () => {
+
+                if (
+                    confirm(
+                        'هل تريد تسجيل الخروج؟'
+                    )
+                ) {
+
+                    try {
+
+                        sessionStorage.removeItem(
+                            'medlab_admin_logged_in'
+                        );
+
+                        sessionStorage.removeItem(
+                            'medlab_admin_username'
+                        );
+
+                    } catch (e) {}
+
+
+                    window.location.href =
+                        'login.html';
+                }
+            }
+        );
+
+
+    /* =========================================================
+       INITIALIZE
+       ========================================================= */
+
+    loadAppointments();
+
+
+    console.log(
+        '✅ MEDLAB Professional Appointments Dashboard ready'
+    );
+
+})();
+</script>
+
 
 <!-- Dev Watermark -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+    rel="stylesheet"
+>
+
 <script src="js/dev-watermark.js"></script>
 
 </body>
