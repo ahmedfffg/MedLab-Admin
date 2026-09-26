@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>رفع نتيجة - معمل ميدلاب</title>
+  <link href="../images/logo.png" type="image/x-icon" rel="icon">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a7cb8;
+      --primary-dark: #085a87;
+      --primary-light: #3fa4df;
+      --blue-soft: #e8f4fb;
+      --blue-softer: #f3f9fd;
+      --border: #d8e8f2;
+      --text-dark: #143a52;
+      --text-medium: #3c6478;
+      --text-light: #6d8fa3;
+      --success: #1a7d4a;
+      --success-soft: #e8f8ef;
+      --danger: #c0392b;
+      --danger-soft: #fdecea;
+      --warning: #d97706;
+      --warning-soft: #fff4e5;
+      --white: #ffffff;
+      --shadow: 0 8px 24px -8px rgba(10, 60, 100, 0.15);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f4f9fc;
+      color: var(--text-dark);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    button, input, select, textarea { font-family: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+
+    .topbar {
+      position: sticky; top:0; z-index:100;
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(10,60,100,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .brand-logo {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 20px;
+    }
+    .brand-text h1 { color: var(--primary-dark); font-size: 1.15rem; line-height: 1.2; }
+    .brand-text span { color: var(--text-light); font-size: 12px; }
+    .top-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--primary-dark);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .top-btn:hover { background: var(--blue-soft); border-color: var(--primary); }
+
+    .page { max-width: 900px; margin: 0 auto; padding: 30px 25px 60px; }
+    .page-head { margin-bottom: 25px; }
+    .page-head h2 { color: var(--primary-dark); font-size: 1.7rem; margin-bottom: 6px; }
+    .page-head p { color: var(--text-light); font-size: 14.5px; }
+
+    .card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      padding: 28px;
+      margin-bottom: 20px;
+    }
+    .card h3 {
+      color: var(--primary-dark);
+      font-size: 1.1rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+    .card h3 i { color: var(--primary); }
+
+    .form-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-group label i { color: var(--primary); font-size: 12px; }
+    .form-group label .required { color: var(--danger); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--blue-softer);
+      font-family: inherit;
+      font-size: 14.5px;
+      outline: none;
+      transition: 0.2s;
+      color: var(--text-dark);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(10,124,184,0.08);
+    }
+    .form-group small { color: var(--text-light); font-size: 12px; }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: end;
+    }
+    .search-row .form-group { margin-bottom: 0; }
+
+    .btn {
+      padding: 12px 22px;
+      border-radius: 10px;
+      border: none;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 6px 18px -6px rgba(10,124,184,0.5);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-ghost {
+      background: var(--blue-soft);
+      color: var(--primary-dark);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--blue-softer); }
+    .btn-success {
+      background: var(--success-soft);
+      color: var(--success);
+      border: 1px solid var(--success);
+    }
+    .btn-success:hover { background: var(--success); color: white; }
+    .btn-danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+    .btn-danger:hover { background: var(--danger); color: white; }
+    .btn-block { width: 100%; }
+    .btn-sm { padding: 8px 14px; font-size: 13px; }
+
+    .patient-info {
+      background: linear-gradient(135deg, var(--blue-soft), var(--blue-softer));
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      margin: 20px 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .patient-info .info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .patient-info .info-item i { color: var(--primary); width: 20px; }
+    .patient-info .info-item strong { color: var(--primary-dark); }
+
+    .file-drop {
+      border: 2px dashed var(--border);
+      border-radius: 12px;
+      padding: 30px 20px;
+      text-align: center;
+      background: var(--blue-softer);
+      transition: 0.2s;
+      cursor: pointer;
+      display: block;
+    }
+    .file-drop:hover, .file-drop.dragover {
+      border-color: var(--primary);
+      background: var(--blue-soft);
+    }
+    .file-drop input { display: none; }
+    .file-drop i {
+      font-size: 36px;
+      color: var(--primary);
+      margin-bottom: 10px;
+      display: block;
+    }
+    .file-drop .title {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .file-drop .sub { font-size: 12.5px; color: var(--text-light); }
+    .file-name {
+      display: none;
+      margin-top: 12px;
+      padding: 10px 14px;
+      background: white;
+      border-radius: 8px;
+      font-size: 13.5px;
+      color: var(--success);
+      font-weight: 700;
+    }
+    .file-name.show { display: flex; align-items: center; gap: 8px; }
+
+    .alert {
+      padding: 13px 16px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 9px;
+    }
+    .alert.show { display: flex; animation: fadeIn 0.3s; }
+    .alert.success { background: var(--success-soft); color: var(--success); border-right: 3px solid var(--success); }
+    .alert.error { background: var(--danger-soft); color: var(--danger); border-right: 3px solid var(--danger); }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .recent-uploads {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .upload-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      background: var(--blue-softer);
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      gap: 10px;
+      transition: 0.2s;
+    }
+    .upload-item:hover { border-color: var(--primary); background: white; }
+    .upload-item .info { flex: 1; min-width: 0; }
+    .upload-item .info .fname {
+      font-weight: 700;
+      color: var(--text-dark);
+      font-size: 13.5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .upload-item .info .fmeta { font-size: 12px; color: var(--text-light); }
+    .upload-item .item-actions {
+      display: flex;
+      gap: 5px;
+      flex-shrink: 0;
+    }
+    .empty-mini {
+      text-align: center;
+      padding: 25px;
+      color: var(--text-light);
+      font-size: 13.5px;
+    }
+
+    .preview-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 40, 60, 0.75);
+      z-index: 3000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(6px);
+    }
+    .preview-overlay.show { display: flex; }
+    .preview-modal {
+      background: white;
+      border-radius: 18px;
+      width: 100%;
+      max-width: 1000px;
+      height: 92vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.4);
+      overflow: hidden;
+    }
+    .preview-header {
+      padding: 16px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      background: var(--blue-softer);
+    }
+    .preview-header .preview-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 0;
+    }
+    .preview-header .preview-title i { color: var(--primary); font-size: 22px; flex-shrink: 0; }
+    .preview-header .preview-title .t-info h3 {
+      color: var(--primary-dark);
+      font-size: 1.05rem;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .preview-header .preview-title .t-info p { color: var(--text-light); font-size: 12.5px; }
+    .preview-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .preview-body {
+      flex: 1;
+      overflow: hidden;
+      background: #f0f2f5;
+      position: relative;
+    }
+    .preview-body iframe { width: 100%; height: 100%; border: none; display: block; }
+    .preview-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 15px;
+      background: white;
+      z-index: 5;
+    }
+    .preview-loading.hidden { display: none; }
+    .preview-spinner {
+      width: 45px; height: 45px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .preview-info-bar {
+      padding: 10px 22px;
+      background: white;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 12.5px;
+      color: var(--text-light);
+    }
+    .preview-info-bar .info-chip { display: inline-flex; align-items: center; gap: 6px; }
+    .preview-info-bar .info-chip i { color: var(--primary); }
+    .preview-info-bar .info-chip strong { color: var(--text-dark); }
+
+    @media (max-width: 700px) {
+      .topbar { padding: 0 15px; height: 64px; }
+      .brand-text span { display: none; }
+      .page { padding: 20px 15px 50px; }
+      .page-head h2 { font-size: 1.4rem; }
+      .card { padding: 20px; }
+      .search-row { grid-template-columns: 1fr; }
+      .search-row .form-group { margin-bottom: 8px; }
+      .patient-info { grid-template-columns: 1fr; }
+      .top-btn span { display: none; }
+      .upload-item { flex-direction: column; align-items: stretch; }
+      .upload-item .item-actions { justify-content: flex-end; }
+      .preview-overlay { padding: 0; }
+      .preview-modal { border-radius: 0; height: 100vh; max-height: 100vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a href="admin.html" class="brand">
+      <div class="brand-logo"><i class="fas fa-flask"></i></div>
+      <div class="brand-text">
+        <h1>معمل ميدلاب</h1>
+        <span>رفع النتائج (نظام المرضى بالكود)</span>
+      </div>
+    </a>
+    <div>
+      <a href="add-patient-forwebsite.html" class="top-btn">
+        <i class="fas fa-arrow-right"></i> <span>إدارة المرضى</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="page-head">
+      <h2><i class="fas fa-file-upload"></i> رفع نتيجة جديدة</h2>
+      <p>ارفع ملف PDF لمريض مسجل بالكود أو الهاتف الخاص به</p>
+    </div>
+
+    <!-- Step 1: Search -->
+    <div class="card">
+      <h3><i class="fas fa-search"></i> الخطوة 1: ابحث عن المريض</h3>
+
+      <div class="search-row">
+        <div class="form-group">
+          <label for="searchCode"><i class="fas fa-id-card"></i> كود المريض أو الهاتف <span class="required">*</span></label>
+          <input type="text" id="searchCode" placeholder="مثال: P02024614 أو 01061730854">
+        </div>
+        <button class="btn btn-primary" id="searchBtn">
+          <i class="fas fa-search"></i> بحث
+        </button>
+      </div>
+
+      <div class="alert" id="searchAlert"></div>
+    </div>
+
+    <!-- Step 2: Upload (hidden initially) -->
+    <div id="uploadSection" class="hidden">
+
+      <div class="card">
+        <h3><i class="fas fa-user-check"></i> المريض المحدد</h3>
+        <div class="patient-info" id="patientInfoBox"></div>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-cloud-upload-alt"></i> الخطوة 2: ارفع الملف</h3>
+
+        <div class="alert" id="uploadAlert"></div>
+
+        <form id="uploadForm">
+          <div class="form-group">
+            <label for="fileName"><i class="fas fa-file-alt"></i> اسم التحليل المعروض <span class="required">*</span></label>
+            <input type="text" id="fileName" placeholder="مثال: تحليل صورة دم كاملة" required>
+          </div>
+
+          <div class="form-group">
+            <label for="testType"><i class="fas fa-flask"></i> نوع التحليل (اختياري)</label>
+            <input type="text" id="testType" placeholder="مثال: CBC">
+          </div>
+
+          <div class="form-group">
+            <label for="resultDate"><i class="fas fa-calendar"></i> تاريخ النتيجة <span class="required">*</span></label>
+            <input type="date" id="resultDate" required>
+          </div>
+
+          <div class="form-group">
+            <label for="notes"><i class="fas fa-sticky-note"></i> ملاحظات (اختياري)</label>
+            <textarea id="notes" rows="2" placeholder="أي ملاحظات إضافية..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-file-pdf"></i> ملف النتيجة PDF <span class="required">*</span></label>
+            <label for="pdfFile" class="file-drop" id="fileDrop">
+              <input type="file" id="pdfFile" accept=".pdf,application/pdf" required>
+              <i class="fas fa-cloud-upload-alt"></i>
+              <div class="title">اضغط لاختيار ملف PDF أو اسحبه هنا</div>
+              <div class="sub">الحد الأقصى 10 ميجابايت - PDF فقط</div>
+            </label>
+            <div class="file-name" id="fileNameDisplay">
+              <i class="fas fa-check-circle"></i> <span id="fileNameText"></span>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block" id="uploadBtn">
+            <i class="fas fa-cloud-upload-alt"></i> رفع النتيجة
+          </button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h3><i class="fas fa-history"></i> النتائج الحالية للمريض</h3>
+        <div class="recent-uploads" id="recentUploads">
+          <div class="empty-mini">جاري التحميل...</div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <div class="preview-overlay" id="previewOverlay">
+    <div class="preview-modal">
+      <div class="preview-header">
+        <div class="preview-title">
+          <i class="fas fa-file-pdf"></i>
+          <div class="t-info">
+            <h3 id="previewFileName">-</h3>
+            <p id="previewSubtitle">-</p>
+          </div>
+        </div>
+        <div class="preview-actions">
+          <button class="btn btn-success btn-sm" onclick="printPreview()">
+            <i class="fas fa-print"></i> <span>طباعة</span>
+          </button>
+          <a href="#" class="btn btn-primary btn-sm" id="previewDownloadBtn" target="_blank" rel="noopener">
+            <i class="fas fa-download"></i> <span>تحميل</span>
+          </a>
+          <button class="btn btn-danger btn-sm" onclick="closePreview()">
+            <i class="fas fa-times"></i> <span>إغلاق</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="preview-body">
+        <div class="preview-loading" id="previewLoading">
+          <div class="preview-spinner"></div>
+          <p style="color: var(--text-light); font-size: 13.5px;">جاري تحميل المعاينة...</p>
+        </div>
+        <iframe id="previewFrame" src="about:blank"></iframe>
+      </div>
+
+      <div class="preview-info-bar" id="previewInfoBar"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+  (function () {
+    'use strict';
+
+    // ✅ استخدام نفس المشروع القديم (نفس add-patient-forwebsite.html)
+    const SUPABASE_URL = 'https://rlkqifdteyccagpdtdmu.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // حماية
+    if (sessionStorage.getItem('medlab_admin_logged_in') !== '1') {
+      window.location.href = 'login.html';
+      return;
+    }
+
+    const $ = id => document.getElementById(id);
+
+    let currentPatient = null;
+    let currentPreviewUrl = '';
+
+    function escapeHtml(v) {
+      return String(v ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function showAlert(id, msg, type) {
+      const el = document.getElementById(id);
+      el.className = 'alert ' + type + ' show';
+      el.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${escapeHtml(msg)}`;
+      setTimeout(() => el.classList.remove('show'), 5000);
+    }
+
+    function formatDate(d) {
+      if (!d) return '-';
+      try {
+        return new Date(d).toLocaleDateString('ar-EG');
+      } catch { return d; }
+    }
+
+    function getFileUrl(filePath) {
+      return `${SUPABASE_URL}/storage/v1/object/public/results/${filePath}`;
+    }
+
+    /* ============================================================
+       SEARCH PATIENT (من جدول patients)
+    ============================================================ */
+    async function searchPatient() {
+      const code = $('searchCode').value.trim();
+
+      if (!code) {
+        showAlert('searchAlert', 'الرجاء إدخال كود المريض أو رقم الهاتف', 'error');
+        return;
+      }
+
+      const btn = $('searchBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري البحث...';
+
+      try {
+        // البحث بالكود أولاً
+        let { data: patient, error } = await supabaseClient
+          .from('patients')
+          .select('*')
+          .eq('patient_code', code)
+          .maybeSingle();
+
+        if (error && error.code !== 'PGRST116') throw error;
+
+        // لو مش موجود، جرب بالهاتف
+        if (!patient) {
+          const res = await supabaseClient
+            .from('patients')
+            .select('*')
+            .eq('phone', code)
+            .maybeSingle();
+          
+          if (res.error && res.error.code !== 'PGRST116') throw res.error;
+          patient = res.data;
+        }
+
+        if (!patient) {
+          $('uploadSection').classList.add('hidden');
+          currentPatient = null;
+          showAlert('searchAlert', '❌ لا يوجد مريض بهذا الكود أو الهاتف', 'error');
+          return;
+        }
+
+        currentPatient = patient;
+        renderPatientInfo(patient);
+        await loadPatientResults(patient);
+        $('uploadSection').classList.remove('hidden');
+        $('searchAlert').classList.remove('show');
+
+        $('uploadSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      } catch (error) {
+        console.error(error);
+        showAlert('searchAlert', 'حدث خطأ: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-search"></i> بحث';
+      }
+    }
+
+    function renderPatientInfo(p) {
+      $('patientInfoBox').innerHTML = `
+        <div class="info-item"><i class="fas fa-user"></i> الاسم: <strong>${escapeHtml(p.full_name || '-')}</strong></div>
+        <div class="info-item"><i class="fas fa-id-card"></i> الكود: <strong>${escapeHtml(p.patient_code || '-')}</strong></div>
+        <div class="info-item"><i class="fas fa-phone"></i> الهاتف: <strong dir="ltr">${escapeHtml(p.phone || '-')}</strong></div>
+        <div class="info-item"><i class="fas fa-envelope"></i> البريد: <strong>${escapeHtml(p.email || '-')}</strong></div>
+      `;
+    }
+
+    /* ============================================================
+       LOAD PATIENT RESULTS (من جدول results)
+    ============================================================ */
+    async function loadPatientResults(patient) {
+      const container = $('recentUploads');
+      container.innerHTML = '<div class="empty-mini">جاري التحميل...</div>';
+
+      try {
+        const { data: results, error } = await supabaseClient
+          .from('results')
+          .select('*')
+          .eq('patient_id', patient.id)
+          .order('result_date', { ascending: false });
+
+        if (error) throw error;
+
+        if (!results || results.length === 0) {
+          container.innerHTML = '<div class="empty-mini">لا توجد نتائج مسجلة بعد</div>';
+          return;
+        }
+
+        container.innerHTML = results.map(r => {
+          const fileUrl = getFileUrl(r.file_path);
+          return `
+            <div class="upload-item">
+              <div class="info">
+                <div class="fname">${escapeHtml(r.file_name || '-')}</div>
+                <div class="fmeta">
+                  <i class="fas fa-calendar"></i> ${formatDate(r.result_date)}
+                  • <i class="fas fa-flask"></i> ${escapeHtml(r.test_type || 'عام')}
+                </div>
+              </div>
+
+              <div class="item-actions">
+                <button class="btn btn-primary btn-sm" title="معاينة" 
+                        onclick="window.previewResult('${escapeHtml(r.file_path)}', '${escapeHtml(r.file_name || '')}', '${escapeHtml(r.result_date || '')}', '${escapeHtml(r.test_type || '')}')">
+                  <i class="fas fa-eye"></i> معاينة
+                </button>
+                <a href="${fileUrl}" target="_blank" rel="noopener" class="btn btn-ghost btn-sm" title="تحميل">
+                  <i class="fas fa-download"></i>
+                </a>
+                <button class="btn btn-danger btn-sm" title="حذف" 
+                        onclick="window.deleteResult(${r.id}, '${escapeHtml(r.file_path)}')">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = '<div class="empty-mini">حدث خطأ في التحميل</div>';
+      }
+    }
+
+    /* ============================================================
+       PREVIEW
+    ============================================================ */
+    window.previewResult = function (filePath, fileName, resultDate, testType) {
+      const fileUrl = getFileUrl(filePath);
+      currentPreviewUrl = fileUrl;
+
+      $('previewFileName').textContent = fileName || 'نتيجة تحليل';
+      $('previewSubtitle').textContent =
+        `${currentPatient ? currentPatient.full_name : ''} • ${formatDate(resultDate)}`;
+
+      $('previewDownloadBtn').href = fileUrl;
+
+      const frame = $('previewFrame');
+      const loading = $('previewLoading');
+      loading.classList.remove('hidden');
+      frame.src = 'about:blank';
+
+      setTimeout(() => {
+        frame.src = fileUrl;
+        frame.onload = () => {
+          setTimeout(() => loading.classList.add('hidden'), 400);
+        };
+      }, 100);
+
+      let infoHtml = `
+        <div class="info-chip"><i class="fas fa-user"></i> المريض: <strong>${escapeHtml(currentPatient ? currentPatient.full_name : '-')}</strong></div>
+        <div class="info-chip"><i class="fas fa-id-card"></i> الكود: <strong>${escapeHtml(currentPatient ? currentPatient.patient_code : '-')}</strong></div>
+        <div class="info-chip"><i class="fas fa-calendar"></i> التاريخ: <strong>${formatDate(resultDate)}</strong></div>
+      `;
+
+      if (testType) {
+        infoHtml += `<div class="info-chip"><i class="fas fa-flask"></i> النوع: <strong>${escapeHtml(testType)}</strong></div>`;
+      }
+
+      $('previewInfoBar').innerHTML = infoHtml;
+      $('previewOverlay').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    };
+
+    window.closePreview = function () {
+      $('previewOverlay').classList.remove('show');
+      $('previewFrame').src = 'about:blank';
+      currentPreviewUrl = '';
+      document.body.style.overflow = 'auto';
+    };
+
+    window.printPreview = function () {
+      if (!currentPreviewUrl) return;
+      const win = window.open(currentPreviewUrl, '_blank');
+      if (win) {
+        win.onload = function () {
+          setTimeout(() => {
+            try { win.print(); } catch (e) { console.warn(e); }
+          }, 500);
+        };
+      }
+    };
+
+    /* ============================================================
+       DELETE RESULT
+    ============================================================ */
+    window.deleteResult = async function (resultId, filePath) {
+      if (!confirm('هل أنت متأكد من حذف هذه النتيجة؟')) return;
+
+      try {
+        // حذف الملف من Storage
+        if (filePath) {
+          try {
+            await supabaseClient.storage.from('results').remove([filePath]);
+          } catch (e) {
+            console.warn('Storage delete failed:', e);
+          }
+        }
+
+        // حذف من DB
+        const { error } = await supabaseClient
+          .from('results')
+          .delete()
+          .eq('id', resultId);
+
+        if (error) throw error;
+
+        showAlert('uploadAlert', '✅ تم حذف النتيجة', 'success');
+        await loadPatientResults(currentPatient);
+
+      } catch (error) {
+        console.error(error);
+        showAlert('uploadAlert', 'فشل الحذف: ' + error.message, 'error');
+      }
+    };
+
+    /* ============================================================
+       FILE INPUT
+    ============================================================ */
+    const pdfInput = $('pdfFile');
+    const fileDrop = $('fileDrop');
+    const fileNameDisplay = $('fileNameDisplay');
+    const fileNameText = $('fileNameText');
+
+    pdfInput.addEventListener('change', function () {
+      if (this.files && this.files[0]) {
+        fileNameText.textContent = this.files[0].name + ' (' + (this.files[0].size / 1024 / 1024).toFixed(2) + ' MB)';
+        fileNameDisplay.classList.add('show');
+      } else {
+        fileNameDisplay.classList.remove('show');
+      }
+    });
+
+    fileDrop.addEventListener('dragover', e => {
+      e.preventDefault();
+      fileDrop.classList.add('dragover');
+    });
+    fileDrop.addEventListener('dragleave', () => fileDrop.classList.remove('dragover'));
+    fileDrop.addEventListener('drop', e => {
+      e.preventDefault();
+      fileDrop.classList.remove('dragover');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        pdfInput.files = e.dataTransfer.files;
+        pdfInput.dispatchEvent(new Event('change'));
+      }
+    });
+
+    /* ============================================================
+       UPLOAD RESULT
+    ============================================================ */
+    $('uploadForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      if (!currentPatient) {
+        return showAlert('uploadAlert', 'اختر مريضاً أولاً', 'error');
+      }
+
+      const fileName = $('fileName').value.trim();
+      const testType = $('testType').value.trim();
+      const resultDate = $('resultDate').value;
+      const notes = $('notes').value.trim();
+      const file = pdfInput.files[0];
+
+      if (!fileName || !resultDate || !file) {
+        return showAlert('uploadAlert', 'الرجاء ملء كل الحقول المطلوبة واختيار ملف', 'error');
+      }
+
+      if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+        return showAlert('uploadAlert', 'يجب أن يكون الملف PDF فقط', 'error');
+      }
+
+      if (file.size > 10 * 1024 * 1024) {
+        return showAlert('uploadAlert', 'حجم الملف يتجاوز 10 ميجا', 'error');
+      }
+
+      const btn = $('uploadBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الرفع...';
+
+      try {
+        const safeCode = (currentPatient.patient_code || 'unknown').replace(/[^a-zA-Z0-9]/g, '_');
+        const safeName = Date.now() + '_' + file.name.replace(/[^a-zA-Z0-9._-]/g, '_');
+        const filePath = `${safeCode}/${safeName}`;
+
+        // 1) رفع الملف لـ Supabase Storage
+        const { error: uploadError } = await supabaseClient
+          .storage
+          .from('results')
+          .upload(filePath, file, {
+            cacheControl: '3600',
+            upsert: false,
+            contentType: 'application/pdf'
+          });
+
+        if (uploadError) throw uploadError;
+
+        // 2) حفظ metadata في جدول results
+        const { error: dbError } = await supabaseClient
+          .from('results')
+          .insert({
+            patient_id: currentPatient.id,
+            file_name: fileName,
+            file_path: filePath,
+            result_date: resultDate,
+            test_type: testType || null,
+            notes: notes || null
+          });
+
+        if (dbError) throw dbError;
+
+        showAlert('uploadAlert', '✅ تم رفع النتيجة بنجاح', 'success');
+
+        // إعادة تعيين الفورم
+        this.reset();
+        fileNameDisplay.classList.remove('show');
+
+        // تحديث القائمة
+        await loadPatientResults(currentPatient);
+
+        // معاينة تلقائية
+        setTimeout(() => {
+          window.previewResult(filePath, fileName, resultDate, testType);
+        }, 600);
+
+      } catch (error) {
+        console.error(error);
+        showAlert('uploadAlert', 'فشل الرفع: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-cloud-upload-alt"></i> رفع النتيجة';
+      }
+    });
+
+    /* ============================================================
+       EVENTS
+    ============================================================ */
+    $('searchBtn').addEventListener('click', searchPatient);
+    $('searchCode').addEventListener('keypress', e => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        searchPatient();
+      }
+    });
+
+    $('previewOverlay').addEventListener('click', function (e) {
+      if (e.target === this) window.closePreview();
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        if ($('previewOverlay').classList.contains('show')) {
+          window.closePreview();
+        }
+      }
+    });
+
+    // تاريخ اليوم
+    $('resultDate').value = new Date().toISOString().split('T')[0];
+
+    // لو الكود في URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const codeFromUrl = urlParams.get('code') || urlParams.get('phone');
+    if (codeFromUrl) {
+      $('searchCode').value = codeFromUrl;
+      setTimeout(() => searchPatient(), 500);
+    }
+
+    console.log('✅ Upload Result ready');
+  })();
+  </script>
+
+<!-- Dev Watermark -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="js/dev-watermark.js"></script>
+
+</body>
+</html>
