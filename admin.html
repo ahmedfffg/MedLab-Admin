@@ -173,6 +173,7 @@
     position:absolute; width:1px; height:1px;
     overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;
   }
+  
 </style>
 </head>
 <body>
@@ -181,6 +182,17 @@
 
   <div class="buttons-wrap">
     <div class="btn-row">
+
+<!-- اضافة مريض -->
+<button class="lab-btn" type="button" data-action="اضافة مريض">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="9" cy="7.5" r="3"/>
+    <path d="M3.5 20c.4-3.5 2.5-5.8 5.5-5.8s5.1 2.3 5.5 5.8"/>
+    <path d="M17 13v6"/>
+    <path d="M14 16h6"/>
+  </svg>
+  <span>اضافة مريض جديد</span>
+</button>
 
 <!-- اضافة مريض لرفع النتائج -->
 <button class="lab-btn" type="button" data-action="اضافة مريض لرفع النتائج">
@@ -192,6 +204,19 @@
   </svg>
   <span>اضافة مريض لرفع النتائج</span>
 </button>
+
+<!-- اضافة نتائج -->
+<button class="lab-btn" type="button" data-action="اضافة نتائج">
+  <svg viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M6 3h12v18H6z"/>
+    <path d="M9 7h6"/>
+    <path d="M9 11h6"/>
+    <path d="M9 15h3"/>
+    <path d="M16 15l1.5 1.5L20 14"/>
+  </svg>
+  <span>اضافة نتائج</span>
+</button>
+
 
 <!-- رفع نتيجة مريض PDF -->
 <button class="lab-btn" type="button" data-action="رفع نتيجة مريض PDF">
@@ -302,7 +327,15 @@
 
     switch (action) {
 
- 
+     case 'اضافة نتائج':
+    window.location.href = 'add-result.html';
+    break;
+
+      case 'اضافة مريض':
+        window.location.href = 'add-patient.html';
+        break;  
+
+
       case 'الحجوزات':
         window.location.href = 'admin-patients.html';
         break;
@@ -324,7 +357,7 @@
         break;
 
  case 'رفع نتيجة مريض PDF':
-        window.location.href = 'samples-admin.html';
+        window.location.href = 'upload-result.html';
         break;  
 
       case 'عن الموقع':
