@@ -293,7 +293,7 @@
                     اسم المستخدم
                 </label>
                 <div class="input-wrapper">
-                    <input type="text" id="username" placeholder="أدخل اسم المستخدم" required autofocus>
+                    <input type="text" id="username" placeholder="أدخل اسم المستخدم" value="admin" required>
                     <i class="fas fa-user input-icon"></i>
                 </div>
             </div>
@@ -304,7 +304,7 @@
                     كلمة المرور
                 </label>
                 <div class="input-wrapper">
-                    <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+                    <input type="password" id="password" placeholder="أدخل كلمة المرور" required autofocus>
                     <i class="fas fa-lock input-icon"></i>
                     <button type="button" class="toggle-password" id="togglePassword" title="إظهار/إخفاء">
                         <i class="fas fa-eye"></i>
@@ -318,13 +318,7 @@
             </button>
 
         </form>
-
-        <div class="login-info">
-            <i class="fas fa-info-circle"></i>
-            بيانات الدخول الافتراضية:<br>
-            المستخدم: <code>admin</code> • كلمة المرور: <code>admin123</code>
-        </div>
-
+        
         <div class="login-footer">
             © 2026 معمل ميدلاب. جميع الحقوق محفوظة.
         </div>
@@ -339,7 +333,7 @@
 
         // بيانات الدخول (يمكن تعديلها)
         const ADMIN_USERNAME = 'admin';
-        const ADMIN_PASSWORD = 'admin123';
+        const ADMIN_PASSWORD = '123';
 
         const form = $('loginForm');
         const usernameInput = $('username');
