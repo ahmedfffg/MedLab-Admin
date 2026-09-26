@@ -1890,7 +1890,7 @@
 
 <header class="topbar">
 
-    <a href="admin.html" class="brand">
+    <a href="index.html" class="brand">
         <div class="brand-logo">
             <i class="fas fa-calendar-check"></i>
         </div>
@@ -1902,7 +1902,7 @@
 
     <div class="top-actions">
 
-        <a href="admin.html" class="top-btn" title="لوحة التحكم">
+        <a href="index.html" class="top-btn" title="لوحة التحكم">
             <i class="fas fa-arrow-right"></i>
             <span>لوحة التحكم</span>
         </a>
@@ -2201,7 +2201,7 @@
     });
 
     if (sessionStorage.getItem('medlab_admin_logged_in') !== '1') {
-        window.location.href = 'admin.html';
+        window.location.href = 'index.html';
     }
 
     let appointments = [];
@@ -2581,7 +2581,7 @@
                             التفاصيل
                         </button>
 
-                        <a href="samples-admin.html?phone=${encodeURIComponent(patientPhone)}" class="pact-btn upload" title="رفع نتيجة">
+                        <a href="samples-index.html?phone=${encodeURIComponent(patientPhone)}" class="pact-btn upload" title="رفع نتيجة">
                             <i class="fas fa-cloud-arrow-up"></i>
                             رفع نتيجة
                         </a>
