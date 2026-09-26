@@ -182,18 +182,7 @@
 
   <div class="buttons-wrap">
     <div class="btn-row">
-
-<!-- اضافة مريض -->
-<button class="lab-btn" type="button" data-action="اضافة مريض">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <circle cx="9" cy="7.5" r="3"/>
-    <path d="M3.5 20c.4-3.5 2.5-5.8 5.5-5.8s5.1 2.3 5.5 5.8"/>
-    <path d="M17 13v6"/>
-    <path d="M14 16h6"/>
-  </svg>
-  <span>اضافة مريض جديد</span>
-</button>
-
+     
 <!-- اضافة مريض لرفع النتائج -->
 <button class="lab-btn" type="button" data-action="اضافة مريض لرفع النتائج">
   <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -205,16 +194,17 @@
   <span>اضافة مريض لرفع النتائج</span>
 </button>
 
-<!-- اضافة نتائج -->
-<button class="lab-btn" type="button" data-action="اضافة نتائج">
+     <!-- الحجوزات -->
+<button class="lab-btn" type="button" data-action="الحجوزات">
   <svg viewBox="0 0 24 24" aria-hidden="true">
-    <path d="M6 3h12v18H6z"/>
-    <path d="M9 7h6"/>
-    <path d="M9 11h6"/>
-    <path d="M9 15h3"/>
-    <path d="M16 15l1.5 1.5L20 14"/>
+    <rect x="3.5" y="5" width="17" height="16" rx="2"/>
+    <path d="M7 3v4"/>
+    <path d="M17 3v4"/>
+    <path d="M3.5 9h17"/>
+    <path d="M7.5 13h3"/>
+    <path d="M7.5 17h6"/>
   </svg>
-  <span>اضافة نتائج</span>
+  <span>الحجوزات</span>
 </button>
 
 
@@ -228,20 +218,6 @@
   </svg>
   <span>رفع نتيجة مريض PDF</span>
 </button>
-
-<!-- الحجوزات -->
-<button class="lab-btn" type="button" data-action="الحجوزات">
-  <svg viewBox="0 0 24 24" aria-hidden="true">
-    <rect x="3.5" y="5" width="17" height="16" rx="2"/>
-    <path d="M7 3v4"/>
-    <path d="M17 3v4"/>
-    <path d="M3.5 9h17"/>
-    <path d="M7.5 13h3"/>
-    <path d="M7.5 17h6"/>
-  </svg>
-  <span>الحجوزات</span>
-</button>
-
 
 <!-- الرسائل -->
 <button class="lab-btn" type="button" data-action="الرسائل">
@@ -326,16 +302,7 @@
     const action = this.dataset.action;
 
     switch (action) {
-
-     case 'اضافة نتائج':
-    window.location.href = 'add-result.html';
-    break;
-
-      case 'اضافة مريض':
-        window.location.href = 'add-patient.html';
-        break;  
-
-
+      
       case 'الحجوزات':
         window.location.href = 'admin-patients.html';
         break;
