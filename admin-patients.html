@@ -3,423 +3,383 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#0796d8">
+    <meta name="description" content="إدارة الحجوزات - معمل ميدلاب">
 
     <title>إدارة الحجوزات | MEDLAB</title>
 
     <link rel="icon" href="logo.png" type="image/x-icon">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-        /* =========================================================
-           MEDLAB APPOINTMENTS
-           Professional Medical Dashboard
-           ========================================================= */
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* =========================================================
+           MEDLAB — PREMIUM MEDICAL UI
+           إدارة الحجوزات — تصميم طبي احترافي متجاوب بالكامل
+           الحجوزات داخل صفحة فرعية (Drawer Panel)
+        ========================================================= */
 
         :root {
-            --primary: #0796d8;
-            --primary-dark: #0575ad;
-            --primary-deep: #075783;
-            --primary-light: #e9f8ff;
-            --primary-soft: #f2fbff;
+            --primary: #0788c7;
+            --primary-dark: #056b9d;
+            --primary-deep: #075579;
+            --primary-light: #42b6e8;
 
-            --cyan: #12b8d8;
-            --cyan-light: #e9fcff;
+            --cyan: #08a9d6;
+            --cyan-soft: #e8faff;
+
+            --blue-soft: #eaf7fd;
+            --blue-softer: #f7fcff;
 
             --white: #ffffff;
-            --bg: #f4faff;
-            --bg-soft: #f8fcff;
 
-            --text: #12394f;
-            --text-dark: #0a3047;
-            --muted: #78909d;
-            --muted-light: #9aacb6;
+            --border: #dcecf4;
+            --border-light: #edf5f9;
 
-            --border: #dceef6;
-            --border-light: #eaf4f8;
+            --text-dark: #14394d;
+            --text-medium: #486879;
+            --text-light: #7893a2;
 
-            --success: #13a56b;
-            --success-bg: #eafaf3;
+            --success: #16834d;
+            --success-soft: #e9f8f0;
 
-            --warning: #e59b16;
-            --warning-bg: #fff8e8;
+            --danger: #d13f35;
+            --danger-soft: #fff0ee;
 
-            --danger: #e34b4b;
-            --danger-bg: #fff1f1;
+            --warning: #d98408;
+            --warning-soft: #fff7e8;
 
-            --purple: #7658d9;
-            --purple-bg: #f2efff;
+            --purple: #7054b5;
+            --purple-soft: #f3efff;
 
-            --shadow-xs: 0 2px 8px rgba(19, 105, 145, .04);
-            --shadow-sm: 0 5px 18px rgba(19, 105, 145, .07);
-            --shadow: 0 12px 35px rgba(19, 105, 145, .09);
-            --shadow-lg: 0 22px 65px rgba(13, 76, 108, .14);
+            --shadow-xs: 0 2px 8px rgba(15,80,110,.05);
+            --shadow: 0 10px 30px rgba(17,88,120,.08);
+            --shadow-hover: 0 16px 40px rgba(17,88,120,.13);
+            --shadow-lg: 0 24px 60px rgba(17,88,120,.16);
 
             --radius-sm: 10px;
-            --radius: 17px;
-            --radius-lg: 23px;
+            --radius: 16px;
+            --radius-lg: 22px;
+            --radius-xl: 30px;
 
-            --header-height: 76px;
+            --transition: .25s cubic-bezier(.4,0,.2,1);
+            --transition-slow: .45s cubic-bezier(.4,0,.2,1);
 
-            --transition: .25s cubic-bezier(.4, 0, .2, 1);
+            --topbar-h: 72px;
         }
 
-        html {
-            scroll-behavior: smooth;
-            background: var(--bg);
-        }
+        * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color: transparent; }
+
+        html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
 
         body {
-            font-family: "Cairo", Tahoma, Arial, sans-serif;
+            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background:
-                radial-gradient(circle at 90% 0%, rgba(18,184,216,.07), transparent 25%),
-                radial-gradient(circle at 0% 20%, rgba(7,150,216,.045), transparent 25%),
-                var(--bg);
-            color: var(--text);
+                radial-gradient(circle at 100% 0%, rgba(66,182,232,.10), transparent 30%),
+                radial-gradient(circle at 0% 100%, rgba(8,169,214,.07), transparent 28%),
+                radial-gradient(circle at 50% 50%, rgba(7,136,199,.03), transparent 60%),
+                #f2f9fc;
+            color: var(--text-dark);
+            line-height: 1.7;
             min-height: 100vh;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body::before {
             content: "";
             position: fixed;
-            width: 420px;
-            height: 420px;
-            border-radius: 50%;
-            background: rgba(18,184,216,.025);
-            top: 15%;
-            right: -220px;
+            inset: 0;
             pointer-events: none;
+            background: linear-gradient(120deg, rgba(255,255,255,.4), transparent 40%);
             z-index: -1;
         }
 
-        button,
-        input,
-        select {
-            font-family: inherit;
+        body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(66,182,232,.06), transparent 70%);
+            top: -200px;
+            left: -200px;
+            pointer-events: none;
+            z-index: -1;
+            animation: orbFloat 20s ease-in-out infinite;
         }
 
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(80px, 60px) scale(1.15); }
         }
 
-        button {
-            cursor: pointer;
-        }
+        button, input, select, textarea { font-family: inherit; }
+        button { cursor: pointer; }
+        a { color: inherit; }
+        .hidden { display: none !important; }
 
-        ::selection {
-            background: rgba(7,150,216,.18);
-            color: var(--text-dark);
-        }
+        ::selection { background: var(--primary-light); color: white; }
+
 
         /* =========================================================
            TOPBAR
-           ========================================================= */
+        ========================================================= */
 
         .topbar {
-            height: var(--header-height);
             position: sticky;
             top: 0;
             z-index: 1000;
-
+            min-height: var(--topbar-h);
+            background: rgba(255,255,255,.88);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(216,232,242,.8);
+            box-shadow: 0 4px 24px rgba(15,70,100,.06);
             display: flex;
             align-items: center;
             justify-content: space-between;
-
-            padding:
-                0
-                max(18px, env(safe-area-inset-right))
-                0
-                max(18px, env(safe-area-inset-left));
-
-            color: white;
-
-            background:
-                linear-gradient(
-                    120deg,
-                    #064c76 0%,
-                    #057aae 48%,
-                    #08a6d2 100%
-                );
-
-            box-shadow:
-                0 7px 28px rgba(0,72,108,.15);
-
-            isolation: isolate;
-        }
-
-        .topbar::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -1;
-
-            background:
-                radial-gradient(
-                    circle at 85% 50%,
-                    rgba(255,255,255,.13),
-                    transparent 27%
-                ),
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    rgba(255,255,255,.025),
-                    transparent
-                );
-
-            pointer-events: none;
-        }
-
-        .topbar::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 2px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255,255,255,.45),
-                transparent
-            );
-            opacity: .65;
-        }
-
-        .brand {
-            display: flex;
-            align-items: center;
-            gap: 13px;
-            min-width: 0;
-        }
-
-        .brand-logo {
-            width: 48px;
-            height: 48px;
-
-            flex-shrink: 0;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            background: rgba(255,255,255,.96);
-            border: 1px solid rgba(255,255,255,.7);
-            border-radius: 14px;
-
-            padding: 4px;
-
-            box-shadow:
-                0 6px 20px rgba(0,0,0,.12),
-                inset 0 0 0 1px rgba(0,100,150,.05);
-
+            gap: 16px;
+            padding: 10px clamp(14px, 3vw, 42px);
             transition: var(--transition);
         }
 
-        .brand-logo:hover {
-            transform: translateY(-1px) rotate(-1deg);
-        }
-
-        .brand-logo img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .brand-text {
-            display: flex;
-            flex-direction: column;
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
             min-width: 0;
+            transition: var(--transition);
         }
 
-        .brand-text strong {
-            font-size: 21px;
-            line-height: 1.1;
-            letter-spacing: 1px;
+        .brand-logo {
+            width: 46px;
+            height: 46px;
+            flex-shrink: 0;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            box-shadow: 0 8px 20px rgba(7,136,199,.25);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .brand-logo::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,.3), transparent);
+            transform: translateX(-100%);
+            transition: transform .6s ease;
+        }
+
+        .brand:hover .brand-logo::after { transform: translateX(100%); }
+
+        .brand:hover .brand-logo {
+            transform: translateY(-2px) rotate(-3deg);
+            box-shadow: 0 12px 28px rgba(7,136,199,.32);
+        }
+
+        .brand-text { min-width: 0; }
+
+        .brand-text h1 {
+            color: var(--primary-deep);
+            font-size: clamp(1rem, 1.8vw, 1.2rem);
+            line-height: 1.2;
+            white-space: nowrap;
             font-weight: 800;
         }
 
         .brand-text span {
-            margin-top: 4px;
-            font-size: 11px;
-            opacity: .78;
-            white-space: nowrap;
+            color: var(--text-light);
+            font-size: 12px;
+            display: block;
+            margin-top: 2px;
         }
 
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 9px;
-        }
-
-        .admin-label {
+        .top-actions {
             display: flex;
             align-items: center;
             gap: 8px;
+            flex-wrap: wrap;
+        }
 
-            padding: 9px 14px;
-
-            border: 1px solid rgba(255,255,255,.13);
+        .top-btn {
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,.9);
+            color: var(--primary-dark);
+            min-height: 40px;
+            padding: 8px 14px;
             border-radius: 11px;
-
-            background: rgba(255,255,255,.095);
-
             font-size: 13px;
-            font-weight: 600;
-
-            backdrop-filter: blur(8px);
-        }
-
-        .admin-label i {
-            font-size: 12px;
-            opacity: .8;
-        }
-
-        .logout-btn {
-            display: flex;
+            font-weight: 700;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 7px;
-
-            border: 1px solid rgba(255,255,255,.2);
-            background: rgba(255,255,255,.10);
-            color: white;
-
-            padding: 9px 14px;
-            min-height: 40px;
-
-            border-radius: 11px;
-
-            font-size: 12px;
-            font-weight: 700;
-
+            text-decoration: none;
             transition: var(--transition);
-            backdrop-filter: blur(8px);
+            box-shadow: var(--shadow-xs);
         }
 
-        .logout-btn:hover {
-            background: rgba(255,255,255,.18);
-            transform: translateY(-1px);
+        .top-btn:hover {
+            background: var(--blue-soft);
+            border-color: rgba(7,136,199,.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(7,136,199,.12);
         }
 
-        .logout-btn:active {
-            transform: translateY(0);
+        .top-btn:active { transform: translateY(0); }
+
+        .top-btn.danger { color: var(--danger); }
+        .top-btn.danger:hover {
+            background: var(--danger-soft);
+            border-color: rgba(209,63,53,.35);
         }
+
 
         /* =========================================================
            PAGE
-           ========================================================= */
+        ========================================================= */
 
         .page {
-            width: min(100% - 36px, 1540px);
+            width: min(1500px, 100%);
             margin: 0 auto;
-            padding: 32px 0 65px;
+            padding: clamp(22px, 4vw, 42px) clamp(14px, 3vw, 38px) 80px;
         }
 
-        .page-header {
+
+        /* =========================================================
+           PAGE HEAD
+        ========================================================= */
+
+        .page-head {
             display: flex;
-            align-items: flex-end;
             justify-content: space-between;
-            gap: 25px;
-            margin-bottom: 25px;
-        }
-
-        .page-title {
-            position: relative;
-        }
-
-        .page-title .eyebrow {
-            display: inline-flex;
             align-items: center;
-            gap: 7px;
-
-            margin-bottom: 8px;
-
-            color: var(--primary);
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: .3px;
+            gap: 20px;
+            margin-bottom: 26px;
+            padding: clamp(20px, 3vw, 28px);
+            border: 1px solid rgba(220,236,244,.9);
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, rgba(255,255,255,.98), rgba(247,252,255,.96));
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
         }
 
-        .page-title .eyebrow::before {
+        .page-head::before {
             content: "";
-            width: 7px;
-            height: 7px;
+            position: absolute;
+            width: 220px;
+            height: 220px;
             border-radius: 50%;
-            background: var(--cyan);
-            box-shadow: 0 0 0 5px rgba(18,184,216,.09);
+            left: -90px;
+            top: -110px;
+            background: radial-gradient(circle, rgba(66,182,232,.14), transparent 70%);
+            pointer-events: none;
         }
 
-        .page-title h1 {
-            color: var(--text-dark);
-            font-size: clamp(25px, 2.2vw, 34px);
-            line-height: 1.2;
+        .page-head::after {
+            content: "";
+            position: absolute;
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            right: -50px;
+            bottom: -70px;
+            background: radial-gradient(circle, rgba(8,169,214,.08), transparent 70%);
+            pointer-events: none;
+        }
+
+        .page-head > div {
+            position: relative;
+            z-index: 1;
+        }
+
+        .page-head h2 {
+            color: var(--primary-deep);
+            font-size: clamp(1.35rem, 2.5vw, 1.95rem);
             font-weight: 800;
-            letter-spacing: -.5px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        .page-title p {
-            margin-top: 7px;
-            color: var(--muted);
-            font-size: 13px;
-            line-height: 1.8;
+        .page-head h2 i {
+            color: var(--primary);
+            font-size: .9em;
+        }
+
+        .page-head p {
+            color: var(--text-light);
+            font-size: clamp(13px, 1.5vw, 14.5px);
+        }
+
+        .page-head-actions {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+            position: relative;
+            z-index: 2;
         }
 
         .refresh-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            min-height: 48px;
+            padding: 12px 22px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 800;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 9px;
-
-            min-height: 45px;
-            padding: 0 17px;
-
-            border: 1px solid var(--border);
-            border-radius: 12px;
-
-            background: white;
-            color: var(--primary-dark);
-
-            font-size: 12px;
-            font-weight: 800;
-
-            box-shadow: var(--shadow-xs);
+            box-shadow: 0 9px 24px rgba(7,136,199,.28);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
         }
+
+        .refresh-btn::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(255,255,255,.25), transparent);
+            transform: translateX(-100%);
+            transition: transform .6s ease;
+        }
+
+        .refresh-btn:hover::after { transform: translateX(100%); }
 
         .refresh-btn:hover {
-            background: var(--primary-soft);
-            border-color: #c4e8f7;
             transform: translateY(-2px);
-            box-shadow: var(--shadow-sm);
+            box-shadow: 0 14px 32px rgba(7,136,199,.35);
         }
 
-        .refresh-btn:active {
-            transform: translateY(0);
-        }
+        .refresh-btn:active { transform: translateY(0); }
 
-        .refresh-btn i {
-            font-size: 13px;
-        }
 
         /* =========================================================
            STATS
-           ========================================================= */
+        ========================================================= */
 
         .stats {
             display: grid;
@@ -429,1442 +389,1465 @@
         }
 
         .stat-card {
-            position: relative;
-            overflow: hidden;
-
-            min-height: 112px;
-
+            background: rgba(255,255,255,.96);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            min-width: 0;
             display: flex;
             align-items: center;
-            gap: 15px;
-
-            padding: 19px;
-
-            background: rgba(255,255,255,.95);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-
-            box-shadow: var(--shadow-sm);
-
+            gap: 14px;
+            box-shadow: var(--shadow);
             transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
         }
 
         .stat-card::before {
             content: "";
             position: absolute;
-            width: 120px;
-            height: 120px;
+            width: 90px;
+            height: 90px;
+            left: -30px;
+            bottom: -35px;
             border-radius: 50%;
-            left: -60px;
-            bottom: -75px;
-            background: rgba(7,150,216,.035);
+            background: rgba(7,136,199,.035);
+            transition: var(--transition);
+        }
+
+        .stat-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: var(--radius-lg);
+            padding: 1px;
+            background: linear-gradient(135deg, transparent, rgba(66,182,232,.2), transparent);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: var(--transition);
             pointer-events: none;
         }
 
         .stat-card:hover {
-            transform: translateY(-3px);
-            border-color: #c8e9f6;
-            box-shadow: var(--shadow);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-hover);
+            border-color: rgba(7,136,199,.2);
         }
 
-        .stat-icon {
-            width: 53px;
-            height: 53px;
-            flex: 0 0 53px;
+        .stat-card:hover::before {
+            transform: scale(1.4);
+            background: rgba(7,136,199,.06);
+        }
 
+        .stat-card:hover::after { opacity: 1; }
+
+        .stat-icon {
+            width: 54px;
+            height: 54px;
+            flex-shrink: 0;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 22px;
+            transition: var(--transition);
+        }
 
-            border-radius: 15px;
+        .stat-card:hover .stat-icon { transform: scale(1.08) rotate(-4deg); }
 
-            background: linear-gradient(
-                145deg,
-                #effaff,
-                #e4f6fd
-            );
-
-            border: 1px solid #d7eef8;
+        .stat-icon.blue {
+            background: linear-gradient(135deg, var(--blue-soft), #d6eefa);
             color: var(--primary);
-
-            font-size: 20px;
-
-            box-shadow:
-                inset 0 1px 0 rgba(255,255,255,.8);
         }
 
-        .stat-card:nth-child(2) .stat-icon {
-            color: var(--cyan);
-            background: var(--cyan-light);
-        }
-
-        .stat-card:nth-child(3) .stat-icon {
+        .stat-icon.green {
+            background: linear-gradient(135deg, var(--success-soft), #d4f0e1);
             color: var(--success);
-            background: var(--success-bg);
         }
 
-        .stat-card:nth-child(4) .stat-icon {
+        .stat-icon.orange {
+            background: linear-gradient(135deg, var(--warning-soft), #ffedcc);
+            color: var(--warning);
+        }
+
+        .stat-icon.purple {
+            background: linear-gradient(135deg, var(--purple-soft), #e4dbfa);
             color: var(--purple);
-            background: var(--purple-bg);
         }
 
-        .stat-content {
-            min-width: 0;
-        }
+        .stat-info { min-width: 0; }
 
-        .stat-content span {
+        .stat-info span {
             display: block;
+            color: var(--text-light);
+            font-size: 12.5px;
             margin-bottom: 4px;
-
-            color: var(--muted);
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .stat-content strong {
-            display: block;
-
-            color: var(--text-dark);
-            font-size: clamp(20px, 2vw, 26px);
-            line-height: 1.2;
-            font-weight: 800;
-
             white-space: nowrap;
         }
 
+        .stat-info strong {
+            display: block;
+            color: var(--primary-deep);
+            font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+            line-height: 1;
+            font-weight: 800;
+        }
+
+
         /* =========================================================
            FILTERS
-           ========================================================= */
+        ========================================================= */
 
         .filters-card {
             background: rgba(255,255,255,.96);
             border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow-sm);
-            padding: 20px;
+            border-radius: var(--radius-lg);
+            padding: 16px;
             margin-bottom: 20px;
-        }
-
-        .filters-heading {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 15px;
-            margin-bottom: 16px;
-        }
-
-        .filters-title-wrap {
-            display: flex;
-            align-items: center;
-            gap: 11px;
-        }
-
-        .filters-title-icon {
-            width: 35px;
-            height: 35px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 10px;
-
-            color: var(--primary);
-            background: var(--primary-light);
-
-            font-size: 13px;
-        }
-
-        .filters-title {
-            color: var(--text-dark);
-            font-size: 15px;
-            font-weight: 800;
-        }
-
-        .filters-subtitle {
-            color: var(--muted);
-            font-size: 10px;
-            margin-top: 2px;
-        }
-
-        .filters {
             display: grid;
-            grid-template-columns: minmax(220px, 1.3fr) minmax(180px, .8fr) minmax(180px, .9fr) auto;
-            gap: 11px;
-            align-items: end;
-        }
-
-        .field {
-            min-width: 0;
-        }
-
-        .field label {
-            display: flex;
+            grid-template-columns: minmax(200px, 1.7fr) minmax(150px, 1fr) minmax(150px, 1fr) auto;
+            gap: 10px;
             align-items: center;
-            gap: 6px;
-
-            margin-bottom: 7px;
-
-            color: #466878;
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .field label i {
-            color: #70a7bf;
-            font-size: 10px;
-        }
-
-        .field input,
-        .field select {
-            width: 100%;
-            height: 45px;
-
-            border: 1px solid #d7eaf2;
-            border-radius: 11px;
-
-            background: #fbfeff;
-            color: var(--text);
-
-            padding: 0 13px;
-
-            outline: none;
-
-            font-size: 12px;
-            font-weight: 600;
-
+            box-shadow: var(--shadow);
             transition: var(--transition);
         }
 
-        .field input::placeholder {
-            color: #a1b1b9;
-            font-weight: 500;
+        .filters-card:focus-within {
+            border-color: rgba(7,136,199,.25);
+            box-shadow: 0 10px 36px rgba(7,136,199,.10);
         }
 
-        .field input:hover,
-        .field select:hover {
-            border-color: #bddfea;
+        .filters-card input,
+        .filters-card select {
+            width: 100%;
+            min-height: 46px;
+            padding: 10px 14px;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            background: var(--blue-softer);
+            font-size: 13.5px;
+            outline: none;
+            color: var(--text-dark);
+            transition: var(--transition);
         }
 
-        .field input:focus,
-        .field select:focus {
-            border-color: #62b9da;
+        .filters-card input::placeholder { color: #91a8b5; }
+
+        .filters-card input:focus,
+        .filters-card select:focus {
+            border-color: var(--primary);
             background: white;
-
-            box-shadow:
-                0 0 0 4px rgba(7,150,216,.08);
+            box-shadow: 0 0 0 4px rgba(7,136,199,.08);
         }
 
-        .clear-btn {
-            height: 45px;
-
+        .filter-btn {
+            min-height: 46px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--primary-dark);
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 800;
+            white-space: nowrap;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 7px;
-
-            border: 1px solid #dbeef5;
-            background: #f2faff;
-            color: #23708f;
-
-            padding: 0 16px;
-            border-radius: 11px;
-
-            font-size: 11px;
-            font-weight: 800;
-
-            white-space: nowrap;
-
             transition: var(--transition);
         }
 
-        .clear-btn:hover {
-            background: #e7f7fd;
-            border-color: #c7e7f2;
+        .filter-btn:hover {
+            background: var(--blue-soft);
+            border-color: rgba(7,136,199,.35);
             transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(7,136,199,.10);
         }
 
+
         /* =========================================================
-           TABLE CARD
-           ========================================================= */
+           OPEN LIST CARD
+        ========================================================= */
 
-        .table-card {
-            overflow: hidden;
-
-            background: rgba(255,255,255,.98);
+        .open-list-card {
+            background: rgba(255,255,255,.97);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-
+            border-radius: var(--radius-xl);
             box-shadow: var(--shadow);
-
-            animation: fadeUp .45s ease both;
+            overflow: hidden;
+            transition: var(--transition);
         }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .table-header {
-            min-height: 69px;
-
+        .open-list-trigger {
+            padding: 20px 24px;
+            min-height: 72px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             gap: 15px;
-
-            padding: 14px 20px;
-
-            border-bottom: 1px solid var(--border-light);
-
-            background:
-                linear-gradient(
-                    90deg,
-                    rgba(247,252,255,.9),
-                    white
-                );
+            background: linear-gradient(180deg, #ffffff, #fbfdfe);
+            cursor: pointer;
+            user-select: none;
+            transition: var(--transition);
         }
 
-        .table-title-wrap {
+        .open-list-trigger:hover {
+            background: linear-gradient(180deg, #f9fdff, #f3faff);
+        }
+
+        .open-list-trigger:active { transform: scale(.995); }
+
+        .open-list-trigger-left {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
+            min-width: 0;
         }
 
-        .table-title-icon {
-            width: 37px;
-            height: 37px;
-
+        .open-list-trigger-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            border-radius: 10px;
-
-            background: var(--primary-light);
-            color: var(--primary);
-
-            font-size: 13px;
+            font-size: 22px;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(7,136,199,.25);
+            transition: var(--transition);
         }
 
-        .table-header h2 {
-            color: var(--text-dark);
-            font-size: 15px;
+        .open-list-trigger:hover .open-list-trigger-icon {
+            transform: scale(1.06) rotate(-4deg);
+            box-shadow: 0 12px 28px rgba(7,136,199,.32);
+        }
+
+        .open-list-trigger-text { min-width: 0; }
+
+        .open-list-trigger-text h3 {
+            color: var(--primary-deep);
+            font-size: clamp(1rem, 2vw, 1.2rem);
             font-weight: 800;
-        }
-
-        .table-header p {
-            color: var(--muted);
-            font-size: 10px;
-            margin-top: 1px;
-        }
-
-        .results-count {
-            display: inline-flex;
+            display: flex;
             align-items: center;
-            justify-content: center;
-
-            min-height: 30px;
-            padding: 0 11px;
-
-            border: 1px solid #dceff6;
-            border-radius: 9px;
-
-            background: #f5fbfe;
-            color: #538093;
-
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .table-wrapper {
-            width: 100%;
-            overflow-x: auto;
-            scrollbar-width: thin;
-            scrollbar-color: #b9dce9 transparent;
-        }
-
-        .table-wrapper::-webkit-scrollbar {
-            height: 7px;
-        }
-
-        .table-wrapper::-webkit-scrollbar-track {
-            background: #f3f9fc;
-        }
-
-        .table-wrapper::-webkit-scrollbar-thumb {
-            background: #b8dce9;
-            border-radius: 50px;
-        }
-
-        table {
-            width: 100%;
-            min-width: 1100px;
-            border-collapse: separate;
-            border-spacing: 0;
-        }
-
-        th {
-            position: sticky;
-            top: 0;
-            z-index: 2;
-
-            background: #f7fcfe;
-            color: #557686;
-
-            padding: 13px 14px;
-
-            border-bottom: 1px solid var(--border);
-
-            text-align: right;
-            white-space: nowrap;
-
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        td {
-            padding: 13px 14px;
-
-            color: #315567;
-
-            border-bottom: 1px solid #edf5f8;
-
-            font-size: 11px;
-            vertical-align: middle;
-
-            background: white;
-
-            transition: background .2s ease;
-        }
-
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
-
-        tbody tr:hover td {
-            background: #fbfeff;
-        }
-
-        /* =========================================================
-           TABLE ELEMENTS
-           ========================================================= */
-
-        .patient-number {
-            width: 34px;
-            height: 34px;
-
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 10px;
-
-            background: linear-gradient(
-                145deg,
-                #eaf8ff,
-                #ddf4fc
-            );
-
-            border: 1px solid #d3edf7;
-
-            color: var(--primary);
-
-            font-size: 11px;
-            font-weight: 800;
-        }
-
-        .booking-number {
-            display: inline-flex;
-            align-items: center;
-
-            padding: 5px 8px;
-
-            border-radius: 7px;
-
-            background: #f0faff;
-            border: 1px solid #dceff6;
-
-            color: var(--primary-dark);
-
-            font-size: 10px;
-            font-weight: 800;
-        }
-
-        .patient-name {
-            color: #174c66;
-            font-size: 12px;
-            font-weight: 800;
+            gap: 9px;
             margin-bottom: 3px;
         }
 
-        .patient-phone {
-            color: #7d96a2;
+        .open-list-trigger-text p {
+            color: var(--text-light);
+            font-size: 12.5px;
+        }
+
+        .open-list-trigger-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .open-list-trigger-right .count {
+            color: var(--text-light);
+            font-size: 12.5px;
+            background: var(--blue-softer);
+            border: 1px solid var(--border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            white-space: nowrap;
+            font-weight: 700;
+        }
+
+        .open-list-trigger-arrow {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--blue-soft);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .open-list-trigger:hover .open-list-trigger-arrow {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            transform: translateX(-4px);
+        }
+
+
+        /* =========================================================
+           DRAWER OVERLAY
+        ========================================================= */
+
+        .drawer-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(5,40,60,.5);
+            z-index: 4000;
+            display: flex;
+            align-items: stretch;
+            justify-content: flex-start;
+            padding: 0;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .3s ease;
+        }
+
+        .drawer-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .drawer-panel {
+            width: min(960px, 100%);
+            height: 100%;
+            background: #f7fcff;
+            box-shadow: 20px 0 80px rgba(0,0,0,.25);
+            transform: translateX(100%);
+            transition: transform .4s cubic-bezier(.4,0,.2,1);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .drawer-overlay.show .drawer-panel { transform: translateX(0); }
+
+        .drawer-panel::before {
+            content: "";
+            position: absolute;
+            top: -150px;
+            right: -150px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(66,182,232,.10), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .drawer-panel::after {
+            content: "";
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(8,169,214,.08), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+
+        /* =========================================================
+           DRAWER HEADER
+        ========================================================= */
+
+        .drawer-header {
+            padding: 22px 26px;
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            box-shadow: 0 4px 20px rgba(15,70,100,.05);
+        }
+
+        .drawer-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .drawer-header-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 21px;
+            flex-shrink: 0;
+            box-shadow: 0 8px 20px rgba(7,136,199,.25);
+        }
+
+        .drawer-header-text { min-width: 0; }
+
+        .drawer-header-text h2 {
+            color: var(--primary-deep);
+            font-size: clamp(1.1rem, 2vw, 1.35rem);
+            font-weight: 800;
+            line-height: 1.25;
+            margin-bottom: 2px;
+        }
+
+        .drawer-header-text p {
+            color: var(--text-light);
+            font-size: 12.5px;
+        }
+
+        .drawer-close-btn {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border-radius: 13px;
+            border: none;
+            background: var(--blue-soft);
+            color: var(--primary-dark);
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .drawer-close-btn:hover {
+            background: var(--danger-soft);
+            color: var(--danger);
+            transform: rotate(90deg) scale(1.05);
+        }
+
+
+        /* =========================================================
+           DRAWER BODY
+        ========================================================= */
+
+        .drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px 22px 30px;
+            position: relative;
+            z-index: 1;
+            scrollbar-width: thin;
+            scrollbar-color: #b7d8e8 #f3f9fc;
+        }
+
+        .drawer-body::-webkit-scrollbar { width: 8px; }
+        .drawer-body::-webkit-scrollbar-track { background: #f3f9fc; }
+        .drawer-body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #b7d8e8, #9ecce0);
+            border-radius: 20px;
+        }
+
+
+        /* =========================================================
+           DRAWER SEARCH
+        ========================================================= */
+
+        .drawer-filters {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 10px;
+            margin-bottom: 16px;
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            background: rgba(247,252,255,.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 6px 0 10px;
+            border-radius: 14px;
+        }
+
+        .drawer-filters input {
+            width: 100%;
+            min-height: 48px;
+            padding: 11px 16px;
+            border: 1.5px solid var(--border);
+            border-radius: 13px;
+            background: white;
+            font-size: 14px;
+            outline: none;
+            color: var(--text-dark);
+            transition: var(--transition);
+            box-shadow: var(--shadow-xs);
+        }
+
+        .drawer-filters input::placeholder { color: #91a8b5; }
+
+        .drawer-filters input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(7,136,199,.08), var(--shadow-xs);
+        }
+
+        .drawer-refresh-btn {
+            min-height: 48px;
+            padding: 11px 18px;
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--primary-dark);
+            border-radius: 13px;
+            font-size: 13px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            transition: var(--transition);
+            box-shadow: var(--shadow-xs);
+            white-space: nowrap;
+        }
+
+        .drawer-refresh-btn:hover {
+            background: var(--blue-soft);
+            border-color: rgba(7,136,199,.35);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(7,136,199,.12);
+        }
+
+
+        /* =========================================================
+           DRAWER — بطاقات الحجوزات
+        ========================================================= */
+
+        .appointments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .appointment-card-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            padding: 18px 20px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            animation: cardIn .35s ease backwards;
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .appointment-card-item::before {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--primary), var(--primary-light));
+            transform: scaleY(0);
+            transform-origin: center;
+            transition: transform .3s ease;
+            border-radius: 0 18px 18px 0;
+        }
+
+        .appointment-card-item:hover::before { transform: scaleY(1); }
+
+        .appointment-card-item:hover {
+            border-color: rgba(7,136,199,.25);
+            transform: translateX(-4px);
+            box-shadow: 0 14px 36px rgba(17,88,120,.12);
+        }
+
+        .appointment-card-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .appointment-card-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 800;
+            flex-shrink: 0;
+            transition: var(--transition);
+            box-shadow: 0 6px 16px rgba(7,136,199,.22);
+        }
+
+        .appointment-card-item:hover .appointment-card-avatar {
+            transform: scale(1.06) rotate(-4deg);
+            box-shadow: 0 10px 24px rgba(7,136,199,.32);
+        }
+
+        .appointment-card-info {
+            min-width: 0;
+            flex: 1;
+        }
+
+        .appointment-card-name {
+            font-weight: 800;
+            color: var(--text-dark);
+            font-size: 15px;
+            margin-bottom: 4px;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .appointment-card-booking {
+            font-size: 11.5px;
+            color: var(--primary-dark);
+            background: var(--blue-soft);
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-family: monospace;
+            font-weight: 800;
             direction: ltr;
-            text-align: right;
+            display: inline-block;
+            border: 1px solid rgba(7,136,199,.10);
+        }
+
+        .appointment-card-badges {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 5px;
+            flex-shrink: 0;
+        }
+
+        .appointment-status-badge {
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 800;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .appointment-status-badge::before {
+            content: "";
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: currentColor;
+            opacity: .7;
+            animation: pulseDot 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseDot {
+            0%, 100% { opacity: .7; }
+            50% { opacity: .3; }
+        }
+
+        .appointment-status-badge.sync-synced {
+            background: var(--success-soft);
+            color: var(--success);
+        }
+
+        .appointment-status-badge.sync-pending {
+            background: var(--warning-soft);
+            color: var(--warning);
+        }
+
+        .appointment-status-badge.sync-failed {
+            background: var(--danger-soft);
+            color: var(--danger);
+        }
+
+        .appointment-date-badge {
+            color: var(--text-light);
+            font-size: 11px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .appointment-date-badge i {
+            color: var(--primary);
+            opacity: .7;
             font-size: 10px;
         }
 
-        .patient-code {
-            display: inline-block;
-            margin-top: 3px;
 
-            color: #a4b2b9;
-            font-size: 9px;
+        .appointment-card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 12px;
+            padding: 12px 14px;
+            background: linear-gradient(135deg, #f9fdff, #f3faff);
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
         }
 
-        .sample-badge,
-        .status-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-
-            padding: 6px 9px;
-
-            border-radius: 8px;
-
-            font-size: 9px;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .sample-badge::before,
-        .status-badge::before {
-            content: "";
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background: currentColor;
-            opacity: .75;
-        }
-
-        .sample-lab {
-            background: #e9f8ff;
-            color: #0871a6;
-        }
-
-        .sample-home {
-            background: #ebfaf1;
-            color: #247946;
-        }
-
-        .sync-synced {
-            background: #e9f8ef;
-            color: #19733e;
-        }
-
-        .sync-pending {
-            background: #fff7e4;
-            color: #996600;
-        }
-
-        .sync-failed {
-            background: #fff0f0;
-            color: #b62929;
-        }
-
-        .total-price {
-            display: inline-block;
-            color: #0879b9;
-            font-size: 11px;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .actions {
+        .appointment-detail-item {
             display: flex;
             align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 12.5px;
+            min-width: 0;
         }
 
-        .action-btn {
-            min-height: 30px;
-
-            display: inline-flex;
+        .appointment-detail-item i {
+            color: var(--primary);
+            width: 18px;
+            height: 18px;
+            background: var(--blue-soft);
+            border-radius: 6px;
+            display: flex;
             align-items: center;
             justify-content: center;
-            gap: 5px;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
 
-            border: none;
-            padding: 0 9px;
-
-            border-radius: 8px;
-
-            font-size: 9px;
-            font-weight: 800;
-
-            transition: var(--transition);
-            text-decoration: none;
+        .appointment-detail-item span {
+            color: var(--text-medium);
+            font-weight: 700;
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
+            min-width: 0;
         }
 
-        .action-btn:hover {
-            transform: translateY(-1px);
-            filter: brightness(.97);
+        .appointment-detail-item span[dir="ltr"] {
+            direction: ltr;
+            text-align: right;
+            font-family: monospace;
         }
 
-        .action-btn:active {
-            transform: translateY(0);
+        .sample-badge-mini {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 800;
         }
 
-        .details-btn {
-            background: #eaf8ff;
-            color: #0871a8;
+        .sample-badge-mini.sample-lab {
+            background: var(--blue-soft);
+            color: var(--primary);
         }
 
-        .upload-btn {
-            background: #eaf9f0;
-            color: #19733e;
+        .sample-badge-mini.sample-home {
+            background: var(--success-soft);
+            color: var(--success);
         }
 
-        .delete-btn {
-            background: #fff0f0;
-            color: #b72c2c;
+        .appointment-total-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--success-soft), #d4f0e1);
+            color: var(--success);
+            font-size: 12.5px;
+            font-weight: 800;
         }
+
+
+        .appointment-card-actions {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .appointment-card-actions .pact-btn {
+            padding: 10px 6px;
+            border-radius: 11px;
+            border: 1px solid var(--border);
+            background: white;
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            font-size: 10.5px;
+            font-weight: 800;
+            transition: var(--transition);
+            cursor: pointer;
+            color: var(--text-medium);
+            text-decoration: none;
+        }
+
+        .appointment-card-actions .pact-btn i {
+            font-size: 14px;
+        }
+
+        .appointment-card-actions .pact-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(20,90,120,.12);
+        }
+
+        .pact-btn.details { color: var(--primary); }
+        .pact-btn.details:hover { background: var(--blue-soft); border-color: rgba(7,136,199,.3); }
+
+        .pact-btn.upload { color: var(--success); }
+        .pact-btn.upload:hover { background: var(--success-soft); border-color: rgba(22,131,77,.3); }
+
+        .pact-btn.delete { color: var(--danger); }
+        .pact-btn.delete:hover { background: var(--danger-soft); border-color: rgba(209,63,53,.3); }
+
 
         /* =========================================================
-           STATE
-           ========================================================= */
+           DRAWER FOOTER
+        ========================================================= */
 
-        .state-box {
-            min-height: 300px;
-
+        .drawer-footer {
+            padding: 16px 22px;
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            flex-direction: column;
+            gap: 12px;
+            z-index: 10;
+        }
 
-            padding: 50px 20px;
+        .drawer-footer-info {
+            color: var(--text-light);
+            font-size: 12.5px;
+            font-weight: 700;
+        }
 
-            color: var(--muted);
+        .drawer-footer-info strong {
+            color: var(--primary-deep);
+            font-weight: 800;
+        }
+
+
+        /* =========================================================
+           LOADING / EMPTY
+        ========================================================= */
+
+        .loading {
             text-align: center;
+            padding: 70px 20px;
         }
 
-        .state-icon {
-            width: 65px;
-            height: 65px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            margin-bottom: 15px;
-
-            border-radius: 20px;
-
-            background: var(--primary-light);
-            color: var(--primary);
-
-            font-size: 25px;
+        .spinner {
+            display: inline-block;
+            width: 44px;
+            height: 44px;
+            border: 4px solid var(--border);
+            border-top-color: var(--primary);
+            border-right-color: var(--primary-light);
+            border-radius: 50%;
+            animation: spin .8s linear infinite;
         }
 
-        .state-box h3 {
-            color: #456878;
-            font-size: 15px;
-            margin-bottom: 5px;
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .empty-state {
+            text-align: center;
+            padding: 70px 20px;
+            color: var(--text-light);
         }
 
-        .state-box p {
-            color: var(--muted);
-            font-size: 11px;
+        .empty-state i {
+            font-size: 52px;
+            margin-bottom: 16px;
+            color: #cfe2eb;
+            display: block;
+            animation: floatIcon 3s ease-in-out infinite;
         }
+
+        @keyframes floatIcon {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .empty-state h3 {
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            font-size: 1.1rem;
+            font-weight: 800;
+        }
+
+        .empty-state p { font-size: 13px; }
+
 
         /* =========================================================
            MODAL
-           ========================================================= */
+        ========================================================= */
 
         .modal-overlay {
             position: fixed;
             inset: 0;
-            z-index: 2000;
-
+            background: rgba(5,40,60,.5);
+            z-index: 5000;
             display: none;
             align-items: center;
             justify-content: center;
-
-            padding:
-                max(18px, env(safe-area-inset-top))
-                max(18px, env(safe-area-inset-right))
-                max(18px, env(safe-area-inset-bottom))
-                max(18px, env(safe-area-inset-left));
-
-            background: rgba(5, 39, 57, .52);
-
-            backdrop-filter: blur(7px);
-            -webkit-backdrop-filter: blur(7px);
-
-            animation: overlayIn .2s ease;
+            padding: 15px;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            opacity: 0;
+            transition: opacity .25s ease;
         }
 
         .modal-overlay.show {
             display: flex;
-        }
-
-        @keyframes overlayIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+            opacity: 1;
         }
 
         .modal {
-            width: min(900px, 100%);
-            max-height: min(90vh, 900px);
-
-            overflow: hidden;
-
-            display: flex;
-            flex-direction: column;
-
             background: white;
+            border-radius: clamp(18px, 3vw, 24px);
+            width: 100%;
+            max-width: 900px;
+            max-height: 92vh;
+            overflow-y: auto;
+            box-shadow: 0 30px 100px rgba(0,0,0,.28);
+            animation: modalIn .35s cubic-bezier(.34,1.56,.64,1);
+            scrollbar-width: thin;
+            scrollbar-color: #b7d8e8 #f3f9fc;
+        }
 
-            border: 1px solid rgba(255,255,255,.7);
-            border-radius: 23px;
-
-            box-shadow: var(--shadow-lg);
-
-            animation: modalIn .3s cubic-bezier(.2,.8,.2,1);
+        .modal::-webkit-scrollbar { width: 7px; }
+        .modal::-webkit-scrollbar-track { background: #f3f9fc; }
+        .modal::-webkit-scrollbar-thumb {
+            background: #b7d8e8;
+            border-radius: 20px;
         }
 
         @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: translateY(15px) scale(.985);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+            from { opacity: 0; transform: translateY(24px) scale(.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-header {
-            min-height: 70px;
-
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            gap: 15px;
-
-            padding: 14px 20px;
-
-            border-bottom: 1px solid var(--border-light);
-
-            background:
-                linear-gradient(
-                    120deg,
-                    #f4fbfe,
-                    #ffffff
-                );
+            align-items: center;
+            gap: 10px;
+            position: sticky;
+            top: 0;
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2;
+            border-radius: 24px 24px 0 0;
         }
 
-        .modal-title-wrap {
+        .modal-header h3 {
+            color: var(--primary-deep);
+            font-size: 1.15rem;
             display: flex;
             align-items: center;
-            gap: 11px;
-        }
-
-        .modal-title-icon {
-            width: 39px;
-            height: 39px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 11px;
-
-            background: var(--primary-light);
-            color: var(--primary);
-
-            font-size: 14px;
-        }
-
-        .modal-header h2 {
-            color: var(--text-dark);
-            font-size: 17px;
+            gap: 9px;
             font-weight: 800;
         }
 
-        .modal-header p {
-            color: var(--muted);
-            font-size: 9px;
-            margin-top: 1px;
-        }
+        .modal-header h3 i { color: var(--primary); }
 
-        .close-modal {
-            width: 36px;
-            height: 36px;
-
+        .close-btn {
+            width: 38px;
+            height: 38px;
+            flex-shrink: 0;
+            border-radius: 11px;
+            border: none;
+            background: var(--blue-soft);
+            color: var(--text-light);
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-
-            border: 1px solid #e0eef3;
-            background: #f3f9fc;
-            color: #557482;
-
-            border-radius: 10px;
-
-            font-size: 17px;
-
             transition: var(--transition);
+            line-height: 1;
         }
 
-        .close-modal:hover {
-            background: #eaf6fb;
-            color: var(--primary-dark);
-            transform: rotate(4deg);
+        .close-btn:hover {
+            background: var(--danger-soft);
+            color: var(--danger);
+            transform: rotate(90deg);
         }
 
-        .modal-body {
-            padding: 21px;
-            overflow-y: auto;
+        .modal-body { padding: 24px; }
 
-            scrollbar-width: thin;
-            scrollbar-color: #bddde8 transparent;
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            position: sticky;
+            bottom: 0;
+            background: rgba(255,255,255,.97);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 2;
+            border-radius: 0 0 24px 24px;
         }
+
+
+        /* =========================================================
+           DETAILS GRID (Modal)
+        ========================================================= */
 
         .details-grid {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 10px;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .detail-box {
-            position: relative;
-
-            min-width: 0;
-
-            border: 1px solid #e2eef3;
+            border: 1px solid var(--border-light);
             border-radius: 12px;
-
-            padding: 12px 13px;
-
-            background:
-                linear-gradient(
-                    145deg,
-                    #ffffff,
-                    #fafdff
-                );
-
+            padding: 12px 14px;
+            background: linear-gradient(145deg, #ffffff, #fafdff);
             transition: var(--transition);
+            min-width: 0;
         }
 
         .detail-box:hover {
-            border-color: #cce7f1;
+            border-color: rgba(7,136,199,.2);
             box-shadow: var(--shadow-xs);
+            transform: translateY(-2px);
         }
 
-        .detail-box.full {
-            grid-column: 1 / -1;
-        }
+        .detail-box.full { grid-column: 1 / -1; }
 
         .detail-box label {
             display: block;
-
-            color: #8a9da6;
-            font-size: 9px;
-            font-weight: 600;
-
-            margin-bottom: 4px;
+            color: var(--text-light);
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 5px;
         }
 
         .detail-box strong {
             display: block;
-
-            color: #234f68;
-
-            font-size: 12px;
+            color: var(--text-dark);
+            font-size: 13px;
             font-weight: 800;
-
-            line-height: 1.65;
+            line-height: 1.6;
             word-break: break-word;
         }
 
+        .detail-box strong[dir="ltr"] {
+            direction: ltr;
+            text-align: right;
+        }
+
         .modal-section {
-            margin-top: 21px;
+            margin-top: 20px;
         }
 
         .modal-section > h3 {
             display: flex;
             align-items: center;
-            gap: 8px;
-
-            color: #176084;
-
-            font-size: 13px;
+            gap: 9px;
+            color: var(--primary-deep);
+            font-size: 1rem;
             font-weight: 800;
-
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--blue-soft);
+            position: relative;
         }
 
         .modal-section > h3::before {
             content: "";
-            width: 4px;
-            height: 18px;
-            border-radius: 4px;
-            background: linear-gradient(
-                to bottom,
-                var(--primary),
-                var(--cyan)
-            );
+            position: absolute;
+            bottom: -2px;
+            right: 0;
+            width: 50px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            border-radius: 2px;
         }
 
-        .modal-tests {
-            display: flex;
-            flex-direction: column;
-            gap: 7px;
-        }
-
-        .modal-test {
+        .modal-section > h3 i {
+            color: var(--primary);
+            width: 28px;
+            height: 28px;
+            background: var(--blue-soft);
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-
-            padding: 10px 12px;
-
-            border: 1px solid #e2eff4;
-            border-radius: 10px;
-
-            background: #f8fcfe;
+            justify-content: center;
+            font-size: 12px;
         }
 
-        .modal-test-name {
-            color: #31586c;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .modal-test-price {
-            color: #0879b9;
-            font-size: 11px;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        .modal-footer {
-            min-height: 65px;
-
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            gap: 8px;
-
-            padding: 12px 20px;
-
-            border-top: 1px solid var(--border-light);
-            background: #fbfdfe;
-        }
 
         /* =========================================================
            TOAST
-           ========================================================= */
+        ========================================================= */
+
+        .toast-container {
+            position: fixed;
+            top: calc(var(--topbar-h) + 16px);
+            left: 18px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
 
         .toast {
-            position: fixed;
-
-            left: max(18px, env(safe-area-inset-left));
-            bottom: max(18px, env(safe-area-inset-bottom));
-
-            z-index: 3000;
-
-            width: min(410px, calc(100vw - 36px));
-
-            min-height: 50px;
-
+            background: rgba(255,255,255,.98);
+            border-radius: 14px;
+            padding: 14px 17px;
+            box-shadow: 0 16px 48px rgba(0,0,0,.15);
             display: flex;
             align-items: center;
-
-            padding: 12px 16px;
-
-            border: 1px solid rgba(255,255,255,.15);
-            border-radius: 13px;
-
-            background: #12394f;
-            color: white;
-
-            box-shadow: 0 15px 45px rgba(0,35,55,.2);
-
-            font-size: 11px;
+            gap: 10px;
+            min-width: 280px;
+            max-width: 440px;
+            border-right: 4px solid var(--primary);
+            animation: toastIn .4s cubic-bezier(.34,1.56,.64,1);
+            pointer-events: all;
+            font-size: 13px;
             font-weight: 700;
-
-            transform: translateY(130px);
-            opacity: 0;
-
-            pointer-events: none;
-
-            transition:
-                transform .35s cubic-bezier(.2,.8,.2,1),
-                opacity .35s ease;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        .toast.show {
-            transform: translateY(0);
-            opacity: 1;
+        .toast.success { border-right-color: var(--success); color: var(--success); }
+        .toast.error { border-right-color: var(--danger); color: var(--danger); }
+        .toast.warning { border-right-color: var(--warning); color: var(--warning); }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(-24px) scale(.95); }
+            to { opacity: 1; transform: translateX(0) scale(1); }
         }
 
-        .toast.success {
-            background: #167a4c;
-        }
-
-        .toast.error {
-            background: #b92e2e;
-        }
 
         /* =========================================================
-           LARGE SCREENS
-           ========================================================= */
+           RESPONSIVE — VERY LARGE SCREENS
+        ========================================================= */
 
-        @media (min-width: 1800px) {
-            :root {
-                --header-height: 84px;
-            }
+        @media (min-width: 2200px) {
+            :root { --topbar-h: 88px; }
 
             .page {
-                width: min(92vw, 1780px);
-                padding-top: 42px;
+                max-width: 2000px;
+                padding-left: 60px;
+                padding-right: 60px;
             }
 
-            .brand-logo {
-                width: 54px;
-                height: 54px;
-            }
+            .brand-logo { width: 58px; height: 58px; font-size: 26px; border-radius: 18px; }
+            .brand-text h1 { font-size: 1.5rem; }
+            .brand-text span { font-size: 14px; }
 
-            .brand-text strong {
-                font-size: 24px;
-            }
+            .top-btn { min-height: 48px; padding: 12px 22px; font-size: 15px; border-radius: 14px; }
 
-            .page-title h1 {
-                font-size: 39px;
-            }
+            .page-head { padding: 36px; }
+            .page-head h2 { font-size: 2.4rem; }
+            .page-head p { font-size: 17px; }
 
-            .page-title p {
-                font-size: 15px;
-            }
+            .refresh-btn { min-height: 56px; padding: 16px 32px; font-size: 17px; border-radius: 18px; }
 
-            .stat-card {
-                min-height: 130px;
-                padding: 24px;
-            }
+            .stat-card { padding: 28px; gap: 18px; }
+            .stat-icon { width: 68px; height: 68px; font-size: 28px; border-radius: 20px; }
+            .stat-info span { font-size: 15px; }
+            .stat-info strong { font-size: 2.2rem; }
 
-            .stat-icon {
-                width: 60px;
-                height: 60px;
-                flex-basis: 60px;
-                font-size: 23px;
-            }
+            .filters-card { padding: 22px; gap: 14px; }
+            .filters-card input, .filters-card select { min-height: 54px; font-size: 16px; padding: 14px 18px; }
+            .filter-btn { min-height: 54px; font-size: 15px; padding: 14px 24px; }
 
-            .stat-content span {
-                font-size: 13px;
-            }
+            .open-list-trigger { padding: 26px 32px; min-height: 88px; }
+            .open-list-trigger-icon { width: 64px; height: 64px; font-size: 28px; border-radius: 20px; }
+            .open-list-trigger-text h3 { font-size: 1.5rem; }
+            .open-list-trigger-text p { font-size: 15px; }
+            .open-list-trigger-right .count { font-size: 15px; padding: 8px 18px; }
+            .open-list-trigger-arrow { width: 52px; height: 52px; font-size: 18px; border-radius: 15px; }
 
-            .stat-content strong {
-                font-size: 30px;
-            }
+            .drawer-panel { width: min(1200px, 100%); }
+            .drawer-header { padding: 28px 34px; }
+            .drawer-header-icon { width: 60px; height: 60px; font-size: 26px; border-radius: 18px; }
+            .drawer-header-text h2 { font-size: 1.7rem; }
+            .drawer-header-text p { font-size: 15px; }
+            .drawer-close-btn { width: 52px; height: 52px; font-size: 22px; border-radius: 15px; }
 
-            th {
-                font-size: 12px;
-                padding: 16px;
-            }
+            .drawer-body { padding: 26px 30px 40px; }
+            .drawer-filters input { min-height: 58px; font-size: 16px; padding: 14px 20px; }
+            .drawer-refresh-btn { min-height: 58px; font-size: 15px; padding: 14px 24px; }
 
-            td {
-                font-size: 13px;
-                padding: 16px;
-            }
+            .appointment-card-item { padding: 24px 28px; }
+            .appointment-card-avatar { width: 68px; height: 68px; font-size: 28px; border-radius: 20px; }
+            .appointment-card-name { font-size: 18px; }
+            .appointment-card-booking { font-size: 13px; padding: 4px 14px; }
+            .appointment-status-badge { font-size: 13px; padding: 6px 16px; }
+            .appointment-date-badge { font-size: 13px; }
+            .appointment-card-details { padding: 16px 20px; gap: 12px; }
+            .appointment-detail-item { font-size: 14.5px; }
+            .appointment-detail-item i { width: 24px; height: 24px; font-size: 13px; }
+            .sample-badge-mini { font-size: 13px; padding: 6px 14px; }
+            .appointment-total-badge { font-size: 14px; padding: 6px 14px; }
+            .appointment-card-actions { gap: 8px; }
+            .appointment-card-actions .pact-btn { padding: 14px 10px; font-size: 12.5px; border-radius: 13px; }
+            .appointment-card-actions .pact-btn i { font-size: 18px; }
+
+            .modal { max-width: 1100px; }
+            .modal-header h3 { font-size: 1.4rem; }
+            .modal-body { padding: 32px; }
         }
 
+
+        @media (min-width: 1600px) and (max-width: 2199px) {
+            .page { max-width: 1700px; }
+            .stat-card { padding: 24px; }
+            .stat-icon { width: 60px; height: 60px; font-size: 25px; }
+            .drawer-panel { width: min(1100px, 100%); }
+            .appointment-card-item { padding: 20px 24px; }
+        }
+
+
         /* =========================================================
-           TABLET / SMALL LAPTOP
-           ========================================================= */
+           RESPONSIVE — TABLETS
+        ========================================================= */
 
-        @media (max-width: 1100px) {
-            .page {
-                width: min(100% - 28px, 1400px);
+        @media (max-width: 1050px) {
+            .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .filters-card { grid-template-columns: 1.5fr 1fr 1fr; }
+            .filter-btn { grid-column: 1 / -1; width: 100%; }
+            .drawer-panel { width: min(760px, 100%); }
+        }
+
+
+        @media (max-width: 900px) {
+            .page-head {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 18px;
             }
 
-            .stats {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .filters {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-
-            .clear-btn {
+            .page-head-actions {
+                display: grid;
+                grid-template-columns: 1fr;
                 width: 100%;
             }
+
+            .refresh-btn { width: 100%; }
         }
 
+
         /* =========================================================
-           MOBILE
-           ========================================================= */
+           RESPONSIVE — MOBILE
+        ========================================================= */
 
         @media (max-width: 700px) {
-            :root {
-                --header-height: 64px;
-            }
+            :root { --topbar-h: 62px; }
 
-            .topbar {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
+            .topbar { min-height: var(--topbar-h); padding: 8px 12px; gap: 10px; }
 
-            .brand {
-                gap: 9px;
-            }
+            .brand-logo { width: 40px; height: 40px; border-radius: 12px; font-size: 17px; }
+            .brand-text span { display: none; }
+            .brand-text h1 { font-size: 1rem; }
 
-            .brand-logo {
+            .top-actions { gap: 5px; }
+
+            .top-btn {
                 width: 40px;
-                height: 40px;
-                border-radius: 11px;
-            }
-
-            .brand-text strong {
-                font-size: 17px;
-            }
-
-            .brand-text span {
-                display: none;
-            }
-
-            .admin-label {
-                display: none;
-            }
-
-            .logout-btn {
-                min-height: 37px;
-                padding: 0 10px;
-                border-radius: 9px;
-                font-size: 10px;
-            }
-
-            .logout-btn i {
-                font-size: 11px;
-            }
-
-            .page {
-                width: min(100% - 20px, 650px);
-                padding: 21px 0 40px;
-            }
-
-            .page-header {
-                align-items: stretch;
-                flex-direction: column;
-                gap: 14px;
-                margin-bottom: 17px;
-            }
-
-            .page-title .eyebrow {
-                font-size: 9px;
-            }
-
-            .page-title h1 {
-                font-size: 24px;
-            }
-
-            .page-title p {
-                font-size: 10px;
-                margin-top: 5px;
-            }
-
-            .refresh-btn {
-                width: 100%;
-                min-height: 43px;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 9px;
-                margin-bottom: 13px;
-            }
-
-            .stat-card {
-                min-height: 92px;
-                padding: 12px;
-                gap: 9px;
-                border-radius: 14px;
-            }
-
-            .stat-icon {
-                width: 40px;
-                height: 40px;
-                flex-basis: 40px;
-                border-radius: 11px;
-                font-size: 16px;
-            }
-
-            .stat-content span {
-                font-size: 8px;
-                margin-bottom: 3px;
-            }
-
-            .stat-content strong {
-                font-size: 18px;
-            }
-
-            .filters-card {
-                padding: 14px;
-                border-radius: 15px;
-                margin-bottom: 14px;
-            }
-
-            .filters-heading {
-                margin-bottom: 13px;
-            }
-
-            .filters-title-icon {
-                width: 31px;
-                height: 31px;
-                border-radius: 9px;
-                font-size: 11px;
-            }
-
-            .filters-title {
-                font-size: 13px;
-            }
-
-            .filters-subtitle {
-                font-size: 8px;
-            }
-
-            .filters {
-                grid-template-columns: 1fr;
-                gap: 9px;
-            }
-
-            .field label {
-                font-size: 9px;
-            }
-
-            .field input,
-            .field select,
-            .clear-btn {
-                height: 43px;
-            }
-
-            .table-card {
-                border-radius: 15px;
-            }
-
-            .table-header {
-                min-height: 61px;
-                padding: 11px 13px;
-            }
-
-            .table-title-icon {
-                width: 33px;
-                height: 33px;
-                border-radius: 9px;
-                font-size: 11px;
-            }
-
-            .table-header h2 {
-                font-size: 13px;
-            }
-
-            .table-header p {
-                display: none;
-            }
-
-            .results-count {
-                min-height: 27px;
-                padding: 0 8px;
-                font-size: 8px;
-            }
-
-            .state-box {
-                min-height: 250px;
-            }
-
-            .modal-overlay {
-                align-items: flex-end;
+                min-height: 40px;
                 padding: 0;
+                border-radius: 11px;
             }
 
-            .modal {
-                width: 100%;
-                max-height: 94vh;
-                border-radius: 21px 21px 0 0;
-            }
+            .top-btn span { display: none; }
 
-            .modal-header {
-                min-height: 62px;
-                padding: 11px 14px;
-            }
+            .page { padding: 16px 12px 55px; }
 
-            .modal-title-icon {
-                width: 34px;
-                height: 34px;
-            }
+            .page-head { padding: 20px; border-radius: 20px; gap: 16px; }
+            .page-head h2 { font-size: 1.3rem; }
+            .page-head p { font-size: 12.5px; }
 
-            .modal-header h2 {
-                font-size: 14px;
-            }
+            .refresh-btn { min-height: 48px; font-size: 14px; border-radius: 14px; }
 
-            .modal-header p {
-                display: none;
-            }
+            .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
 
-            .close-modal {
-                width: 34px;
-                height: 34px;
-            }
+            .stat-card { padding: 14px; gap: 10px; border-radius: 16px; }
+            .stat-icon { width: 46px; height: 46px; border-radius: 13px; font-size: 18px; }
+            .stat-info span { font-size: 11px; }
+            .stat-info strong { font-size: 1.35rem; }
 
-            .modal-body {
-                padding: 14px;
-            }
+            .filters-card { grid-template-columns: 1fr; padding: 13px; gap: 9px; border-radius: 16px; }
+            .filters-card input, .filters-card select { min-height: 46px; font-size: 13.5px; }
+            .filter-btn { min-height: 46px; font-size: 13.5px; }
 
-            .details-grid {
-                grid-template-columns: 1fr;
-                gap: 8px;
-                margin-bottom: 16px;
-            }
+            .open-list-trigger { padding: 16px 18px; min-height: 66px; gap: 12px; }
+            .open-list-trigger-icon { width: 46px; height: 46px; font-size: 19px; border-radius: 14px; }
+            .open-list-trigger-text h3 { font-size: 1rem; }
+            .open-list-trigger-text p { font-size: 11.5px; }
+            .open-list-trigger-right .count { font-size: 11px; padding: 4px 10px; }
+            .open-list-trigger-arrow { width: 36px; height: 36px; font-size: 13px; border-radius: 10px; }
 
-            .detail-box.full {
-                grid-column: auto;
-            }
+            .drawer-panel { width: 100%; }
 
-            .detail-box {
-                padding: 10px 11px;
-            }
+            .drawer-header { padding: 16px 18px; gap: 12px; }
+            .drawer-header-icon { width: 44px; height: 44px; font-size: 18px; border-radius: 13px; }
+            .drawer-header-text h2 { font-size: 1.05rem; }
+            .drawer-header-text p { font-size: 11.5px; }
+            .drawer-close-btn { width: 40px; height: 40px; font-size: 16px; border-radius: 12px; }
 
-            .detail-box label {
-                font-size: 8px;
-            }
+            .drawer-body { padding: 14px 14px 24px; }
 
-            .detail-box strong {
-                font-size: 11px;
-            }
+            .drawer-filters { grid-template-columns: 1fr auto; gap: 8px; }
+            .drawer-filters input { min-height: 46px; font-size: 13.5px; padding: 10px 14px; }
+            .drawer-refresh-btn { min-height: 46px; font-size: 13px; padding: 10px 14px; }
+            .drawer-refresh-btn span { display: none; }
 
-            .modal-section {
-                margin-top: 17px;
-            }
+            .appointment-card-item { padding: 14px 16px; border-radius: 16px; }
+            .appointment-card-avatar { width: 46px; height: 46px; font-size: 18px; border-radius: 13px; }
+            .appointment-card-name { font-size: 13.5px; }
+            .appointment-card-booking { font-size: 10.5px; padding: 2px 8px; }
+            .appointment-status-badge { font-size: 10.5px; padding: 3px 9px; }
+            .appointment-date-badge { font-size: 10px; }
 
-            .modal-section > h3 {
-                font-size: 11px;
-            }
+            .appointment-card-details { grid-template-columns: 1fr; gap: 6px; padding: 10px 12px; }
+            .appointment-detail-item { font-size: 11.5px; }
+            .appointment-detail-item i { width: 16px; height: 16px; font-size: 9px; }
 
+            .sample-badge-mini { font-size: 10.5px; padding: 3px 9px; }
+            .appointment-total-badge { font-size: 11px; padding: 3px 9px; }
+
+            .appointment-card-actions { grid-template-columns: repeat(3, 1fr); gap: 5px; }
+            .appointment-card-actions .pact-btn { padding: 9px 5px; font-size: 10px; border-radius: 10px; }
+            .appointment-card-actions .pact-btn i { font-size: 13px; }
+
+            .drawer-footer { padding: 12px 16px; gap: 10px; }
+            .drawer-footer-info { font-size: 11.5px; }
+
+            .modal-overlay { padding: 10px; }
+            .modal { max-height: 96vh; border-radius: 20px; }
+            .modal-header { padding: 16px 18px; border-radius: 20px 20px 0 0; }
+            .modal-header h3 { font-size: 1.05rem; }
+            .modal-body { padding: 18px; }
             .modal-footer {
-                min-height: 59px;
-                padding: 10px 14px;
+                padding: 14px 18px;
+                flex-direction: column-reverse;
+                border-radius: 0 0 20px 20px;
             }
+            .modal-footer .btn { width: 100%; }
 
-            .modal-footer .clear-btn {
-                width: auto;
-                min-width: 90px;
-            }
+            .details-grid { grid-template-columns: 1fr; gap: 8px; }
+            .detail-box.full { grid-column: auto; }
+            .detail-box { padding: 10px 12px; }
+            .detail-box label { font-size: 10px; }
+            .detail-box strong { font-size: 12px; }
 
-            .toast {
+            .modal-section > h3 { font-size: .95rem; }
+
+            .toast-container {
+                top: calc(var(--topbar-h) + 12px);
                 left: 10px;
                 right: 10px;
-                bottom: 10px;
-                width: auto;
-                font-size: 10px;
             }
+
+            .toast { min-width: 0; width: 100%; max-width: none; font-size: 12.5px; }
         }
+
 
         /* =========================================================
-           VERY SMALL PHONES
-           ========================================================= */
+           RESPONSIVE — VERY SMALL PHONES
+        ========================================================= */
 
-        @media (max-width: 380px) {
-            .page {
-                width: calc(100% - 14px);
+        @media (max-width: 420px) {
+            .stats { grid-template-columns: 1fr; }
+            .stat-card { min-height: 66px; }
+
+            .page-head h2 { font-size: 1.2rem; }
+            .page-head p { font-size: 12px; }
+
+            .refresh-btn { font-size: 13px; padding: 10px 18px; }
+
+            .open-list-trigger {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
             }
 
-            .stats {
-                gap: 7px;
-            }
+            .open-list-trigger-right { width: 100%; justify-content: space-between; }
 
-            .stat-card {
-                padding: 10px;
-                gap: 7px;
-            }
+            .appointment-card-top { flex-direction: column; align-items: flex-start; gap: 10px; }
+            .appointment-card-badges { flex-direction: row; align-items: center; flex-wrap: wrap; }
 
-            .stat-icon {
-                width: 35px;
-                height: 35px;
-                flex-basis: 35px;
-                font-size: 14px;
-            }
+            .appointment-card-actions { grid-template-columns: repeat(3, 1fr); }
 
-            .stat-content strong {
-                font-size: 16px;
-            }
-
-            .stat-content span {
-                font-size: 7px;
-            }
-
-            .brand-text strong {
-                font-size: 15px;
-            }
-
-            .logout-btn span {
-                display: none;
-            }
-
-            .logout-btn {
-                width: 37px;
-                padding: 0;
-            }
+            .drawer-footer { flex-direction: column; align-items: stretch; }
+            .drawer-footer .btn { width: 100%; }
         }
 
-        /* =========================================================
-           FOLDABLE / NARROW WIDTH
-           ========================================================= */
 
-        @media (max-width: 330px) {
-            .stats {
-                grid-template-columns: 1fr;
-            }
+        @media (max-width: 360px) {
+            .page { padding-left: 8px; padding-right: 8px; }
+            .topbar { padding-left: 8px; padding-right: 8px; }
 
-            .stat-card {
-                min-height: 75px;
-            }
+            .brand { gap: 8px; }
+            .brand-logo { width: 36px; height: 36px; font-size: 15px; border-radius: 10px; }
+            .brand-text h1 { font-size: .9rem; }
 
-            .page-title h1 {
-                font-size: 21px;
-            }
+            .top-btn { width: 36px; min-height: 36px; border-radius: 10px; }
+
+            .stat-card { padding: 12px; gap: 8px; }
+            .stat-icon { width: 40px; height: 40px; font-size: 16px; border-radius: 11px; }
+            .stat-info strong { font-size: 1.2rem; }
+
+            .appointment-card-avatar { width: 42px; height: 42px; font-size: 16px; }
+            .appointment-card-actions .pact-btn { padding: 8px 4px; font-size: 9.5px; }
+            .appointment-card-actions .pact-btn i { font-size: 12px; }
         }
+
+
+        @media (max-width: 320px) {
+            .page { padding-left: 6px; padding-right: 6px; }
+            .topbar { padding-left: 6px; padding-right: 6px; }
+
+            .brand { gap: 6px; }
+            .brand-logo { width: 34px; height: 34px; font-size: 14px; border-radius: 9px; }
+            .brand-text h1 { font-size: .85rem; }
+
+            .top-btn { width: 34px; min-height: 34px; }
+
+            .appointment-card-actions { grid-template-columns: repeat(2, 1fr); }
+        }
+
 
         /* =========================================================
            LANDSCAPE MOBILE
-           ========================================================= */
+        ========================================================= */
 
         @media (max-height: 520px) and (orientation: landscape) {
-            .topbar {
-                height: 58px;
-            }
-
-            .page {
-                padding-top: 17px;
-            }
-
-            .modal {
-                max-height: 96vh;
-            }
-
-            .modal-body {
-                padding: 12px;
-            }
+            :root { --topbar-h: 58px; }
+            .page { padding-top: 14px; }
+            .modal { max-height: 96vh; }
+            .drawer-panel { max-height: 100vh; }
         }
 
+
         /* =========================================================
-           REDUCED MOTION
-           ========================================================= */
+           REDUCE MOTION
+        ========================================================= */
 
         @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
+            *, *::before, *::after {
                 animation-duration: .01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: .01ms !important;
@@ -1872,441 +1855,276 @@
             }
         }
 
+
         /* =========================================================
            PRINT
-           ========================================================= */
+        ========================================================= */
 
         @media print {
-            .topbar,
-            .page-header,
-            .filters-card,
-            .actions,
-            .modal-overlay,
-            .toast {
+            .topbar, .filters-card, .page-head-actions, .toast-container,
+            .open-list-trigger-arrow, .drawer-close-btn, .drawer-refresh-btn,
+            .appointment-card-actions, .close-btn, .modal-footer {
                 display: none !important;
             }
 
-            body {
+            .drawer-overlay {
+                position: static;
                 background: white;
+                opacity: 1;
+                pointer-events: all;
             }
 
-            .page {
-                width: 100%;
-                padding: 0;
-            }
-
-            .table-card {
-                border: none;
-                box-shadow: none;
-            }
+            .drawer-panel { transform: none; box-shadow: none; width: 100%; }
+            .stat-card { box-shadow: none; border: 1px solid #ddd; }
+            body { background: white; }
         }
-        .home-admin-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 9px;
-    height: 44px;
-    padding: 0 17px;
-    border-radius: 12px;
-    border: 1px solid #cfe8f5;
-    background: linear-gradient(135deg, #ffffff, #f2fbff);
-    color: #086b9f;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 700;
-    box-shadow: 0 5px 16px rgba(8, 121, 185, 0.08);
-    transition: all 0.25s ease;
-}
 
-.home-admin-icon {
-    width: 28px;
-    height: 28px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    background: #e7f6fd;
-    color: #0879b9;
-    font-size: 18px;
-    transition: 0.25s ease;
-}
-
-.home-admin-btn:hover {
-    transform: translateY(-2px);
-    border-color: #9ed5ec;
-    background: linear-gradient(135deg, #f5fcff, #e8f8ff);
-    box-shadow: 0 8px 22px rgba(8, 121, 185, 0.14);
-}
-
-.home-admin-btn:hover .home-admin-icon {
-    background: #0879b9;
-    color: #fff;
-    transform: scale(1.08);
-}
-
-.home-admin-btn:active {
-    transform: translateY(0);
-}
     </style>
 </head>
 
 <body>
 
+<!-- =======================================================
+     TOPBAR
+======================================================= -->
+
 <header class="topbar">
 
-    <div class="brand">
-
+    <a href="admin.html" class="brand">
         <div class="brand-logo">
-            <img src="logo.png" alt="MEDLAB">
+            <i class="fas fa-calendar-check"></i>
         </div>
-
         <div class="brand-text">
-            <strong>MEDLAB</strong>
-            <span>نظام إدارة المعمل</span>
-        </div>
-
-    </div>
-
-    <div class="topbar-right">
-
-        <div class="admin-label">
-            <i class="fa-solid fa-calendar-check"></i>
+            <h1>معمل ميدلاب</h1>
             <span>إدارة الحجوزات</span>
         </div>
+    </a>
 
-        <button class="logout-btn" id="logoutBtn" type="button">
-            <i class="fa-solid fa-right-from-bracket"></i>
-            <span>تسجيل الخروج</span>
+    <div class="top-actions">
+
+        <a href="admin.html" class="top-btn" title="لوحة التحكم">
+            <i class="fas fa-arrow-right"></i>
+            <span>لوحة التحكم</span>
+        </a>
+
+        <button class="top-btn danger" id="logoutBtn" type="button" title="خروج">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>خروج</span>
         </button>
 
     </div>
-
-<a href="admin.html" class="home-admin-btn">
-    <span class="home-admin-icon">⌂</span>
-    <span>العودة إلى الرئيسية</span>
-</a>
 
 </header>
 
 
+<!-- =======================================================
+     MAIN
+======================================================= -->
+
 <main class="page">
 
-    <!-- PAGE HEADER -->
-
-    <div class="page-header">
-
-        <div class="page-title">
-
-            <div class="eyebrow">
-                <i class="fa-solid fa-chart-line"></i>
-                لوحة الإدارة
-            </div>
-
-            <h1>إدارة الحجوزات</h1>
-
+    <div class="page-head">
+        <div>
+            <h2>
+                <i class="fas fa-calendar-check"></i>
+                إدارة الحجوزات
+            </h2>
             <p>
                 عرض ومتابعة وتنظيم جميع الحجوزات المسجلة في المعمل
             </p>
-
         </div>
 
-        <button class="refresh-btn" id="refreshBtn" type="button">
-            <i class="fa-solid fa-rotate"></i>
-            تحديث البيانات
+        <div class="page-head-actions">
+            <button class="refresh-btn" id="refreshBtn" type="button">
+                <i class="fas fa-rotate"></i>
+                تحديث البيانات
+            </button>
+        </div>
+    </div>
+
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fas fa-calendar-days"></i>
+            </div>
+            <div class="stat-info">
+                <span>إجمالي الحجوزات</span>
+                <strong id="totalAppointments">0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fas fa-calendar-day"></i>
+            </div>
+            <div class="stat-info">
+                <span>حجوزات اليوم</span>
+                <strong id="todayAppointments">0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon orange">
+                <i class="fas fa-house-medical"></i>
+            </div>
+            <div class="stat-info">
+                <span>عينات منزلية</span>
+                <strong id="homeAppointments">0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="fas fa-coins"></i>
+            </div>
+            <div class="stat-info">
+                <span>إجمالي الإيرادات</span>
+                <strong id="totalRevenue">0</strong>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
+    <div class="filters-card">
+
+        <input type="text" id="searchInput" placeholder="🔍 ابحث بالاسم أو الهاتف أو كود الحجز...">
+
+        <input type="date" id="dateFilter">
+
+        <select id="sampleFilter">
+            <option value="">كل أنواع العينات</option>
+            <option value="lab">عينة في المعمل</option>
+            <option value="home">عينة منزلية</option>
+        </select>
+
+        <button class="filter-btn" id="clearFiltersBtn" type="button">
+            <i class="fas fa-rotate-left"></i>
+            مسح
         </button>
 
     </div>
 
 
-    <!-- STATISTICS -->
+    <!-- =====================================================
+         زر فتح قائمة الحجوزات
+    ====================================================== -->
 
-    <section class="stats">
+    <div class="open-list-card">
 
-        <div class="stat-card">
+        <div class="open-list-trigger" onclick="openAppointmentsDrawer()">
 
-            <div class="stat-icon">
-                <i class="fa-solid fa-calendar-days"></i>
-            </div>
+            <div class="open-list-trigger-left">
 
-            <div class="stat-content">
-                <span>إجمالي الحجوزات</span>
-                <strong id="totalAppointments">0</strong>
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon">
-                <i class="fa-solid fa-calendar-day"></i>
-            </div>
-
-            <div class="stat-content">
-                <span>حجوزات اليوم</span>
-                <strong id="todayAppointments">0</strong>
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon">
-                <i class="fa-solid fa-house-medical"></i>
-            </div>
-
-            <div class="stat-content">
-                <span>عينات منزلية</span>
-                <strong id="homeAppointments">0</strong>
-            </div>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <div class="stat-icon">
-                <i class="fa-solid fa-coins"></i>
-            </div>
-
-            <div class="stat-content">
-                <span>إجمالي الإيرادات</span>
-                <strong id="totalRevenue">0</strong>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <!-- FILTERS -->
-
-    <section class="filters-card">
-
-        <div class="filters-heading">
-
-            <div class="filters-title-wrap">
-
-                <div class="filters-title-icon">
-                    <i class="fa-solid fa-filter"></i>
+                <div class="open-list-trigger-icon">
+                    <i class="fas fa-list-check"></i>
                 </div>
 
-                <div>
-                    <div class="filters-title">
-                        البحث والتصفية
-                    </div>
+                <div class="open-list-trigger-text">
 
-                    <div class="filters-subtitle">
-                        استخدم أي فلتر للوصول إلى الحجز المطلوب بسرعة
-                    </div>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="filters">
-
-            <div class="field">
-
-                <label for="searchInput">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    البحث
-                </label>
-
-                <input
-                    type="search"
-                    id="searchInput"
-                    placeholder="اسم المريض، الهاتف، أو كود الحجز..."
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="dateFilter">
-                    <i class="fa-regular fa-calendar"></i>
-                    تاريخ الزيارة
-                </label>
-
-                <input
-                    type="date"
-                    id="dateFilter"
-                >
-
-            </div>
-
-
-            <div class="field">
-
-                <label for="sampleFilter">
-                    <i class="fa-solid fa-vial"></i>
-                    نوع العينة
-                </label>
-
-                <select id="sampleFilter">
-
-                    <option value="">
-                        كل الأنواع
-                    </option>
-
-                    <option value="lab">
-                        عينة في المعمل
-                    </option>
-
-                    <option value="home">
-                        عينة منزلية
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <button
-                class="clear-btn"
-                id="clearFiltersBtn"
-                type="button"
-            >
-                <i class="fa-solid fa-rotate-left"></i>
-                مسح البحث
-            </button>
-
-        </div>
-
-    </section>
-
-
-    <!-- TABLE -->
-
-    <section class="table-card">
-
-        <div class="table-header">
-
-            <div class="table-title-wrap">
-
-                <div class="table-title-icon">
-                    <i class="fa-solid fa-list-check"></i>
-                </div>
-
-                <div>
-
-                    <h2>
-                        قائمة الحجوزات
-                    </h2>
+                    <h3>
+                        <i class="fas fa-calendar-check"></i>
+                        عرض قائمة الحجوزات
+                    </h3>
 
                     <p>
-                        جميع الحجوزات المسجلة في النظام
+                        اضغط لعرض وإدارة جميع الحجوزات المسجلة
                     </p>
 
                 </div>
 
             </div>
 
-            <span
-                class="results-count"
-                id="resultsCount"
-            >
-                0 نتيجة
-            </span>
+            <div class="open-list-trigger-right">
 
-        </div>
+                <span class="count" id="resultsCount">
+                    0 حجز
+                </span>
 
-
-        <div
-            class="table-wrapper"
-            id="tableContainer"
-        >
-
-            <div class="state-box">
-
-                <div class="state-icon">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
+                <div class="open-list-trigger-arrow">
+                    <i class="fas fa-arrow-left"></i>
                 </div>
-
-                <h3>
-                    جاري تحميل البيانات
-                </h3>
-
-                <p>
-                    برجاء الانتظار...
-                </p>
 
             </div>
 
         </div>
 
-    </section>
+    </div>
 
 </main>
 
 
-<!-- =========================================================
-     DETAILS MODAL
-     ========================================================= -->
+<!-- =======================================================
+     DRAWER — صفحة فرعية لعرض الحجوزات
+======================================================= -->
 
-<div
-    class="modal-overlay"
-    id="detailsModal"
->
+<div class="drawer-overlay" id="appointmentsDrawer" onclick="handleDrawerOverlayClick(event)">
 
-    <div class="modal">
+    <div class="drawer-panel" onclick="event.stopPropagation()">
 
-        <div class="modal-header">
+        <div class="drawer-header">
 
-            <div class="modal-title-wrap">
+            <div class="drawer-header-left">
 
-                <div class="modal-title-icon">
-                    <i class="fa-solid fa-file-medical"></i>
+                <div class="drawer-header-icon">
+                    <i class="fas fa-calendar-check"></i>
                 </div>
 
-                <div>
-
-                    <h2>
-                        تفاصيل الحجز
-                    </h2>
-
-                    <p>
-                        بيانات المريض والحجز والتفاصيل المالية
-                    </p>
-
+                <div class="drawer-header-text">
+                    <h2>قائمة الحجوزات</h2>
+                    <p>عرض ومتابعة وتنظيم الحجوزات</p>
                 </div>
 
             </div>
 
-
-            <button
-                class="close-modal"
-                id="closeModalBtn"
-                type="button"
-                aria-label="إغلاق"
-            >
-                <i class="fa-solid fa-xmark"></i>
+            <button class="drawer-close-btn" type="button" onclick="closeAppointmentsDrawer()" title="إغلاق">
+                <i class="fas fa-times"></i>
             </button>
 
         </div>
 
 
-        <div
-            class="modal-body"
-            id="modalBody"
-        ></div>
+        <div class="drawer-body">
+
+            <div class="drawer-filters">
+
+                <input type="text" id="drawerSearchInput" placeholder="🔍 ابحث عن حجز...">
+
+                <button class="drawer-refresh-btn" type="button" onclick="loadAppointments()" title="تحديث">
+                    <i class="fas fa-sync"></i>
+                    <span>تحديث</span>
+                </button>
+
+            </div>
 
 
-        <div class="modal-footer">
+            <div class="appointments-list" id="appointmentsListContainer">
+                <div class="loading">
+                    <div class="spinner"></div>
+                </div>
+            </div>
 
-            <button
-                class="clear-btn"
-                id="closeModalFooterBtn"
-                type="button"
-            >
-                <i class="fa-solid fa-xmark"></i>
-                إغلاق
-            </button>
+        </div>
+
+
+        <div class="drawer-footer">
+
+            <div class="drawer-footer-info">
+                <i class="fas fa-info-circle"></i>
+                إجمالي:
+                <strong id="drawerTotalCount">0</strong>
+                حجز
+            </div>
 
         </div>
 
@@ -2315,124 +2133,107 @@
 </div>
 
 
-<!-- TOAST -->
+<!-- =======================================================
+     DETAILS MODAL
+======================================================= -->
 
-<div
-    class="toast"
-    id="toast"
-></div>
+<div class="modal-overlay" id="detailsModal">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3>
+                <i class="fas fa-file-medical"></i>
+                تفاصيل الحجز
+            </h3>
+
+            <button class="close-btn" type="button" onclick="closeDetailsModal()">×</button>
+
+        </div>
+
+        <div class="modal-body" id="modalBody"></div>
+
+        <div class="modal-footer">
+            <button class="btn btn-ghost" type="button" onclick="closeDetailsModal()" style="min-height:46px;padding:11px 22px;border-radius:12px;border:1px solid var(--border);background:var(--blue-soft);color:var(--primary-dark);font-size:13.5px;font-weight:800;cursor:pointer;display:inline-flex;align-items:center;gap:8px;">
+                <i class="fas fa-times"></i>
+                إغلاق
+            </button>
+        </div>
+
+    </div>
+
+</div>
 
 
-<!-- SUPABASE SDK -->
+<!-- =======================================================
+     TOAST
+======================================================= -->
+
+<div class="toast-container" id="toastContainer"></div>
+
+
+<!-- =======================================================
+     SUPABASE SDK
+======================================================= -->
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
 (function () {
-
     'use strict';
-
 
     /* =========================================================
        SUPABASE
-       ========================================================= */
+    ========================================================= */
 
-    const SUPABASE_URL =
-        'https://rlkqifdteyccagpdtdmu.supabase.co';
+    const SUPABASE_URL = 'https://rlkqifdteyccagpdtdmu.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
 
-    const SUPABASE_KEY =
-        'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
-
-
-    const sb = window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY,
-        {
-            auth: {
-                persistSession: false,
-                autoRefreshToken: false,
-                detectSessionInUrl: false,
-                storageKey: 'medlab-admin-appointments'
-            }
+    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
+        auth: {
+            persistSession: false,
+            autoRefreshToken: false,
+            detectSessionInUrl: false,
+            storageKey: 'medlab-admin-appointments'
         }
-    );
+    });
+
+    if (sessionStorage.getItem('medlab_admin_logged_in') !== '1') {
+        window.location.href = 'admin.html';
+    }
+
+    let appointments = [];
+    let filteredAppointments = [];
+
+    const $ = id => document.getElementById(id);
+
+    const appointmentsListContainer = $('appointmentsListContainer');
+    const searchInput = $('searchInput');
+    const drawerSearchInput = $('drawerSearchInput');
+    const dateFilter = $('dateFilter');
+    const sampleFilter = $('sampleFilter');
+    const resultsCount = $('resultsCount');
+    const detailsModal = $('detailsModal');
+    const modalBody = $('modalBody');
+    const toastContainer = $('toastContainer');
 
 
     /* =========================================================
        HELPERS
-       ========================================================= */
-
-    const $ = id =>
-        document.getElementById(id);
-
-
-    const tableContainer =
-        $('tableContainer');
-
-    const searchInput =
-        $('searchInput');
-
-    const dateFilter =
-        $('dateFilter');
-
-    const sampleFilter =
-        $('sampleFilter');
-
-    const resultsCount =
-        $('resultsCount');
-
-    const detailsModal =
-        $('detailsModal');
-
-    const modalBody =
-        $('modalBody');
-
-    const toast =
-        $('toast');
-
-
-    let appointments = [];
-
-    let filteredAppointments = [];
-
-
-    /* =========================================================
-       TODAY
-       ========================================================= */
+    ========================================================= */
 
     function getTodayDate() {
-
         const now = new Date();
-
-        const y =
-            now.getFullYear();
-
-        const m =
-            String(now.getMonth() + 1)
-                .padStart(2, '0');
-
-        const d =
-            String(now.getDate())
-                .padStart(2, '0');
-
+        const y = now.getFullYear();
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const d = String(now.getDate()).padStart(2, '0');
         return `${y}-${m}-${d}`;
     }
 
-
-    /* =========================================================
-       ESCAPE HTML
-       ========================================================= */
-
     function escapeHtml(value) {
-
-        if (
-            value === null ||
-            value === undefined
-        ) {
-            return '';
-        }
-
+        if (value === null || value === undefined) return '';
         return String(value)
             .replace(/&/g, '&amp;')
             .replace(/</g, '&lt;')
@@ -2441,1773 +2242,647 @@
             .replace(/'/g, '&#039;');
     }
 
-
-    /* =========================================================
-       DATE
-       ========================================================= */
+    function escapeAttr(value) {
+        return String(value ?? '')
+            .replace(/\\/g, '\\\\')
+            .replace(/'/g, "\\'")
+            .replace(/"/g, '&quot;')
+            .replace(/\n/g, '\\n');
+    }
 
     function formatDate(dateString) {
-
-        if (!dateString) {
-            return '-';
-        }
-
-        const parts =
-            String(dateString)
-                .split('T')[0]
-                .split('-');
-
-        if (parts.length !== 3) {
-            return dateString;
-        }
-
+        if (!dateString) return '-';
+        const parts = String(dateString).split('T')[0].split('-');
+        if (parts.length !== 3) return dateString;
         return `${parts[2]}/${parts[1]}/${parts[0]}`;
     }
 
-
-    /* =========================================================
-       MONEY
-       ========================================================= */
-
     function formatMoney(value) {
-
-        return `${Number(value || 0)
-            .toLocaleString('ar-EG')} جنيه`;
+        return `${Number(value || 0).toLocaleString('ar-EG')} جنيه`;
     }
-
-
-    /* =========================================================
-       SAMPLE
-       ========================================================= */
 
     function getSampleText(location) {
-
-        return location === 'home'
-            ? 'عينة منزلية'
-            : 'عينة في المعمل';
+        return location === 'home' ? 'عينة منزلية' : 'عينة في المعمل';
     }
 
-
-    /* =========================================================
-       GENDER
-       ========================================================= */
-
     function getGenderText(gender) {
-
-        if (gender === 'male') {
-            return 'ذكر';
-        }
-
-        if (gender === 'female') {
-            return 'أنثى';
-        }
-
+        if (gender === 'male') return 'ذكر';
+        if (gender === 'female') return 'أنثى';
         return '-';
     }
 
-
-    /* =========================================================
-       STATUS
-       ========================================================= */
-
     function getStatusText(status) {
-
         const map = {
-
-            'new':
-                'جديد',
-
-            'in_progress':
-                'قيد التنفيذ',
-
-            'completed':
-                'مكتمل',
-
-            'cancelled':
-                'ملغي',
-
-            'pending':
-                'في الانتظار',
-
-            'synced':
-                'تمت المزامنة',
-
-            'failed':
-                'فشل'
+            'new': 'جديد',
+            'in_progress': 'قيد التنفيذ',
+            'completed': 'مكتمل',
+            'cancelled': 'ملغي',
+            'pending': 'في الانتظار',
+            'synced': 'تمت المزامنة',
+            'failed': 'فشل'
         };
-
-        return map[status]
-            || status
-            || 'غير معروف';
+        return map[status] || status || 'غير معروف';
     }
-
 
     function getStatusClass(status) {
-
         const map = {
-
-            'completed':
-                'sync-synced',
-
-            'cancelled':
-                'sync-failed',
-
-            'pending':
-                'sync-pending',
-
-            'new':
-                'sync-pending',
-
-            'in_progress':
-                'sync-pending'
+            'completed': 'sync-synced',
+            'cancelled': 'sync-failed',
+            'pending': 'sync-pending',
+            'new': 'sync-pending',
+            'in_progress': 'sync-pending'
         };
-
-        return map[status]
-            || 'sync-pending';
+        return map[status] || 'sync-pending';
     }
 
-
-    /* =========================================================
-       TOAST
-       ========================================================= */
+    function getInitial(name) {
+        if (!name) return '؟';
+        return String(name).trim().charAt(0).toUpperCase();
+    }
 
     let toastTimer = null;
 
+    function showToast(message, type = '') {
+        if (!toastContainer) return;
 
-    function showToast(
-        message,
-        type = ''
-    ) {
+        toastContainer.innerHTML = '';
 
-        toast.textContent =
-            message;
+        const t = document.createElement('div');
+        t.className = 'toast ' + type;
 
-        toast.className =
-            'toast ' +
-            type +
-            ' show';
+        let icon = 'fa-check-circle';
+        if (type === 'error') icon = 'fa-exclamation-circle';
+        else if (type === 'warning') icon = 'fa-exclamation-triangle';
+
+        t.innerHTML = `<i class="fas ${icon}"></i><span>${escapeHtml(message)}</span>`;
+
+        toastContainer.appendChild(t);
 
         clearTimeout(toastTimer);
-
-        toastTimer =
-            setTimeout(
-                () => {
-                    toast.classList.remove('show');
-                },
-                3500
-            );
+        toastTimer = setTimeout(() => {
+            t.style.opacity = '0';
+            t.style.transform = 'translateX(-20px)';
+            t.style.transition = 'all .3s ease';
+            setTimeout(() => t.remove(), 300);
+        }, 3500);
     }
+
+
+    /* =========================================================
+       DRAWER
+    ========================================================= */
+
+    function openAppointmentsDrawer() {
+        document.getElementById('appointmentsDrawer').classList.add('show');
+        document.body.style.overflow = 'hidden';
+        renderAppointmentsList();
+    }
+
+    function closeAppointmentsDrawer() {
+        document.getElementById('appointmentsDrawer').classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    function handleDrawerOverlayClick(e) {
+        if (e.target.id === 'appointmentsDrawer') {
+            closeAppointmentsDrawer();
+        }
+    }
+
+    window.openAppointmentsDrawer = openAppointmentsDrawer;
+    window.closeAppointmentsDrawer = closeAppointmentsDrawer;
+    window.handleDrawerOverlayClick = handleDrawerOverlayClick;
 
 
     /* =========================================================
        LOAD APPOINTMENTS
-       ========================================================= */
+    ========================================================= */
 
     async function loadAppointments() {
-
-        tableContainer.innerHTML = `
-
-            <div class="state-box">
-
-                <div class="state-icon">
-                    <i class="fa-solid fa-spinner fa-spin"></i>
-                </div>
-
-                <h3>
-                    جاري تحميل البيانات
-                </h3>
-
-                <p>
-                    برجاء الانتظار...
-                </p>
-
-            </div>
-        `;
-
+        appointmentsListContainer.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
 
         try {
-
-            /* =====================================================
-               1) APPOINTMENTS
-               ===================================================== */
-
-            const {
-                data: appts,
-                error: apptErr
-            } = await sb
+            const { data: appts, error: apptErr } = await sb
                 .from('appointments')
                 .select('*')
-                .order(
-                    'created_at',
-                    {
-                        ascending: false
-                    }
-                );
+                .order('created_at', { ascending: false });
 
+            if (apptErr) throw apptErr;
 
-            if (apptErr) {
-                throw apptErr;
-            }
-
-
-            console.log(
-                '📦 Raw appointments:',
-                appts
-            );
-
-
-            if (
-                !appts ||
-                appts.length === 0
-            ) {
-
+            if (!appts || appts.length === 0) {
                 appointments = [];
-
                 updateStatistics();
-
                 applyFilters();
-
                 return;
             }
 
-
-            /* =====================================================
-               2) PATIENT IDS
-               ===================================================== */
-
-            const patientIds =
-                [
-                    ...new Set(
-                        appts
-                            .map(
-                                a =>
-                                    a.patient_id
-                            )
-                            .filter(Boolean)
-                    )
-                ];
-
-
-            console.log(
-                '👥 Patient IDs to fetch:',
-                patientIds
-            );
-
+            const patientIds = [...new Set(appts.map(a => a.patient_id).filter(Boolean))];
 
             let patientsMap = {};
 
-
-            /* =====================================================
-               3) PATIENTS
-               ===================================================== */
-
-            if (
-                patientIds.length > 0
-            ) {
-
-                const {
-                    data: patients,
-                    error: patErr
-                } = await sb
+            if (patientIds.length > 0) {
+                const { data: patients, error: patErr } = await sb
                     .from('patients')
-                    .select(
-                        'id, patient_code, full_name, phone, email, age, gender, created_at'
-                    )
-                    .in(
-                        'id',
-                        patientIds
-                    );
-
+                    .select('id, patient_code, full_name, phone, email, age, gender, created_at')
+                    .in('id', patientIds);
 
                 if (patErr) {
-
-                    console.warn(
-                        '⚠️ Could not load patients:',
-                        patErr
-                    );
-
+                    console.warn('⚠️ Could not load patients:', patErr);
                 } else {
-
-                    (patients || [])
-                        .forEach(
-                            p => {
-
-                                patientsMap[p.id] =
-                                    p;
-                            }
-                        );
-
-
-                    console.log(
-                        '✅ Patients loaded:',
-                        patients.length
-                    );
+                    (patients || []).forEach(p => { patientsMap[p.id] = p; });
                 }
             }
 
-
-            /* =====================================================
-               4) MERGE
-               ===================================================== */
-
-            appointments =
-                appts.map(
-                    a => ({
-
-                        ...a,
-
-                        patient:
-                            patientsMap[
-                                a.patient_id
-                            ] || null
-
-                    })
-                );
-
+            appointments = appts.map(a => ({ ...a, patient: patientsMap[a.patient_id] || null }));
 
             updateStatistics();
-
             applyFilters();
 
-
-            console.log(
-                `✅ Loaded ${appointments.length} appointments`
-            );
-
-
-            console.log(
-                '📋 Sample:',
-                appointments[0]
-            );
-
-
         } catch (error) {
-
-            console.error(
-                '❌ Load error:',
-                error
-            );
-
-
-            tableContainer.innerHTML = `
-
-                <div class="state-box">
-
-                    <div
-                        class="state-icon"
-                        style="background:#fff0f0;color:#c62828;"
-                    >
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-
-                    <h3>
-                        تعذر تحميل البيانات
-                    </h3>
-
-                    <p>
-                        ${escapeHtml(
-                            error.message ||
-                            'خطأ غير معروف'
-                        )}
-                    </p>
-
-                </div>
-            `;
-
-
-            showToast(
-                error.message ||
-                'حدث خطأ',
-                'error'
-            );
+            console.error('❌ Load error:', error);
+            appointmentsListContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-circle" style="color:var(--danger);"></i>
+                    <h3>تعذر تحميل البيانات</h3>
+                    <p>${escapeHtml(error.message || 'خطأ غير معروف')}</p>
+                </div>`;
+            showToast(error.message || 'حدث خطأ', 'error');
         }
     }
+
+    window.loadAppointments = loadAppointments;
 
 
     /* =========================================================
        STATISTICS
-       ========================================================= */
+    ========================================================= */
 
     function updateStatistics() {
+        const today = getTodayDate();
 
-        const today =
-            getTodayDate();
+        $('totalAppointments').textContent = appointments.length;
 
+        $('todayAppointments').textContent = appointments.filter(
+            p => String(p.appointment_date || '').split('T')[0] === today
+        ).length;
 
-        $('totalAppointments')
-            .textContent =
-            appointments.length;
+        $('homeAppointments').textContent = appointments.filter(
+            p => p.sample_location === 'home'
+        ).length;
 
+        const revenue = appointments.reduce(
+            (sum, p) => sum + Number(p.total || 0), 0
+        );
 
-        $('todayAppointments')
-            .textContent =
-            appointments.filter(
-                p =>
-                    String(
-                        p.appointment_date || ''
-                    ).split('T')[0]
-                    === today
-            ).length;
-
-
-        $('homeAppointments')
-            .textContent =
-            appointments.filter(
-                p =>
-                    p.sample_location ===
-                    'home'
-            ).length;
-
-
-        const revenue =
-            appointments.reduce(
-                (sum, p) =>
-                    sum +
-                    Number(p.total || 0),
-                0
-            );
-
-
-        $('totalRevenue')
-            .textContent =
-            revenue.toLocaleString(
-                'ar-EG'
-            ) + ' ج';
+        $('totalRevenue').textContent = revenue.toLocaleString('ar-EG') + ' ج';
     }
 
 
     /* =========================================================
        FILTERS
-       ========================================================= */
+    ========================================================= */
 
     function applyFilters() {
+        const search = searchInput.value.trim().toLowerCase();
+        const drawerSearch = drawerSearchInput.value.trim().toLowerCase();
+        const date = dateFilter.value;
+        const sample = sampleFilter.value;
 
-        const search =
-            searchInput.value
-                .trim()
-                .toLowerCase();
+        filteredAppointments = appointments.filter(p => {
+            const patient = p.patient || {};
+            const values = [
+                patient.full_name,
+                patient.phone,
+                patient.patient_code,
+                p.booking_number,
+                p.referring_doctor,
+                p.referral_source
+            ].filter(Boolean).join(' ').toLowerCase();
 
+            if (search && !values.includes(search)) return false;
+            if (drawerSearch && !values.includes(drawerSearch)) return false;
 
-        const date =
-            dateFilter.value;
+            if (date) {
+                const visitDate = String(p.appointment_date || '').split('T')[0];
+                if (visitDate !== date) return false;
+            }
 
+            if (sample && p.sample_location !== sample) return false;
 
-        const sample =
-            sampleFilter.value;
+            return true;
+        });
 
-
-        filteredAppointments =
-            appointments.filter(
-                p => {
-
-                    if (search) {
-
-                        const patient =
-                            p.patient || {};
-
-
-                        const values = [
-
-                            patient.full_name,
-
-                            patient.phone,
-
-                            patient.patient_code,
-
-                            p.booking_number,
-
-                            p.referring_doctor,
-
-                            p.referral_source
-
-                        ]
-                            .filter(Boolean)
-                            .join(' ')
-                            .toLowerCase();
-
-
-                        if (
-                            !values.includes(search)
-                        ) {
-                            return false;
-                        }
-                    }
-
-
-                    if (date) {
-
-                        const visitDate =
-                            String(
-                                p.appointment_date || ''
-                            ).split('T')[0];
-
-
-                        if (
-                            visitDate !== date
-                        ) {
-                            return false;
-                        }
-                    }
-
-
-                    if (
-                        sample &&
-                        p.sample_location !== sample
-                    ) {
-                        return false;
-                    }
-
-
-                    return true;
-                }
-            );
-
-
-        renderTable();
+        renderAppointmentsList();
     }
 
 
     /* =========================================================
-       TABLE
-       ========================================================= */
+       RENDER APPOINTMENTS LIST
+    ========================================================= */
 
-    function renderTable() {
+    function renderAppointmentsList() {
+        resultsCount.textContent = `${filteredAppointments.length} حجز`;
+        $('drawerTotalCount').textContent = filteredAppointments.length;
 
-        resultsCount.textContent =
-            `${filteredAppointments.length} نتيجة`;
-
-
-        if (
-            !filteredAppointments.length
-        ) {
-
-            tableContainer.innerHTML = `
-
-                <div class="state-box">
-
-                    <div class="state-icon">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </div>
-
-                    <h3>
-                        لا توجد نتائج
-                    </h3>
-
-                    <p>
-                        ${
-                            appointments.length === 0
-                                ? 'لم يتم تسجيل حجوزات بعد'
-                                : 'لم يتم العثور على حجوزات مطابقة للبحث'
-                        }
-                    </p>
-
-                </div>
-            `;
-
+        if (filteredAppointments.length === 0) {
+            appointmentsListContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times"></i>
+                    <h3>لا توجد حجوزات</h3>
+                    <p>${appointments.length === 0 ? 'لم يتم تسجيل حجوزات بعد' : 'جرّب تغيير الفلاتر'}</p>
+                </div>`;
             return;
         }
 
+        let html = '';
 
-        let html = `
+        filteredAppointments.forEach((p, i) => {
+            const patient = p.patient || {};
+            const patientName = patient.full_name || 'غير معروف';
+            const patientPhone = patient.phone || '-';
+            const patientCode = patient.patient_code || '-';
+            const visitDate = String(p.appointment_date || '').split('T')[0];
+            const visitTime = p.appointment_time ? p.appointment_time.slice(0, 5) : '-';
+            const isHome = p.sample_location === 'home';
 
-            <table>
+            html += `
+                <div class="appointment-card-item" style="animation-delay: ${Math.min(i * 0.03, 0.4)}s">
 
-                <thead>
+                    <div class="appointment-card-top">
 
-                    <tr>
+                        <div class="appointment-card-avatar">
+                            ${escapeHtml(getInitial(patientName))}
+                        </div>
 
-                        <th>#</th>
+                        <div class="appointment-card-info">
 
-                        <th>
-                            رقم الحجز
-                        </th>
+                            <div class="appointment-card-name">
+                                ${escapeHtml(patientName)}
+                            </div>
 
-                        <th>
-                            المريض
-                        </th>
+                            <span class="appointment-card-booking">
+                                #${escapeHtml(p.booking_number || '-')}
+                            </span>
 
-                        <th>
-                            تاريخ الزيارة
-                        </th>
+                        </div>
 
-                        <th>
-                            الوقت
-                        </th>
+                        <div class="appointment-card-badges">
 
-                        <th>
-                            نوع العينة
-                        </th>
+                            <span class="appointment-status-badge ${getStatusClass(p.status)}">
+                                ${escapeHtml(getStatusText(p.status))}
+                            </span>
 
-                        <th>
-                            الإجمالي
-                        </th>
-
-                        <th>
-                            الحالة
-                        </th>
-
-                        <th>
-                            الإجراءات
-                        </th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-        `;
-
-
-        filteredAppointments
-            .forEach(
-                (p, index) => {
-
-                    const patient =
-                        p.patient || {};
-
-
-                    const patientName =
-                        patient.full_name ||
-                        'غير معروف';
-
-
-                    const patientPhone =
-                        patient.phone ||
-                        '-';
-
-
-                    const patientCode =
-                        patient.patient_code ||
-                        '-';
-
-
-                    const visitDate =
-                        String(
-                            p.appointment_date || ''
-                        ).split('T')[0];
-
-
-                    const visitTime =
-                        p.appointment_time
-                            ? p.appointment_time.slice(0, 5)
-                            : '-';
-
-
-                    html += `
-
-                        <tr>
-
-                            <td>
-
-                                <span class="patient-number">
-
-                                    ${escapeHtml(
-                                        p.daily_number ||
-                                        (index + 1)
-                                    )}
-
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <span class="booking-number">
-
-                                    <i
-                                        class="fa-solid fa-hashtag"
-                                        style="font-size:8px;"
-                                    ></i>
-
-                                    ${escapeHtml(
-                                        p.booking_number ||
-                                        '-'
-                                    )}
-
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <div class="patient-name">
-
-                                    ${escapeHtml(
-                                        patientName
-                                    )}
-
-                                </div>
-
-                                <div class="patient-phone">
-
-                                    ${escapeHtml(
-                                        patientPhone
-                                    )}
-
-                                </div>
-
-                                <div class="patient-code">
-
-                                    ${escapeHtml(
-                                        patientCode
-                                    )}
-
-                                </div>
-
-                            </td>
-
-
-                            <td>
+                            <span class="appointment-date-badge">
+                                <i class="fas fa-calendar-alt"></i>
                                 ${formatDate(visitDate)}
-                            </td>
+                            </span>
 
+                        </div>
 
-                            <td
-                                dir="ltr"
-                                style="text-align:right;"
-                            >
+                    </div>
 
-                                <span
-                                    style="
-                                        display:inline-flex;
-                                        align-items:center;
-                                        gap:5px;
-                                    "
-                                >
+                    <div class="appointment-card-details">
 
-                                    <i
-                                        class="fa-regular fa-clock"
-                                        style="
-                                            color:#8aadb9;
-                                            font-size:9px;
-                                        "
-                                    ></i>
+                        <div class="appointment-detail-item">
+                            <i class="fas fa-phone"></i>
+                            <span dir="ltr">${escapeHtml(patientPhone)}</span>
+                        </div>
 
-                                    ${escapeHtml(
-                                        visitTime
-                                    )}
+                        <div class="appointment-detail-item">
+                            <i class="fas fa-id-card"></i>
+                            <span>${escapeHtml(patientCode)}</span>
+                        </div>
 
-                                </span>
+                        <div class="appointment-detail-item">
+                            <i class="fas fa-clock"></i>
+                            <span dir="ltr">${escapeHtml(visitTime)}</span>
+                        </div>
 
-                            </td>
+                        <div class="appointment-detail-item">
+                            <i class="fas fa-${isHome ? 'house' : 'flask'}"></i>
+                            <span class="sample-badge-mini ${isHome ? 'sample-home' : 'sample-lab'}">
+                                ${getSampleText(p.sample_location)}
+                            </span>
+                        </div>
 
+                        <div class="appointment-detail-item" style="grid-column: 1 / -1;">
+                            <i class="fas fa-coins"></i>
+                            <span class="appointment-total-badge">
+                                ${formatMoney(p.total)}
+                            </span>
+                        </div>
 
-                            <td>
+                    </div>
 
-                                <span
-                                    class="
-                                        sample-badge
-                                        ${
-                                            p.sample_location === 'home'
-                                                ? 'sample-home'
-                                                : 'sample-lab'
-                                        }
-                                    "
-                                >
+                    <div class="appointment-card-actions">
 
-                                    ${
-                                        p.sample_location === 'home'
-                                            ? '<i class="fa-solid fa-house"></i>'
-                                            : '<i class="fa-solid fa-flask"></i>'
-                                    }
+                        <button class="pact-btn details" type="button" onclick="showDetails(${p.id})" title="عرض التفاصيل">
+                            <i class="fas fa-eye"></i>
+                            التفاصيل
+                        </button>
 
-                                    ${getSampleText(
-                                        p.sample_location
-                                    )}
+                        <a href="samples-admin.html?phone=${encodeURIComponent(patientPhone)}" class="pact-btn upload" title="رفع نتيجة">
+                            <i class="fas fa-cloud-arrow-up"></i>
+                            رفع نتيجة
+                        </a>
 
-                                </span>
+                        <button class="pact-btn delete" type="button" onclick="deleteAppointment(${p.id}, '${escapeAttr(patientName)}')" title="حذف">
+                            <i class="fas fa-trash-can"></i>
+                            حذف
+                        </button>
 
-                            </td>
+                    </div>
 
+                </div>
+            `;
+        });
 
-                            <td>
-
-                                <span class="total-price">
-
-                                    ${formatMoney(
-                                        p.total
-                                    )}
-
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <span
-                                    class="
-                                        status-badge
-                                        ${getStatusClass(
-                                            p.status
-                                        )}
-                                    "
-                                >
-
-                                    ${escapeHtml(
-                                        getStatusText(
-                                            p.status
-                                        )
-                                    )}
-
-                                </span>
-
-                            </td>
-
-
-                            <td>
-
-                                <div class="actions">
-
-                                    <button
-                                        type="button"
-                                        class="action-btn details-btn"
-                                        data-action="details"
-                                        data-id="${p.id}"
-                                    >
-
-                                        <i class="fa-solid fa-eye"></i>
-                                        التفاصيل
-
-                                    </button>
-
-
-                                    <a
-                                        href="samples-admin.html?phone=${encodeURIComponent(
-                                            patientPhone
-                                        )}"
-                                        class="action-btn upload-btn"
-                                    >
-
-                                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                                        رفع نتيجة
-
-                                    </a>
-
-
-                                    <button
-                                        type="button"
-                                        class="action-btn delete-btn"
-                                        data-action="delete"
-                                        data-id="${p.id}"
-                                        data-name="${escapeHtml(
-                                            patientName
-                                        )}"
-                                    >
-
-                                        <i class="fa-solid fa-trash-can"></i>
-                                        حذف
-
-                                    </button>
-
-                                </div>
-
-                            </td>
-
-                        </tr>
-                    `;
-                }
-            );
-
-
-        html += `
-
-                </tbody>
-
-            </table>
-        `;
-
-
-        tableContainer.innerHTML =
-            html;
-
-
-        /* DETAILS */
-
-        tableContainer
-            .querySelectorAll(
-                '[data-action="details"]'
-            )
-            .forEach(
-                btn => {
-
-                    btn.addEventListener(
-                        'click',
-                        () => {
-
-                            showDetails(
-                                Number(
-                                    btn.dataset.id
-                                )
-                            );
-                        }
-                    );
-                }
-            );
-
-
-        /* DELETE */
-
-        tableContainer
-            .querySelectorAll(
-                '[data-action="delete"]'
-            )
-            .forEach(
-                btn => {
-
-                    btn.addEventListener(
-                        'click',
-                        () => {
-
-                            deleteAppointment(
-                                Number(
-                                    btn.dataset.id
-                                ),
-                                btn.dataset.name
-                            );
-                        }
-                    );
-                }
-            );
+        appointmentsListContainer.innerHTML = html;
     }
 
 
     /* =========================================================
        SHOW DETAILS
-       ========================================================= */
+    ========================================================= */
 
     function showDetails(id) {
+        const p = appointments.find(x => x.id === id);
+        if (!p) return;
 
-        const p =
-            appointments.find(
-                x => x.id === id
-            );
+        const patient = p.patient || {};
+        const isHome = p.sample_location === 'home';
 
-
-        if (!p) {
-            return;
-        }
-
-
-        const patient =
-            p.patient || {};
-
-
-        const isHome =
-            p.sample_location ===
-            'home';
-
-
-        const homeSection =
-            isHome
-                ? `
-
-                    <div class="modal-section">
-
-                        <h3>
-                            <i class="fa-solid fa-house-medical"></i>
-                            عنوان الزيارة المنزلية
-                        </h3>
-
-                        <div class="details-grid">
-
-                            <div class="detail-box">
-
-                                <label>
-                                    المحافظة
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.home_governorate ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box">
-
-                                <label>
-                                    المركز / المدينة
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.home_district ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box">
-
-                                <label>
-                                    المنطقة التفصيلية
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.home_detailed_area ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box">
-
-                                <label>
-                                    رقم المبنى
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.home_building_number ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box full">
-
-                                <label>
-                                    علامة مميزة
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.home_landmark ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box">
-
-                                <label>
-                                    رسوم الزيارة المنزلية
-                                </label>
-
-                                <strong
-                                    style="color:#0879b9;"
-                                >
-                                    ${formatMoney(
-                                        p.home_visit_fee
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box">
-
-                                <label>
-                                    حالة رسوم الزيارة
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.home_visit_fee_status ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-                        </div>
-
+        const homeSection = isHome ? `
+            <div class="modal-section">
+                <h3><i class="fas fa-house-medical"></i> عنوان الزيارة المنزلية</h3>
+                <div class="details-grid">
+                    <div class="detail-box">
+                        <label>المحافظة</label>
+                        <strong>${escapeHtml(p.home_governorate || '-')}</strong>
                     </div>
-
-                `
-                : '';
-
-
-        const packageSection =
-            p.package_id
-                ? `
-
-                    <div class="modal-section">
-
-                        <h3>
-                            <i class="fa-solid fa-box-open"></i>
-                            الباقة
-                        </h3>
-
-                        <div class="details-grid">
-
-                            <div class="detail-box">
-
-                                <label>
-                                    اسم الباقة
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.package_name_snapshot ||
-                                        '-'
-                                    )}
-                                </strong>
-
-                            </div>
-
-
-                            <div class="detail-box">
-
-                                <label>
-                                    سعر الباقة
-                                </label>
-
-                                <strong
-                                    style="color:#0879b9;"
-                                >
-                                    ${formatMoney(
-                                        p.package_price
-                                    )}
-                                </strong>
-
-                            </div>
-
-                        </div>
-
+                    <div class="detail-box">
+                        <label>المركز / المدينة</label>
+                        <strong>${escapeHtml(p.home_district || '-')}</strong>
                     </div>
+                    <div class="detail-box">
+                        <label>المنطقة التفصيلية</label>
+                        <strong>${escapeHtml(p.home_detailed_area || '-')}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>رقم المبنى</label>
+                        <strong>${escapeHtml(p.home_building_number || '-')}</strong>
+                    </div>
+                    <div class="detail-box full">
+                        <label>علامة مميزة</label>
+                        <strong>${escapeHtml(p.home_landmark || '-')}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>رسوم الزيارة المنزلية</label>
+                        <strong style="color:var(--primary);">${formatMoney(p.home_visit_fee)}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>حالة رسوم الزيارة</label>
+                        <strong>${escapeHtml(p.home_visit_fee_status || '-')}</strong>
+                    </div>
+                </div>
+            </div>
+        ` : '';
 
-                `
-                : '';
-
+        const packageSection = p.package_id ? `
+            <div class="modal-section">
+                <h3><i class="fas fa-box-open"></i> الباقة</h3>
+                <div class="details-grid">
+                    <div class="detail-box">
+                        <label>اسم الباقة</label>
+                        <strong>${escapeHtml(p.package_name_snapshot || '-')}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>سعر الباقة</label>
+                        <strong style="color:var(--primary);">${formatMoney(p.package_price)}</strong>
+                    </div>
+                </div>
+            </div>
+        ` : '';
 
         modalBody.innerHTML = `
-
             <div class="details-grid">
 
                 <div class="detail-box">
-
-                    <label>
-                        رقم الحجز
-                    </label>
-
-                    <strong
-                        style="color:#0879b9;"
-                    >
-                        ${escapeHtml(
-                            p.booking_number ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>رقم الحجز</label>
+                    <strong style="color:var(--primary);">${escapeHtml(p.booking_number || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        الرقم اليومي
-                    </label>
-
-                    <strong>
-                        ${escapeHtml(
-                            p.daily_number ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>الرقم اليومي</label>
+                    <strong>${escapeHtml(p.daily_number || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        اسم المريض
-                    </label>
-
-                    <strong>
-                        ${escapeHtml(
-                            patient.full_name ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>اسم المريض</label>
+                    <strong>${escapeHtml(patient.full_name || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        رقم الهاتف
-                    </label>
-
-                    <strong dir="ltr">
-                        ${escapeHtml(
-                            patient.phone ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>رقم الهاتف</label>
+                    <strong dir="ltr">${escapeHtml(patient.phone || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        كود المريض
-                    </label>
-
-                    <strong>
-                        ${escapeHtml(
-                            patient.patient_code ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>كود المريض</label>
+                    <strong>${escapeHtml(patient.patient_code || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        البريد الإلكتروني
-                    </label>
-
-                    <strong
-                        dir="ltr"
-                        style="font-size:11px;"
-                    >
-                        ${escapeHtml(
-                            patient.email ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>البريد الإلكتروني</label>
+                    <strong dir="ltr" style="font-size:12px;">${escapeHtml(patient.email || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        العمر
-                    </label>
-
-                    <strong>
-                        ${
-                            patient.age
-                                ? escapeHtml(
-                                    patient.age
-                                ) + ' سنة'
-                                : '-'
-                        }
-                    </strong>
-
+                    <label>العمر</label>
+                    <strong>${patient.age ? escapeHtml(patient.age) + ' سنة' : '-'}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        الجنس
-                    </label>
-
-                    <strong>
-                        ${getGenderText(
-                            patient.gender
-                        )}
-                    </strong>
-
+                    <label>الجنس</label>
+                    <strong>${getGenderText(patient.gender)}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        تاريخ الزيارة
-                    </label>
-
-                    <strong>
-                        ${formatDate(
-                            p.appointment_date
-                        )}
-                    </strong>
-
+                    <label>تاريخ الزيارة</label>
+                    <strong>${formatDate(p.appointment_date)}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        وقت الزيارة
-                    </label>
-
-                    <strong dir="ltr">
-                        ${escapeHtml(
-                            p.appointment_time ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>وقت الزيارة</label>
+                    <strong dir="ltr">${escapeHtml(p.appointment_time || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        نوع العينة
-                    </label>
-
-                    <strong>
-                        ${getSampleText(
-                            p.sample_location
-                        )}
-                    </strong>
-
+                    <label>نوع العينة</label>
+                    <strong>${getSampleText(p.sample_location)}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        الحالة
-                    </label>
-
-                    <strong>
-                        ${getStatusText(
-                            p.status
-                        )}
-                    </strong>
-
+                    <label>الحالة</label>
+                    <strong>${getStatusText(p.status)}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        الطبيب المحول
-                    </label>
-
-                    <strong>
-                        ${escapeHtml(
-                            p.referring_doctor ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>الطبيب المحول</label>
+                    <strong>${escapeHtml(p.referring_doctor || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box">
-
-                    <label>
-                        مصدر الإحالة
-                    </label>
-
-                    <strong>
-                        ${escapeHtml(
-                            p.referral_source ||
-                            '-'
-                        )}
-                    </strong>
-
+                    <label>مصدر الإحالة</label>
+                    <strong>${escapeHtml(p.referral_source || '-')}</strong>
                 </div>
-
 
                 <div class="detail-box full">
-
-                    <label>
-                        تاريخ إنشاء الحجز
-                    </label>
-
+                    <label>تاريخ إنشاء الحجز</label>
                     <strong>
-
-                        ${
-                            p.created_at
-                                ? formatDate(
-                                    p.created_at
-                                )
-                                + ' ' +
-                                String(
-                                    p.created_at
-                                )
-                                .split('T')[1]
-                                .slice(0, 5)
-                                : '-'
-                        }
-
+                        ${p.created_at
+                            ? formatDate(p.created_at) + ' ' + String(p.created_at).split('T')[1].slice(0, 5)
+                            : '-'}
                     </strong>
-
                 </div>
 
-
-                ${
-                    p.notes
-                        ? `
-
-                            <div class="detail-box full">
-
-                                <label>
-                                    ملاحظات
-                                </label>
-
-                                <strong>
-                                    ${escapeHtml(
-                                        p.notes
-                                    )}
-                                </strong>
-
-                            </div>
-
-                        `
-                        : ''
-                }
+                ${p.notes ? `
+                    <div class="detail-box full">
+                        <label>ملاحظات</label>
+                        <strong>${escapeHtml(p.notes)}</strong>
+                    </div>
+                ` : ''}
 
             </div>
 
-
             ${homeSection}
-
             ${packageSection}
 
-
             <div class="modal-section">
-
-                <h3>
-                    <i class="fa-solid fa-wallet"></i>
-                    الحساب
-                </h3>
-
-
+                <h3><i class="fas fa-wallet"></i> الحساب</h3>
                 <div class="details-grid">
 
                     <div class="detail-box">
-
-                        <label>
-                            إجمالي التحاليل
-                        </label>
-
-                        <strong>
-                            ${formatMoney(
-                                p.tests_total
-                            )}
-                        </strong>
-
+                        <label>إجمالي التحاليل</label>
+                        <strong>${formatMoney(p.tests_total)}</strong>
                     </div>
 
-
-                    ${
-                        isHome
-                            ? `
-
-                                <div class="detail-box">
-
-                                    <label>
-                                        رسوم الزيارة المنزلية
-                                    </label>
-
-                                    <strong>
-                                        ${formatMoney(
-                                            p.home_visit_fee
-                                        )}
-                                    </strong>
-
-                                </div>
-
-                            `
-                            : ''
-                    }
-
+                    ${isHome ? `
+                        <div class="detail-box">
+                            <label>رسوم الزيارة المنزلية</label>
+                            <strong>${formatMoney(p.home_visit_fee)}</strong>
+                        </div>
+                    ` : ''}
 
                     <div class="detail-box full">
-
-                        <label>
-                            الإجمالي النهائي
-                        </label>
-
-                        <strong
-                            style="
-                                color:#0879b9;
-                                font-size:20px;
-                            "
-                        >
-                            ${formatMoney(
-                                p.total
-                            )}
-                        </strong>
-
+                        <label>الإجمالي النهائي</label>
+                        <strong style="color:var(--primary);font-size:20px;">${formatMoney(p.total)}</strong>
                     </div>
 
                 </div>
-
             </div>
         `;
 
-
-        detailsModal.classList.add(
-            'show'
-        );
-
-
-        document.body.style.overflow =
-            'hidden';
+        detailsModal.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
+
+    window.showDetails = showDetails;
 
 
     /* =========================================================
        DELETE
-       ========================================================= */
+    ========================================================= */
 
-    async function deleteAppointment(
-        id,
-        name
-    ) {
-
-        if (
-            !confirm(
-                `هل أنت متأكد من حذف حجز "${name}"؟\n\nسيتم حذف الحجز فقط، وليس المريض.`
-            )
-        ) {
-            return;
-        }
-
+    async function deleteAppointment(id, name) {
+        if (!confirm(`هل أنت متأكد من حذف حجز "${name}"؟\n\nسيتم حذف الحجز فقط، وليس المريض.`)) return;
 
         try {
+            const { error } = await sb.from('appointments').delete().eq('id', id);
+            if (error) throw error;
 
-            const {
-                error
-            } = await sb
-                .from('appointments')
-                .delete()
-                .eq('id', id);
-
-
-            if (error) {
-                throw error;
-            }
-
-
-            appointments =
-                appointments.filter(
-                    p => p.id !== id
-                );
-
+            appointments = appointments.filter(p => p.id !== id);
 
             updateStatistics();
-
             applyFilters();
 
-
-            showToast(
-                'تم حذف الحجز بنجاح',
-                'success'
-            );
-
-
+            showToast('تم حذف الحجز بنجاح', 'success');
         } catch (error) {
-
-            console.error(
-                error
-            );
-
-
-            showToast(
-                'فشل الحذف: ' +
-                error.message,
-                'error'
-            );
+            console.error(error);
+            showToast('فشل الحذف: ' + error.message, 'error');
         }
     }
+
+    window.deleteAppointment = deleteAppointment;
 
 
     /* =========================================================
        MODAL CONTROLS
-       ========================================================= */
+    ========================================================= */
 
-    function closeModal() {
-
-        detailsModal.classList.remove(
-            'show'
-        );
-
-        document.body.style.overflow =
-            '';
+    function closeDetailsModal() {
+        detailsModal.classList.remove('show');
+        document.body.style.overflow = '';
     }
 
+    window.closeDetailsModal = closeDetailsModal;
 
-    $('closeModalBtn')
-        .addEventListener(
-            'click',
-            closeModal
-        );
+    detailsModal.addEventListener('click', e => {
+        if (e.target === detailsModal) closeDetailsModal();
+    });
 
-
-    $('closeModalFooterBtn')
-        .addEventListener(
-            'click',
-            closeModal
-        );
-
-
-    detailsModal
-        .addEventListener(
-            'click',
-            e => {
-
-                if (
-                    e.target ===
-                    detailsModal
-                ) {
-                    closeModal();
-                }
-            }
-        );
-
-
-    document
-        .addEventListener(
-            'keydown',
-            e => {
-
-                if (
-                    e.key ===
-                    'Escape'
-                ) {
-                    closeModal();
-                }
-            }
-        );
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') {
+            closeDetailsModal();
+            closeAppointmentsDrawer();
+        }
+    });
 
 
     /* =========================================================
        EVENTS
-       ========================================================= */
+    ========================================================= */
 
-    searchInput
-        .addEventListener(
-            'input',
-            applyFilters
-        );
+    searchInput.addEventListener('input', applyFilters);
+    drawerSearchInput.addEventListener('input', applyFilters);
+    dateFilter.addEventListener('change', applyFilters);
+    sampleFilter.addEventListener('change', applyFilters);
 
+    $('clearFiltersBtn').addEventListener('click', () => {
+        searchInput.value = '';
+        drawerSearchInput.value = '';
+        dateFilter.value = '';
+        sampleFilter.value = '';
+        applyFilters();
+        showToast('تم مسح الفلاتر', 'success');
+    });
 
-    dateFilter
-        .addEventListener(
-            'change',
-            applyFilters
-        );
+    $('refreshBtn').addEventListener('click', async () => {
+        const icon = $('refreshBtn').querySelector('i');
+        icon.classList.add('fa-spin');
+        await loadAppointments();
+        setTimeout(() => icon.classList.remove('fa-spin'), 350);
+        showToast('تم تحديث البيانات', 'success');
+    });
 
-
-    sampleFilter
-        .addEventListener(
-            'change',
-            applyFilters
-        );
-
-
-    $('clearFiltersBtn')
-        .addEventListener(
-            'click',
-            () => {
-
-                searchInput.value =
-                    '';
-
-                dateFilter.value =
-                    '';
-
-                sampleFilter.value =
-                    '';
-
-                applyFilters();
-            }
-        );
-
-
-    $('refreshBtn')
-        .addEventListener(
-            'click',
-            async () => {
-
-                const icon =
-                    $('refreshBtn')
-                        .querySelector('i');
-
-
-                icon.classList.add(
-                    'fa-spin'
-                );
-
-
-                await loadAppointments();
-
-
-                setTimeout(
-                    () => {
-                        icon.classList.remove(
-                            'fa-spin'
-                        );
-                    },
-                    350
-                );
-
-
-                showToast(
-                    'تم تحديث البيانات',
-                    'success'
-                );
-            }
-        );
+    $('logoutBtn').addEventListener('click', () => {
+        if (confirm('هل تريد تسجيل الخروج؟')) {
+            try {
+                sessionStorage.removeItem('medlab_admin_logged_in');
+                sessionStorage.removeItem('medlab_admin_username');
+            } catch (e) {}
+            window.location.href = 'login.html';
+        }
+    });
 
 
     /* =========================================================
-       LOGOUT
-       ========================================================= */
-
-    $('logoutBtn')
-        .addEventListener(
-            'click',
-            () => {
-
-                if (
-                    confirm(
-                        'هل تريد تسجيل الخروج؟'
-                    )
-                ) {
-
-                    try {
-
-                        sessionStorage.removeItem(
-                            'medlab_admin_logged_in'
-                        );
-
-                        sessionStorage.removeItem(
-                            'medlab_admin_username'
-                        );
-
-                    } catch (e) {}
-
-
-                    window.location.href =
-                        'login.html';
-                }
-            }
-        );
-
-
-    /* =========================================================
-       INITIALIZE
-       ========================================================= */
+       INIT
+    ========================================================= */
 
     loadAppointments();
 
-
-    console.log(
-        '✅ MEDLAB Professional Appointments Dashboard ready'
-    );
+    console.log('✅ MEDLAB Appointments Dashboard ready');
 
 })();
 </script>
@@ -4215,10 +2890,7 @@
 
 <!-- Dev Watermark -->
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
-    rel="stylesheet"
->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
 <script src="js/dev-watermark.js"></script>
 
