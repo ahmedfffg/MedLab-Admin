@@ -342,7 +342,7 @@
         const alertBox = $('alertBox');
         const togglePassword = $('togglePassword');
 
-        // لو مسجل دخول بالفعل → انتقل لـ admin
+        // لو مسجل دخول بالفعل → انتقل لـ index
         if (sessionStorage.getItem('medlab_admin_logged_in') === '1') {
             window.location.href = 'index.html';
             return;
