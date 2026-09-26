@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المطور - أحمد حسين | معمل ميدلاب</title>
+    <link href="../images/logo.png" type="image/x-icon" rel="icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Great+Vibes&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0a1929 0%, #0a4179 50%, #085a87 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* خلفية متحركة */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(73, 155, 218, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(138, 196, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            animation: bgMove 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes bgMove {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(-30px, -30px) scale(1.1); }
+        }
+
+        /* نجوم متلألئة */
+        .stars {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: twinkle 4s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.5); }
+        }
+
+        /* الحاوية الرئيسية */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        /* بطاقة المطور */
+        .dev-card {
+            background: rgba(10, 30, 60, 0.6);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(138, 196, 255, 0.2);
+            border-radius: 30px;
+            padding: 60px 50px;
+            box-shadow:
+                0 30px 80px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(138, 196, 255, 0.1) inset,
+                0 0 100px rgba(73, 155, 218, 0.15) inset;
+            animation: cardIn 1s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dev-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #8ac4ff, transparent);
+            animation: shine 4s infinite;
+        }
+
+        @keyframes shine {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes cardIn {
+            from { opacity: 0; transform: translateY(40px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* الأيقونة العلوية */
+        .dev-icon {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 30px;
+            border-radius: 28px;
+            background: linear-gradient(135deg, #499bda, #8ac4ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            box-shadow:
+                0 15px 40px rgba(73, 155, 218, 0.5),
+                0 0 0 6px rgba(138, 196, 255, 0.15),
+                0 0 0 12px rgba(138, 196, 255, 0.08);
+            position: relative;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .dev-icon::after {
+            content: '';
+            position: absolute;
+            inset: -20px;
+            border: 2px dashed rgba(138, 196, 255, 0.3);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        /* العنوان الرئيسي */
+        .dev-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #8ac4ff;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            opacity: 0.9;
+        }
+
+        /* اسم المطور بالتوقيع */
+        .dev-name {
+            text-align: center;
+            font-family: 'Great Vibes', cursive;
+            font-size: 5rem;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            text-shadow:
+                0 0 20px rgba(138, 196, 255, 0.8),
+                0 0 40px rgba(73, 155, 218, 0.5),
+                0 0 80px rgba(73, 155, 218, 0.3);
+            animation: nameGlow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes nameGlow {
+            from { text-shadow:
+                0 0 20px rgba(138, 196, 255, 0.8),
+                0 0 40px rgba(73, 155, 218, 0.5),
+                0 0 80px rgba(73, 155, 218, 0.3); }
+            to { text-shadow:
+                0 0 30px rgba(138, 196, 255, 1),
+                0 0 60px rgba(73, 155, 218, 0.7),
+                0 0 120px rgba(73, 155, 218, 0.4); }
+        }
+
+        /* الاسم العربي */
+        .dev-name-ar {
+            text-align: center;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: #e0f0ff;
+            letter-spacing: 3px;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+
+        /* التوقيع SVG */
+        .signature-wrap {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0 30px;
+            position: relative;
+        }
+
+        .signature-svg {
+            width: 320px;
+            height: 100px;
+            filter: drop-shadow(0 0 15px rgba(138, 196, 255, 0.6));
+        }
+
+        .signature-path {
+            fill: none;
+            stroke: #8ac4ff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: drawSignature 4s ease-out forwards, glowSignature 3s ease-in-out 4s infinite alternate;
+        }
+
+        @keyframes drawSignature {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes glowSignature {
+            from { filter: drop-shadow(0 0 8px rgba(138, 196, 255, 0.6)); }
+            to { filter: drop-shadow(0 0 18px rgba(138, 196, 255, 1)); }
+        }
+
+        /* الوصف */
+        .dev-desc {
+            text-align: center;
+            font-size: 1.15rem;
+            color: #b8d4ec;
+            line-height: 2;
+            max-width: 600px;
+            margin: 0 auto 40px;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .dev-desc::before,
+        .dev-desc::after {
+            content: '"';
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: #8ac4ff;
+            opacity: 0.3;
+            line-height: 0;
+            position: absolute;
+        }
+
+        .dev-desc::before {
+            top: 15px;
+            right: 0;
+        }
+
+        .dev-desc::after {
+            bottom: -20px;
+            left: 0;
+        }
+
+        /* المهارات */
+        .skills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .skill-tag {
+            padding: 10px 22px;
+            background: rgba(73, 155, 218, 0.15);
+            border: 1px solid rgba(138, 196, 255, 0.3);
+            border-radius: 30px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #c8e1f7;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .skill-tag:hover {
+            background: rgba(73, 155, 218, 0.3);
+            border-color: #8ac4ff;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(73, 155, 218, 0.3);
+            color: white;
+        }
+
+        .skill-tag i {
+            color: #8ac4ff;
+            font-size: 0.95rem;
+        }
+
+        /* التواصل */
+        .contact-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 700;
+            color: #8ac4ff;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            background: rgba(73, 155, 218, 0.15);
+            border: 1px solid rgba(138, 196, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c8e1f7;
+            font-size: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, #499bda, #8ac4ff);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-btn i {
+            position: relative;
+            z-index: 2;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: #8ac4ff;
+            color: white;
+            box-shadow: 0 15px 30px rgba(73, 155, 218, 0.4);
+        }
+
+        .social-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* الفوتر */
+        .dev-footer {
+            text-align: center;
+            margin-top: 45px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(138, 196, 255, 0.15);
+            font-size: 0.85rem;
+            color: #7aa3c4;
+            line-height: 1.8;
+        }
+
+        .dev-footer .heart {
+            color: #ff6b8a;
+            animation: heartbeat 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            15% { transform: scale(1.2); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+        }
+
+        /* زر الرجوع */
+        .back-btn {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            padding: 12px 22px;
+            background: rgba(10, 30, 60, 0.7);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(138, 196, 255, 0.25);
+            border-radius: 14px;
+            color: white;
+            text-decoration: none;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            z-index: 100;
+        }
+
+        .back-btn:hover {
+            background: rgba(73, 155, 218, 0.3);
+            border-color: #8ac4ff;
+            transform: translateX(-3px);
+        }
+
+        /* الردود */
+        @media (max-width: 640px) {
+            .dev-card {
+                padding: 40px 25px;
+                border-radius: 24px;
+            }
+
+            .dev-icon {
+                width: 90px;
+                height: 90px;
+                font-size: 38px;
+                border-radius: 22px;
+            }
+
+            .dev-name {
+                font-size: 3.5rem;
+            }
+
+            .dev-name-ar {
+                font-size: 1.3rem;
+            }
+
+            .signature-svg {
+                width: 240px;
+                height: 80px;
+            }
+
+            .dev-desc {
+                font-size: 1rem;
+                line-height: 1.8;
+            }
+
+            .skill-tag {
+                padding: 8px 16px;
+                font-size: 0.8rem;
+            }
+
+            .social-btn {
+                width: 48px;
+                height: 48px;
+                font-size: 17px;
+            }
+
+            .back-btn {
+                top: 15px;
+                right: 15px;
+                padding: 10px 16px;
+                font-size: 13px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .dev-name { font-size: 2.8rem; }
+            .signature-svg { width: 200px; }
+        }
+
+        /* Scroll reveal */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+        .delay-4 { animation-delay: 0.8s; }
+        .delay-5 { animation-delay: 1s; }
+        .delay-6 { animation-delay: 1.2s; }
+    </style>
+</head>
+<body>
+
+    <!-- زر الرجوع -->
+    <a href="admin.html" class="back-btn">
+        <i class="fas fa-arrow-right"></i>
+        <span>رجوع</span>
+    </a>
+
+    <!-- نجوم الخلفية -->
+    <div class="stars" id="stars"></div>
+
+    <div class="container">
+        <div class="dev-card">
+
+            <!-- أيقونة -->
+            <div class="dev-icon">
+                <i class="fas fa-code"></i>
+            </div>
+
+            <!-- التصنيف -->
+            <div class="dev-title">Developer</div>
+
+            <!-- الاسم بالإنجليزية -->
+            <h1 class="dev-name">Ahmed Hussein</h1>
+
+            <!-- الاسم بالعربي -->
+            <div class="dev-name-ar">أحمد حسين</div>
+
+            <!-- التوقيع -->
+            <div class="signature-wrap">
+                <svg class="signature-svg" viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg">
+                    <path class="signature-path" d="M 20 70 Q 40 30, 55 60 T 90 55 Q 110 20, 125 55 Q 140 80, 155 50 Q 170 20, 185 55 Q 195 75, 210 55 Q 225 35, 235 55 Q 250 70, 265 50 Q 280 30, 295 55" />
+                </svg>
+            </div>
+
+            <!-- الوصف -->
+            <p class="dev-desc fade-in delay-3">
+                مطور ويب متخصص في بناء أنظمة إدارة المعامل الطبية<br>
+                وتصميم واجهات مستخدم عصرية وسريعة
+            </p>
+
+            <!-- المهارات -->
+            <div class="skills fade-in delay-4">
+                <span class="skill-tag"><i class="fab fa-html5"></i> HTML5</span>
+                <span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS3</span>
+                <span class="skill-tag"><i class="fab fa-js"></i> JavaScript</span>
+                <span class="skill-tag"><i class="fas fa-database"></i> Supabase</span>
+                <span class="skill-tag"><i class="fas fa-server"></i> PostgreSQL</span>
+                <span class="skill-tag"><i class="fas fa-mobile-alt"></i> Responsive</span>
+            </div>
+
+            <!-- التواصل -->
+            <div class="fade-in delay-5">
+                <div class="contact-title">تواصل معي</div>
+                <div class="social-links">
+                    <a href="https://wa.me/201061730854" target="_blank" rel="noopener" class="social-btn" title="واتساب">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="tel:+201061730854" class="social-btn" title="اتصال">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="mailto:ahmed@medlab.com" class="social-btn" title="البريد الإلكتروني">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://github.com" target="_blank" rel="noopener" class="social-btn" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://linkedin.com" target="_blank" rel="noopener" class="social-btn" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- الفوتر -->
+            <div class="dev-footer fade-in delay-6">
+                صُنع بـ <span class="heart">❤</span> بواسطة <strong style="color: #8ac4ff;">أحمد حسين</strong><br>
+                © 2026 معمل ميدلاب - جميع الحقوق محفوظة
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+    (function () {
+        'use strict';
+
+        // توليد نجوم عشوائية
+        const starsContainer = document.getElementById('stars');
+        const starCount = 60;
+
+        for (let i = 0; i < starCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 4 + 's';
+            star.style.animationDuration = (2 + Math.random() * 3) + 's';
+
+            // بعض النجوم أكبر
+            if (Math.random() > 0.7) {
+                star.style.width = '3px';
+                star.style.height = '3px';
+            }
+
+            starsContainer.appendChild(star);
+        }
+
+        // تغيير عنوان الصفحة عند العودة
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                document.title = 'المطور - أحمد حسين | معمل ميدلاب';
+            }
+        });
+
+        console.log('✅ Developer page ready');
+        console.log('💻 Designed & Developed by Ahmed Hussein');
+    })();
+    </script>
+
+</body>
+</html>

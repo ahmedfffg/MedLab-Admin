@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>مولد الأكواد</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #eaf8ff, #f8fdff);
+            color: #17324d;
+            padding: 30px 15px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 30px;
+            box-shadow: 0 10px 35px rgba(0, 100, 160, 0.12);
+            border: 1px solid #dceff8;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header .icon {
+            width: 75px;
+            height: 75px;
+            margin: 0 auto 15px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1597d4, #0c6fa8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 34px;
+            box-shadow: 0 8px 20px rgba(21, 151, 212, 0.25);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+            color: #0b5f8d;
+        }
+
+        .header p {
+            color: #71879a;
+            font-size: 14px;
+        }
+
+        /* اختيار النوع */
+        .type-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .type-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .type-option {
+            position: relative;
+        }
+
+        .type-option input {
+            display: none;
+        }
+
+        .type-label {
+            display: block;
+            padding: 18px;
+            border: 2px solid #dceaf2;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: 0.25s;
+            background: #fbfdff;
+        }
+
+        .type-label:hover {
+            border-color: #69b9dd;
+            transform: translateY(-2px);
+        }
+
+        .type-option input:checked + .type-label {
+            border-color: #1597d4;
+            background: #eefaff;
+            box-shadow: 0 5px 18px rgba(21, 151, 212, 0.12);
+        }
+
+        .type-label-content {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+        }
+
+        .type-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #e4f6fd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+        }
+
+        .type-name {
+            font-weight: bold;
+            font-size: 17px;
+            margin-bottom: 4px;
+        }
+
+        .type-example {
+            color: #7a91a3;
+            font-size: 12px;
+            direction: ltr;
+            text-align: right;
+        }
+
+        /* الكود */
+        .code-area {
+            background: linear-gradient(135deg, #f2fbff, #e8f8ff);
+            border: 1px solid #ccebf8;
+            border-radius: 18px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 22px;
+        }
+
+        .code-label {
+            color: #6c8496;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .code-display {
+            min-height: 65px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            direction: ltr;
+            font-family: "Courier New", monospace;
+            font-size: 38px;
+            font-weight: bold;
+            letter-spacing: 4px;
+            color: #075e8d;
+            word-break: break-all;
+        }
+
+        .code-display.empty {
+            color: #a7bbc9;
+            font-size: 18px;
+            letter-spacing: 0;
+            font-family: Tahoma, Arial, sans-serif;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        button {
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            border-radius: 13px;
+            padding: 14px 18px;
+            font-size: 15px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #1597d4, #0875ac);
+            color: white;
+            box-shadow: 0 6px 15px rgba(8, 117, 172, 0.22);
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .copy-btn {
+            background: #e9f7fd;
+            color: #0873a8;
+            border: 1px solid #c8eaf7;
+        }
+
+        .copy-btn:hover {
+            background: #d9f2fc;
+        }
+
+        .copy-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* الإحصائيات */
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .stat {
+            background: #f8fcff;
+            border: 1px solid #e1eff5;
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #0875ac;
+            margin-bottom: 4px;
+        }
+
+        .stat-title {
+            color: #7a91a3;
+            font-size: 12px;
+        }
+
+        /* السجل */
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .history-header h2 {
+            font-size: 19px;
+            color: #174b68;
+        }
+
+        .clear-btn {
+            background: #fff1f1;
+            color: #c53c3c;
+            padding: 9px 13px;
+            font-size: 12px;
+        }
+
+        .clear-btn:hover {
+            background: #ffe2e2;
+        }
+
+        .history {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-left: 3px;
+        }
+
+        .history-empty {
+            text-align: center;
+            color: #91a6b5;
+            background: #f9fcfe;
+            border: 1px dashed #d7e8f0;
+            border-radius: 13px;
+            padding: 25px;
+            font-size: 14px;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            background: #fbfdff;
+            border: 1px solid #e2eef4;
+            padding: 12px 14px;
+            border-radius: 12px;
+        }
+
+        .history-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .history-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e7f6fc;
+            color: #0875ac;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .history-code {
+            direction: ltr;
+            font-family: "Courier New", monospace;
+            font-size: 18px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #174b68;
+        }
+
+        .history-type {
+            font-size: 10px;
+            padding: 4px 7px;
+            border-radius: 7px;
+            background: #eef5f8;
+            color: #71899a;
+            margin-right: 5px;
+        }
+
+        .history-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .small-btn {
+            padding: 7px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+        }
+
+        .small-copy {
+            background: #eaf8ff;
+            color: #0875ac;
+        }
+
+        .small-delete {
+            background: #fff1f1;
+            color: #c53c3c;
+        }
+
+        /* التنبيه */
+        .toast {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #173b52;
+            color: white;
+            padding: 13px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            opacity: 0;
+            pointer-events: none;
+            transition: 0.3s;
+            z-index: 9999;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ملاحظة */
+        .security-note {
+            margin-top: 20px;
+            padding: 14px;
+            background: #f6fbfd;
+            border-radius: 12px;
+            color: #698293;
+            font-size: 12px;
+            line-height: 1.8;
+            border-right: 3px solid #1597d4;
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 15px 10px;
+            }
+
+            .card {
+                padding: 20px 15px;
+                border-radius: 18px;
+            }
+
+            .header h1 {
+                font-size: 23px;
+            }
+
+            .type-options {
+                grid-template-columns: 1fr;
+            }
+
+            .buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .code-display {
+                font-size: 27px;
+                letter-spacing: 2px;
+            }
+
+            .history-item {
+                align-items: flex-start;
+            }
+
+            .history-actions {
+                flex-direction: column;
+            }
+
+            .history-code {
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="header">
+
+            <div class="icon">
+                🔐
+            </div>
+
+            <h1>مولد الأكواد</h1>
+
+            <p>
+                إنشاء أكواد فريدة محفوظة على هذا المتصفح
+            </p>
+
+        </div>
+
+
+        <!-- اختيار نوع الشخص -->
+
+        <div class="type-title">
+            اختر نوع الشخص
+        </div>
+
+        <div class="type-options">
+
+            <div class="type-option">
+
+                <input
+                    type="radio"
+                    name="personType"
+                    id="normalType"
+                    value="normal"
+                    checked
+                >
+
+                <label class="type-label" for="normalType">
+
+                    <div class="type-label-content">
+
+                        <div class="type-icon">
+                            👤
+                        </div>
+
+                        <div>
+
+                            <div class="type-name">
+                                شخص عادي
+                            </div>
+
+                            <div class="type-example">
+                                مثال: P02024614
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </label>
+
+            </div>
+
+
+            <div class="type-option">
+
+                <input
+                    type="radio"
+                    name="personType"
+                    id="vipType"
+                    value="vip"
+                >
+
+                <label class="type-label" for="vipType">
+
+                    <div class="type-label-content">
+
+                        <div class="type-icon">
+                            ⭐
+                        </div>
+
+                        <div>
+
+                            <div class="type-name">
+                                شخص VIP
+                            </div>
+
+                            <div class="type-example">
+                                مثال: A00012
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- الكود -->
+
+        <div class="code-area">
+
+            <div class="code-label">
+                الكود الجديد
+            </div>
+
+            <div
+                class="code-display empty"
+                id="codeDisplay"
+            >
+                اضغط على "توليد كود"
+            </div>
+
+        </div>
+
+
+        <!-- الأزرار -->
+
+        <div class="buttons">
+
+            <button
+                class="generate-btn"
+                onclick="generateCode()"
+            >
+                🔄 توليد كود جديد
+            </button>
+
+            <button
+                class="copy-btn"
+                id="copyBtn"
+                onclick="copyCurrentCode()"
+                disabled
+            >
+                📋 نسخ الكود
+            </button>
+
+        </div>
+
+
+        <!-- الإحصائيات -->
+
+        <div class="stats">
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="totalCodes"
+                >
+                    0
+                </div>
+
+                <div class="stat-title">
+                    إجمالي الأكواد
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="normalCodes"
+                >
+                    0
+                </div>
+
+                <div class="stat-title">
+                    أكواد عادية
+                </div>
+
+            </div>
+
+
+            <div class="stat">
+
+                <div
+                    class="stat-number"
+                    id="vipCodes"
+                >
+                    0
+                </div>
+
+                <div class="stat-title">
+                    أكواد VIP
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- السجل -->
+
+        <div class="history-header">
+
+            <h2>
+                سجل الأكواد
+            </h2>
+
+            <button
+                class="clear-btn"
+                onclick="clearAllCodes()"
+            >
+                🗑 مسح السجل
+            </button>
+
+        </div>
+
+
+        <div
+            class="history"
+            id="history"
+        >
+        </div>
+
+
+        <div class="security-note">
+            🔒 يتم حفظ جميع الأكواد التي تم توليدها في
+            <strong>localStorage</strong>
+            على هذا المتصفح، ويتم فحص كل كود جديد مقابل الأكواد السابقة قبل اعتماده.
+            لذلك لن يتم تكرار كود سبق توليده على نفس المتصفح.
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+    class="toast"
+    id="toast"
+>
+    تم نسخ الكود
+</div>
+
+
+<script>
+
+    /*
+    =====================================================
+    إعدادات النظام
+    =====================================================
+    */
+
+    const STORAGE_KEY = "unique_person_codes_v1";
+
+    let currentCode = "";
+
+
+    /*
+    =====================================================
+    قراءة الأكواد من localStorage
+    =====================================================
+    */
+
+    function getCodes() {
+
+        try {
+
+            const saved = localStorage.getItem(STORAGE_KEY);
+
+            if (!saved) {
+                return [];
+            }
+
+            const codes = JSON.parse(saved);
+
+            if (!Array.isArray(codes)) {
+                return [];
+            }
+
+            return codes;
+
+        } catch (error) {
+
+            console.error(
+                "خطأ في قراءة الأكواد:",
+                error
+            );
+
+            return [];
+
+        }
+
+    }
+
+
+    /*
+    =====================================================
+    حفظ الأكواد
+    =====================================================
+    */
+
+    function saveCodes(codes) {
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(codes)
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    اختيار حرف عشوائي
+    =====================================================
+    */
+
+    function randomLetter() {
+
+        const letters =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        return letters[
+            Math.floor(
+                Math.random() * letters.length
+            )
+        ];
+
+    }
+
+
+    /*
+    =====================================================
+    توليد أرقام عشوائية
+    =====================================================
+    */
+
+    function randomDigits(length) {
+
+        let result = "";
+
+        for (let i = 0; i < length; i++) {
+
+            result += Math.floor(
+                Math.random() * 10
+            );
+
+        }
+
+        return result;
+
+    }
+
+
+    /*
+    =====================================================
+    توليد كود عادي
+    الشكل:
+    P02024614
+
+    حرف + 8 أرقام
+    =====================================================
+    */
+
+    function generateNormalCode() {
+
+        return (
+            randomLetter() +
+            randomDigits(8)
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    توليد كود VIP
+    الشكل:
+    A00012
+
+    حرف + 5 أرقام
+    =====================================================
+    */
+
+    function generateVIPCode() {
+
+        return (
+            randomLetter() +
+            randomDigits(5)
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    توليد كود فريد
+    =====================================================
+    */
+
+    function generateCode() {
+
+        const type =
+            document.querySelector(
+                'input[name="personType"]:checked'
+            ).value;
+
+        const existingCodes = getCodes();
+
+        let newCode = "";
+
+        /*
+        نحاول توليد كود جديد
+        ونتأكد أنه غير موجود بالفعل
+        */
+
+        let attempts = 0;
+
+        do {
+
+            if (type === "vip") {
+
+                newCode =
+                    generateVIPCode();
+
+            } else {
+
+                newCode =
+                    generateNormalCode();
+
+            }
+
+            attempts++;
+
+            /*
+            حماية إضافية في حالة امتلاء
+            مساحة الأكواد
+            */
+
+            if (attempts > 10000) {
+
+                alert(
+                    "تعذر إنشاء كود جديد. عدد الأكواد أصبح كبيرًا جدًا."
+                );
+
+                return;
+
+            }
+
+        } while (
+            existingCodes.some(
+                item => item.code === newCode
+            )
+        );
+
+
+        /*
+        إضافة الكود للسجل
+        */
+
+        const codeObject = {
+
+            code: newCode,
+
+            type: type,
+
+            createdAt:
+                new Date().toISOString()
+
+        };
+
+
+        existingCodes.unshift(
+            codeObject
+        );
+
+
+        /*
+        حفظ في localStorage
+        */
+
+        saveCodes(
+            existingCodes
+        );
+
+
+        /*
+        عرض الكود
+        */
+
+        currentCode = newCode;
+
+        const display =
+            document.getElementById(
+                "codeDisplay"
+            );
+
+        display.textContent =
+            newCode;
+
+        display.classList.remove(
+            "empty"
+        );
+
+
+        /*
+        تفعيل زر النسخ
+        */
+
+        document.getElementById(
+            "copyBtn"
+        ).disabled = false;
+
+
+        /*
+        تحديث الواجهة
+        */
+
+        updateStats();
+
+        renderHistory();
+
+
+        showToast(
+            "تم توليد كود جديد بنجاح"
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    نسخ الكود الحالي
+    =====================================================
+    */
+
+    async function copyCurrentCode() {
+
+        if (!currentCode) {
+            return;
+        }
+
+        try {
+
+            await navigator.clipboard.writeText(
+                currentCode
+            );
+
+            showToast(
+                "تم نسخ الكود: " +
+                currentCode
+            );
+
+        } catch (error) {
+
+            /*
+            طريقة احتياطية للمتصفحات القديمة
+            */
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+            textarea.value =
+                currentCode;
+
+            document.body.appendChild(
+                textarea
+            );
+
+            textarea.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            textarea.remove();
+
+            showToast(
+                "تم نسخ الكود"
+            );
+
+        }
+
+    }
+
+
+    /*
+    =====================================================
+    نسخ كود من السجل
+    =====================================================
+    */
+
+    async function copyCode(code) {
+
+        try {
+
+            await navigator.clipboard.writeText(
+                code
+            );
+
+            showToast(
+                "تم نسخ الكود: " + code
+            );
+
+        } catch (error) {
+
+            const textarea =
+                document.createElement(
+                    "textarea"
+                );
+
+            textarea.value = code;
+
+            document.body.appendChild(
+                textarea
+            );
+
+            textarea.select();
+
+            document.execCommand(
+                "copy"
+            );
+
+            textarea.remove();
+
+            showToast(
+                "تم نسخ الكود"
+            );
+
+        }
+
+    }
+
+
+    /*
+    =====================================================
+    حذف كود محدد
+    =====================================================
+    */
+
+    function deleteCode(code) {
+
+        const confirmDelete =
+            confirm(
+                "هل أنت متأكد من حذف هذا الكود من السجل؟\n\n" +
+                code +
+                "\n\n" +
+                "ملاحظة: حذف الكود من السجل يعني أنه قد يصبح قابلاً للتوليد مرة أخرى."
+            );
+
+        if (!confirmDelete) {
+            return;
+        }
+
+
+        let codes = getCodes();
+
+
+        codes =
+            codes.filter(
+                item => item.code !== code
+            );
+
+
+        saveCodes(codes);
+
+
+        /*
+        إذا كان الكود الحالي هو الذي تم حذفه
+        */
+
+        if (currentCode === code) {
+
+            currentCode = "";
+
+            const display =
+                document.getElementById(
+                    "codeDisplay"
+                );
+
+            display.textContent =
+                "اضغط على \"توليد كود\"";
+
+            display.classList.add(
+                "empty"
+            );
+
+            document.getElementById(
+                "copyBtn"
+            ).disabled = true;
+
+        }
+
+
+        updateStats();
+
+        renderHistory();
+
+        showToast(
+            "تم حذف الكود من السجل"
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    مسح جميع الأكواد
+    =====================================================
+    */
+
+    function clearAllCodes() {
+
+        const codes = getCodes();
+
+        if (codes.length === 0) {
+
+            showToast(
+                "السجل فارغ بالفعل"
+            );
+
+            return;
+
+        }
+
+
+        const confirmation =
+            confirm(
+                "⚠️ تحذير\n\n" +
+                "سيتم حذف جميع الأكواد المحفوظة من هذا المتصفح.\n\n" +
+                "بعد الحذف يمكن أن يتم توليد نفس الأكواد مرة أخرى.\n\n" +
+                "هل تريد المتابعة؟"
+            );
+
+
+        if (!confirmation) {
+            return;
+        }
+
+
+        localStorage.removeItem(
+            STORAGE_KEY
+        );
+
+
+        currentCode = "";
+
+
+        const display =
+            document.getElementById(
+                "codeDisplay"
+            );
+
+        display.textContent =
+            "اضغط على \"توليد كود\"";
+
+        display.classList.add(
+            "empty"
+        );
+
+
+        document.getElementById(
+            "copyBtn"
+        ).disabled = true;
+
+
+        updateStats();
+
+        renderHistory();
+
+
+        showToast(
+            "تم مسح جميع الأكواد"
+        );
+
+    }
+
+
+    /*
+    =====================================================
+    تحديث الإحصائيات
+    =====================================================
+    */
+
+    function updateStats() {
+
+        const codes = getCodes();
+
+
+        const normalCount =
+            codes.filter(
+                item => item.type === "normal"
+            ).length;
+
+
+        const vipCount =
+            codes.filter(
+                item => item.type === "vip"
+            ).length;
+
+
+        document.getElementById(
+            "totalCodes"
+        ).textContent =
+            codes.length;
+
+
+        document.getElementById(
+            "normalCodes"
+        ).textContent =
+            normalCount;
+
+
+        document.getElementById(
+            "vipCodes"
+        ).textContent =
+            vipCount;
+
+    }
+
+
+    /*
+    =====================================================
+    عرض سجل الأكواد
+    =====================================================
+    */
+
+    function renderHistory() {
+
+        const history =
+            document.getElementById(
+                "history"
+            );
+
+
+        const codes = getCodes();
+
+
+        if (codes.length === 0) {
+
+            history.innerHTML = `
+                <div class="history-empty">
+                    لا توجد أكواد مولدة حتى الآن
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        history.innerHTML =
+            codes.map(
+                (item, index) => {
+
+                    const typeName =
+                        item.type === "vip"
+                            ? "VIP"
+                            : "عادي";
+
+
+                    return `
+
+                        <div class="history-item">
+
+                            <div class="history-info">
+
+                                <div class="history-number">
+                                    ${codes.length - index}
+                                </div>
+
+                                <div>
+
+                                    <span class="history-code">
+                                        ${escapeHTML(item.code)}
+                                    </span>
+
+                                    <span class="history-type">
+                                        ${typeName}
+                                    </span>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="history-actions">
+
+                                <button
+                                    class="small-btn small-copy"
+                                    onclick="copyCode('${escapeJS(item.code)}')"
+                                >
+                                    نسخ
+                                </button>
+
+                                <button
+                                    class="small-btn small-delete"
+                                    onclick="deleteCode('${escapeJS(item.code)}')"
+                                >
+                                    حذف
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    `;
+
+                }
+            ).join("");
+
+    }
+
+
+    /*
+    =====================================================
+    حماية النص قبل إدخاله في HTML
+    =====================================================
+    */
+
+   function escapeHTML(text) {
+    return String(text || '')
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+    /*
+    =====================================================
+    حماية النص داخل JavaScript
+    =====================================================
+    */
+
+  function escapeJS(text) {
+    return String(text || '')
+        .replace(/\\/g, "\\\\")
+        .replace(/'/g, "\\'")
+        .replace(/"/g, '\\"')
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r")
+        .replace(/</g, "\\x3c")
+        .replace(/>/g, "\\x3e");
+}
+
+    /*
+    =====================================================
+    رسالة Toast
+    =====================================================
+    */
+
+    let toastTimer;
+
+
+    function showToast(message) {
+
+        const toast =
+            document.getElementById(
+                "toast"
+            );
+
+
+        toast.textContent =
+            message;
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(
+                () => {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                2500
+            );
+
+    }
+
+
+    /*
+    =====================================================
+    تشغيل النظام عند فتح الصفحة
+    =====================================================
+    */
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        () => {
+
+            updateStats();
+
+            renderHistory();
+
+        }
+    );
+
+</script>
+
+<!-- Dev Watermark -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="js/dev-watermark.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>إدارة المرضى - معمل ميدلاب</title>
+  <link href="../images/logo.png" type="image/x-icon" rel="icon">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary: #0a7cb8;
+      --primary-dark: #085a87;
+      --primary-light: #3fa4df;
+      --blue-soft: #e8f4fb;
+      --blue-softer: #f3f9fd;
+      --border: #d8e8f2;
+      --text-dark: #143a52;
+      --text-medium: #3c6478;
+      --text-light: #6d8fa3;
+      --success: #1a7d4a;
+      --success-soft: #e8f8ef;
+      --warning: #d97706;
+      --warning-soft: #fff4e5;
+      --danger: #c0392b;
+      --danger-soft: #fdecea;
+      --white: #ffffff;
+      --shadow: 0 8px 24px -8px rgba(10, 60, 100, 0.15);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: #f4f9fc;
+      color: var(--text-dark);
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+    button, input, select { font-family: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+
+    /* Topbar */
+    .topbar {
+      position: sticky; top:0; z-index:100;
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 8px rgba(10,60,100,0.04);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .brand-logo {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex; align-items: center; justify-content: center;
+      color: white; font-size: 20px;
+    }
+    .brand-text h1 {
+      color: var(--primary-dark);
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+    .brand-text span {
+      color: var(--text-light);
+      font-size: 12px;
+    }
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .top-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--primary-dark);
+      padding: 9px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .top-btn:hover {
+      background: var(--blue-soft);
+      border-color: var(--primary);
+    }
+    .top-btn.danger {
+      color: var(--danger);
+    }
+    .top-btn.danger:hover {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+    }
+
+    /* Page */
+    .page {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 25px 60px;
+    }
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+    }
+    .page-head h2 {
+      color: var(--primary-dark);
+      font-size: 1.7rem;
+      margin-bottom: 6px;
+    }
+    .page-head p {
+      color: var(--text-light);
+      font-size: 14.5px;
+    }
+    .add-btn {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      padding: 13px 22px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 20px -6px rgba(10,124,184,0.5);
+      transition: 0.25s;
+    }
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 26px -6px rgba(10,124,184,0.6);
+    }
+
+    /* Filters */
+    .filters-card {
+      background: white;
+      border-radius: 16px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: center;
+    }
+    .filters-card input,
+    .filters-card select {
+      width: 100%;
+      padding: 11px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--blue-softer);
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+      color: var(--text-dark);
+    }
+    .filters-card input:focus,
+    .filters-card select:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(10,124,184,0.08);
+    }
+    .filter-btn {
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--primary-dark);
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 13.5px;
+      transition: 0.2s;
+    }
+    .filter-btn:hover {
+      background: var(--blue-soft);
+      border-color: var(--primary);
+    }
+
+    /* Table */
+    .table-card {
+      background: white;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .table-header {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+    }
+    .table-header h3 {
+      color: var(--primary-dark);
+      font-size: 1.1rem;
+    }
+    .table-header .count {
+      color: var(--text-light);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .table-wrap { overflow-x: auto; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+    th {
+      background: var(--blue-softer);
+      color: var(--primary-dark);
+      padding: 13px 15px;
+      text-align: right;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-medium);
+      font-size: 14px;
+      vertical-align: middle;
+    }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: var(--blue-softer); }
+
+    .code-badge {
+      background: var(--blue-soft);
+      color: var(--primary-dark);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 12.5px;
+      direction: ltr;
+      display: inline-block;
+    }
+    .pwd-badge {
+      background: var(--warning-soft);
+      color: var(--warning);
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-family: monospace;
+      font-size: 12px;
+      direction: ltr;
+      display: inline-block;
+    }
+    .results-count {
+      background: var(--success-soft);
+      color: var(--success);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Actions */
+    .actions {
+      display: flex;
+      gap: 5px;
+      flex-wrap: wrap;
+    }
+    .act-btn {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: white;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      transition: 0.2s;
+    }
+    .act-btn.view    { color: var(--primary); }
+    .act-btn.upload  { color: var(--success); }
+    .act-btn.copy    { color: var(--warning); }
+    .act-btn.delete  { color: var(--danger); }
+    .act-btn:hover {
+      transform: translateY(-2px);
+      background: var(--blue-soft);
+    }
+    .act-btn.delete:hover {
+      background: var(--danger-soft);
+      border-color: var(--danger);
+    }
+    .act-btn.upload:hover {
+      background: var(--success-soft);
+      border-color: var(--success);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 45px;
+    }
+    .spinner {
+      display: inline-block;
+      width: 38px; height: 38px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--text-light);
+    }
+    .empty-state i {
+      font-size: 50px;
+      margin-bottom: 15px;
+      color: var(--border);
+      display: block;
+    }
+    .empty-state h3 {
+      color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+
+    /* ============================================
+       MODALS
+    ============================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 40, 60, 0.5);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+      background: white;
+      border-radius: 20px;
+      width: 100%;
+      max-width: 620px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+      animation: modalIn 0.25s ease;
+    }
+    .modal.wide { max-width: 900px; }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.98); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .modal-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      color: var(--primary-dark);
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .modal-header h3 i { color: var(--primary); }
+    .close-btn {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: var(--blue-soft);
+      color: var(--text-light);
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.2s;
+    }
+    .close-btn:hover {
+      background: var(--danger-soft);
+      color: var(--danger);
+    }
+    .modal-body { padding: 24px; }
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    /* Form */
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .form-row.full { grid-template-columns: 1fr; }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: var(--text-dark);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .form-group label i { color: var(--primary); font-size: 12px; }
+    .form-group label .required { color: var(--danger); }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--blue-softer);
+      font-family: inherit;
+      font-size: 14px;
+      outline: none;
+      transition: 0.2s;
+      color: var(--text-dark);
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--primary);
+      background: white;
+      box-shadow: 0 0 0 3px rgba(10,124,184,0.08);
+    }
+
+    .btn {
+      padding: 12px 22px;
+      border-radius: 10px;
+      border: none;
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: 0 6px 18px -6px rgba(10,124,184,0.5);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-ghost {
+      background: var(--blue-soft);
+      color: var(--primary-dark);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { background: var(--blue-softer); }
+    .btn-danger {
+      background: var(--danger-soft);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+    .btn-danger:hover { background: var(--danger); color: white; }
+
+    /* Results in modal */
+    .patient-info-box {
+      background: linear-gradient(135deg, var(--blue-soft), var(--blue-softer));
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .patient-info-box .info-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13.5px;
+    }
+    .patient-info-box .info-item i {
+      color: var(--primary);
+      width: 18px;
+    }
+    .patient-info-box .info-item strong {
+      color: var(--primary-dark);
+    }
+
+    .results-list-admin {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .result-item-admin {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      gap: 15px;
+      flex-wrap: wrap;
+      transition: 0.2s;
+    }
+    .result-item-admin:hover {
+      border-color: var(--primary);
+      box-shadow: 0 4px 12px rgba(10,60,100,0.08);
+    }
+    .result-info { flex: 1; min-width: 200px; }
+    .result-info .name {
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .result-info .meta {
+      font-size: 12px;
+      color: var(--text-light);
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .result-info .meta i {
+      color: var(--primary);
+      margin-left: 3px;
+    }
+    .result-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    /* Toast */
+    .toast-container {
+      position: fixed;
+      top: 90px;
+      left: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast {
+      background: white;
+      border-radius: 12px;
+      padding: 14px 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 280px;
+      max-width: 420px;
+      border-right: 4px solid var(--primary);
+      animation: toastIn 0.3s ease;
+      pointer-events: all;
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .toast.success { border-right-color: var(--success); color: var(--success); }
+    .toast.error   { border-right-color: var(--danger);  color: var(--danger); }
+    .toast.warning { border-right-color: var(--warning); color: var(--warning); }
+    .toast i { font-size: 18px; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateX(-20px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .topbar { padding: 0 15px; height: 64px; }
+      .brand-text span { display: none; }
+      .page { padding: 20px 15px 50px; }
+      .page-head h2 { font-size: 1.4rem; }
+      .filters-card { grid-template-columns: 1fr; }
+      .form-row { grid-template-columns: 1fr; }
+      .patient-info-box { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .page-head { flex-direction: column; align-items: stretch; }
+      .add-btn { justify-content: center; }
+      .top-btn span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <a href="admin.html" class="brand">
+      <div class="brand-logo"><i class="fas fa-flask"></i></div>
+      <div class="brand-text">
+        <h1>معمل ميدلاب</h1>
+        <span>إدارة المرضى</span>
+      </div>
+    </a>
+
+    <div class="topbar-actions">
+      <a href="admin.html" class="top-btn">
+        <i class="fas fa-arrow-right"></i> <span>لوحة التحكم</span>
+      </a>
+      <button class="top-btn danger" id="logoutBtn">
+        <i class="fas fa-sign-out-alt"></i> <span>خروج</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="page">
+
+    <div class="page-head">
+      <div>
+        <h2><i class="fas fa-users"></i> إدارة المرضى</h2>
+        <p>إضافة وعرض وحذف المرضى + إدارة النتائج</p>
+      </div>
+      <button class="add-btn" id="addPatientBtn">
+        <i class="fas fa-user-plus"></i> إضافة مريض جديد
+      </button>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-card">
+      <input type="text" id="searchInput" placeholder="🔍 ابحث بالاسم أو الكود أو الهاتف...">
+      <select id="sortFilter">
+        <option value="newest">الأحدث أولاً</option>
+        <option value="oldest">الأقدم أولاً</option>
+        <option value="name">الاسم (أ - ي)</option>
+      </select>
+      <select id="resultsFilter">
+        <option value="all">كل المرضى</option>
+        <option value="with">لديه نتائج</option>
+        <option value="without">بدون نتائج</option>
+      </select>
+      <button class="filter-btn" id="refreshBtn">
+        <i class="fas fa-sync"></i> تحديث
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-header">
+        <h3><i class="fas fa-list"></i> قائمة المرضى</h3>
+        <span class="count" id="resultsCount">0 مريض</span>
+      </div>
+      <div class="table-wrap" id="tableContainer">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ============================================
+       Add Patient Modal
+  ============================================ -->
+  <div class="modal-overlay" id="addModal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-plus"></i> إضافة مريض جديد</h3>
+        <button class="close-btn" onclick="closeModal('addModal')">×</button>
+      </div>
+
+      <form id="addPatientForm">
+        <div class="modal-body">
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-user"></i> الاسم بالكامل <span class="required">*</span></label>
+              <input type="text" id="ap_name" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-phone"></i> رقم الهاتف <span class="required">*</span></label>
+              <input type="tel" id="ap_phone" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fas fa-hashtag"></i> كود المريض <span class="required">*</span></label>
+              <input type="text" id="ap_code" placeholder="مثال: P02024614" required>
+            </div>
+            <div class="form-group">
+              <label><i class="fas fa-key"></i> كلمة السر <span class="required">*</span></label>
+              <input type="text" id="ap_password" placeholder="مثال: 123456" required>
+            </div>
+          </div>
+
+          <div class="form-row full">
+            <div class="form-group">
+              <label><i class="fas fa-envelope"></i> البريد الإلكتروني (اختياري)</label>
+              <input type="email" id="ap_email">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-ghost" onclick="closeModal('addModal')">إلغاء</button>
+          <button type="submit" class="btn btn-primary" id="savePatientBtn">
+            <i class="fas fa-save"></i> حفظ المريض
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================
+       View Patient + Results Modal
+  ============================================ -->
+  <div class="modal-overlay" id="viewModal">
+    <div class="modal wide">
+      <div class="modal-header">
+        <h3><i class="fas fa-user-circle"></i> تفاصيل المريض والنتائج</h3>
+        <button class="close-btn" onclick="closeModal('viewModal')">×</button>
+      </div>
+      <div class="modal-body" id="viewModalBody"></div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       Delete Confirm Modal
+  ============================================ -->
+  <div class="modal-overlay" id="deleteModal">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 style="color: var(--danger);"><i class="fas fa-exclamation-triangle"></i> تأكيد الحذف</h3>
+        <button class="close-btn" onclick="closeModal('deleteModal')">×</button>
+      </div>
+      <div class="modal-body">
+        <p style="text-align: center; font-size: 15px; color: var(--text-medium);">
+          هل أنت متأكد من حذف المريض <strong id="deletePatientName" style="color: var(--danger);"></strong>؟
+        </p>
+        <p style="text-align: center; font-size: 13px; color: var(--text-light); margin-top: 10px;">
+          سيتم حذف كل النتائج المرتبطة به أيضاً. لا يمكن التراجع.
+        </p>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button class="btn btn-ghost" onclick="closeModal('deleteModal')">إلغاء</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">
+          <i class="fas fa-trash"></i> حذف نهائي
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script>
+    const SUPABASE_URL = 'https://rlkqifdteyccagpdtdmu.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // حماية
+    if (sessionStorage.getItem('medlab_admin_logged_in') !== '1') {
+      window.location.href = 'admin.html';
+    }
+
+    // Global state
+    let allPatients = [];
+    let filteredPatients = [];
+    let deleteTargetId = null;
+
+    // ============================================
+    // HELPERS
+    // ============================================
+    function escapeHtml(v) {
+      return String(v ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function showToast(msg, type = 'success') {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+
+      let icon = 'fa-check-circle';
+      if (type === 'error') icon = 'fa-exclamation-circle';
+      else if (type === 'warning') icon = 'fa-exclamation-triangle';
+
+      t.innerHTML = `<i class="fas ${icon}"></i> <span>${escapeHtml(msg)}</span>`;
+      c.appendChild(t);
+
+      setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(-20px)';
+        setTimeout(() => t.remove(), 300);
+      }, 3500);
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    // ============================================
+    // LOGOUT
+    // ============================================
+    document.getElementById('logoutBtn').addEventListener('click', function () {
+      if (confirm('هل تريد تسجيل الخروج؟')) {
+        sessionStorage.removeItem('medlab_admin_logged_in');
+        sessionStorage.removeItem('medlab_admin_username');
+        window.location.href = 'admin.html';
+      }
+    });
+
+    // ============================================
+    // LOAD PATIENTS
+    // ============================================
+    async function loadPatients() {
+      const container = document.getElementById('tableContainer');
+      container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+      try {
+        // جلب المرضى
+        const { data: patients, error } = await supabaseClient
+          .from('patients')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        // جلب عدد النتائج لكل مريض
+        const { data: results } = await supabaseClient
+          .from('results')
+          .select('patient_id');
+
+        // حساب العدد لكل مريض
+        const counts = {};
+        (results || []).forEach(r => {
+          counts[r.patient_id] = (counts[r.patient_id] || 0) + 1;
+        });
+
+        allPatients = (patients || []).map(p => ({
+          ...p,
+          resultsCount: counts[p.id] || 0
+        }));
+
+        applyFilters();
+
+      } catch (error) {
+        console.error(error);
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
+            <h3>حدث خطأ</h3>
+            <p>${escapeHtml(error.message)}</p>
+          </div>`;
+        showToast('فشل تحميل البيانات', 'error');
+      }
+    }
+
+    // ============================================
+    // FILTERS
+    // ============================================
+    function applyFilters() {
+      const search = document.getElementById('searchInput').value.trim().toLowerCase();
+      const sort = document.getElementById('sortFilter').value;
+      const resultsFilter = document.getElementById('resultsFilter').value;
+
+      filteredPatients = allPatients.filter(p => {
+        // بحث
+        if (search) {
+          const combined = [
+            p.full_name, p.patient_code, p.phone, p.email
+          ].filter(Boolean).join(' ').toLowerCase();
+
+          if (!combined.includes(search)) return false;
+        }
+
+        // فلتر النتائج
+        if (resultsFilter === 'with' && p.resultsCount === 0) return false;
+        if (resultsFilter === 'without' && p.resultsCount > 0) return false;
+
+        return true;
+      });
+
+      // ترتيب
+      if (sort === 'oldest') {
+        filteredPatients.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      } else if (sort === 'name') {
+        filteredPatients.sort((a, b) => (a.full_name || '').localeCompare(b.full_name || '', 'ar'));
+      } else {
+        filteredPatients.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+
+      renderTable();
+    }
+
+    // ============================================
+    // RENDER TABLE
+    // ============================================
+    function renderTable() {
+      const container = document.getElementById('tableContainer');
+      const count = document.getElementById('resultsCount');
+
+      count.textContent = `${filteredPatients.length} مريض`;
+
+      if (filteredPatients.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-user-slash"></i>
+            <h3>لا يوجد مرضى</h3>
+            <p>${allPatients.length === 0 ? 'ابدأ بإضافة مريض جديد' : 'جرّب تغيير الفلاتر'}</p>
+          </div>`;
+        return;
+      }
+
+      let html = `
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>الاسم</th>
+              <th>الكود</th>
+              <th>الهاتف</th>
+              <th>كلمة السر</th>
+              <th>النتائج</th>
+              <th>تاريخ التسجيل</th>
+              <th>إجراءات</th>
+            </tr>
+          </thead>
+          <tbody>`;
+
+      filteredPatients.forEach((p, i) => {
+        const date = p.created_at
+          ? new Date(p.created_at).toLocaleDateString('ar-EG')
+          : '-';
+
+        html += `
+          <tr>
+            <td>${i + 1}</td>
+            <td><strong>${escapeHtml(p.full_name || '-')}</strong></td>
+            <td><span class="code-badge">${escapeHtml(p.patient_code || '-')}</span></td>
+            <td dir="ltr">${escapeHtml(p.phone || '-')}</td>
+            <td><span class="pwd-badge">${escapeHtml(p.password || '-')}</span></td>
+            <td>
+              <span class="results-count">
+                <i class="fas fa-file-medical"></i>
+                ${p.resultsCount}
+              </span>
+            </td>
+            <td>${date}</td>
+            <td>
+              <div class="actions">
+                <button class="act-btn view" title="عرض التفاصيل والنتائج" onclick="viewPatient(${p.id})">
+                  <i class="fas fa-eye"></i>
+                </button>
+               <a href="upload-result.html?code=${encodeURIComponent(p.patient_code)}"  class="act-btn upload" title="رفع نتيجة">
+                  <i class="fas fa-file-upload"></i>
+                </a>
+                <button class="act-btn copy" title="نسخ كود + باسورد" onclick="copyCredentials('${escapeHtml(p.patient_code)}', '${escapeHtml(p.password || '')}')">
+                  <i class="fas fa-copy"></i>
+                </button>
+                <button class="act-btn delete" title="حذف" onclick="askDelete(${p.id}, '${escapeHtml(p.full_name || '').replace(/'/g, "\\'")}')">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </div>
+            </td>
+          </tr>`;
+      });
+
+      html += `</tbody></table>`;
+      container.innerHTML = html;
+    }
+
+    // ============================================
+    // ADD PATIENT
+    // ============================================
+    document.getElementById('addPatientBtn').addEventListener('click', function () {
+      document.getElementById('addPatientForm').reset();
+      openModal('addModal');
+    });
+
+    document.getElementById('addPatientForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById('ap_name').value.trim();
+      const phone = document.getElementById('ap_phone').value.trim();
+      const code = document.getElementById('ap_code').value.trim();
+      const password = document.getElementById('ap_password').value.trim();
+      const email = document.getElementById('ap_email').value.trim() || null;
+
+      if (!name || !phone || !code || !password) {
+        return showToast('الرجاء ملء كل الحقول المطلوبة', 'warning');
+      }
+
+      const btn = document.getElementById('savePatientBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+      try {
+        // تحقق من عدم وجود الكود
+        const { data: existing } = await supabaseClient
+          .from('patients')
+          .select('id')
+          .eq('patient_code', code)
+          .maybeSingle();
+
+        if (existing) {
+          throw new Error('هذا الكود مستخدم بالفعل');
+        }
+
+        // إضافة المريض
+        const { error } = await supabaseClient
+          .from('patients')
+          .insert({
+            patient_code: code,
+            full_name: name,
+            phone: phone,
+            email: email,
+            password: password
+          });
+
+        if (error) throw error;
+
+        showToast('✅ تم إضافة المريض بنجاح', 'success');
+        closeModal('addModal');
+        await loadPatients();
+
+      } catch (error) {
+        console.error(error);
+        showToast(error.message || 'فشل الحفظ', 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-save"></i> حفظ المريض';
+      }
+    });
+
+    // ============================================
+    // VIEW PATIENT + RESULTS
+    // ============================================
+    async function viewPatient(patientId) {
+      const body = document.getElementById('viewModalBody');
+      body.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+      openModal('viewModal');
+
+      try {
+        // جلب المريض
+        const { data: patient, error: pErr } = await supabaseClient
+          .from('patients')
+          .select('*')
+          .eq('id', patientId)
+          .single();
+
+        if (pErr) throw pErr;
+
+        // جلب النتائج
+        const { data: results, error: rErr } = await supabaseClient
+          .from('results')
+          .select('*')
+          .eq('patient_id', patientId)
+          .order('result_date', { ascending: false });
+
+        if (rErr) throw rErr;
+
+        let resultsHtml = '';
+        if (!results || results.length === 0) {
+          resultsHtml = `
+            <div class="empty-state" style="padding: 30px;">
+              <i class="fas fa-folder-open"></i>
+              <p>لا توجد نتائج مسجلة</p>
+              <a href="upload-result.html?code=${encodeURIComponent(patient.patient_code)}" class="btn btn-primary" style="margin-top: 12px; text-decoration: none;">
+                <i class="fas fa-file-upload"></i> رفع نتيجة
+              </a>
+            </div>`;
+        } else {
+          resultsHtml = '<div class="results-list-admin">';
+          results.forEach(r => {
+            const fileUrl = `${SUPABASE_URL}/storage/v1/object/public/results/${r.file_path}`;
+            const date = r.result_date || '-';
+            resultsHtml += `
+              <div class="result-item-admin">
+                <div class="result-info">
+                  <div class="name">${escapeHtml(r.file_name || '-')}</div>
+                  <div class="meta">
+                    <span><i class="fas fa-calendar"></i> ${date}</span>
+                    <span><i class="fas fa-flask"></i> ${escapeHtml(r.test_type || 'عام')}</span>
+                  </div>
+                </div>
+                <div class="result-actions">
+                  <a href="${fileUrl}" target="_blank" rel="noopener" class="btn btn-ghost" style="text-decoration: none; padding: 8px 12px; font-size: 13px;">
+                    <i class="fas fa-eye"></i> عرض
+                  </a>
+                  <button class="btn btn-danger" style="padding: 8px 12px; font-size: 13px;" onclick="deleteResult(${r.id}, ${patientId}, '${escapeHtml(r.file_path)}')">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>`;
+          });
+          resultsHtml += '</div>';
+        }
+
+        body.innerHTML = `
+          <div class="patient-info-box">
+            <div class="info-item">
+              <i class="fas fa-user"></i>
+              <span>الاسم: <strong>${escapeHtml(patient.full_name || '-')}</strong></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-id-card"></i>
+              <span>الكود: <strong>${escapeHtml(patient.patient_code || '-')}</strong></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-phone"></i>
+              <span>الهاتف: <strong dir="ltr">${escapeHtml(patient.phone || '-')}</strong></span>
+            </div>
+            <div class="info-item">
+              <i class="fas fa-key"></i>
+              <span>كلمة السر: <strong>${escapeHtml(patient.password || '-')}</strong></span>
+            </div>
+          </div>
+
+          <h4 style="color: var(--primary-dark); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+            <i class="fas fa-file-medical"></i>
+            النتائج (${(results || []).length})
+          </h4>
+
+          ${resultsHtml}
+        `;
+
+      } catch (error) {
+        console.error(error);
+        body.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
+            <h3>حدث خطأ</h3>
+            <p>${escapeHtml(error.message)}</p>
+          </div>`;
+      }
+    }
+
+    // ============================================
+    // DELETE RESULT
+    // ============================================
+    async function deleteResult(resultId, patientId, filePath) {
+      if (!confirm('هل تريد حذف هذه النتيجة؟')) return;
+
+      try {
+        // حذف من Storage
+        if (filePath) {
+          await supabaseClient.storage.from('results').remove([filePath]);
+        }
+
+        // حذف من DB
+        const { error } = await supabaseClient
+          .from('results')
+          .delete()
+          .eq('id', resultId);
+
+        if (error) throw error;
+
+        showToast('✅ تم حذف النتيجة', 'success');
+        await viewPatient(patientId);
+        await loadPatients();
+
+      } catch (error) {
+        console.error(error);
+        showToast('فشل الحذف', 'error');
+      }
+    }
+
+    // ============================================
+    // DELETE PATIENT
+    // ============================================
+    function askDelete(patientId, name) {
+      deleteTargetId = patientId;
+      document.getElementById('deletePatientName').textContent = name || 'هذا المريض';
+      openModal('deleteModal');
+    }
+
+    document.getElementById('confirmDeleteBtn').addEventListener('click', async function () {
+      if (!deleteTargetId) return;
+
+      const btn = this;
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحذف...';
+
+      try {
+        // جلب نتائج المريض لحذف ملفاتها
+        const { data: results } = await supabaseClient
+          .from('results')
+          .select('file_path')
+          .eq('patient_id', deleteTargetId);
+
+        // حذف الملفات من Storage
+        if (results && results.length > 0) {
+          const paths = results.map(r => r.file_path).filter(Boolean);
+          if (paths.length > 0) {
+            await supabaseClient.storage.from('results').remove(paths);
+          }
+        }
+
+        // حذف المريض (النتائج هتتحذف تلقائياً بسبب CASCADE)
+        const { error } = await supabaseClient
+          .from('patients')
+          .delete()
+          .eq('id', deleteTargetId);
+
+        if (error) throw error;
+
+        showToast('✅ تم حذف المريض بنجاح', 'success');
+        closeModal('deleteModal');
+        deleteTargetId = null;
+        await loadPatients();
+
+      } catch (error) {
+        console.error(error);
+        showToast('فشل الحذف: ' + error.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fas fa-trash"></i> حذف نهائي';
+      }
+    });
+
+    // ============================================
+    // COPY CREDENTIALS
+    // ============================================
+    function copyCredentials(code, password) {
+      const text = `كود المريض: ${code}\nكلمة السر: ${password}`;
+
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('✅ تم نسخ الكود وكلمة السر', 'success');
+        }).catch(() => {
+          fallbackCopy(text);
+        });
+      } else {
+        fallbackCopy(text);
+      }
+    }
+
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      showToast('✅ تم النسخ', 'success');
+    }
+
+    // ============================================
+    // EVENTS
+    // ============================================
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('sortFilter').addEventListener('change', applyFilters);
+    document.getElementById('resultsFilter').addEventListener('change', applyFilters);
+    document.getElementById('refreshBtn').addEventListener('click', () => {
+      loadPatients();
+      showToast('تم التحديث', 'success');
+    });
+
+    // إغلاق modals بالخلفية
+    ['addModal', 'viewModal', 'deleteModal'].forEach(id => {
+      document.getElementById(id).addEventListener('click', function (e) {
+        if (e.target === this) closeModal(id);
+      });
+    });
+
+    // ESC
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        closeModal('addModal');
+        closeModal('viewModal');
+        closeModal('deleteModal');
+      }
+    });
+
+    // Start
+    loadPatients();
+
+    console.log('✅ صفحة إدارة المرضى جاهزة');
+  </script>
+
+<!-- Dev Watermark -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="js/dev-watermark.js"></script>
+
+</body>
+</html>

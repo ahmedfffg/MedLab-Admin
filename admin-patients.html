@@ -1,0 +1,1142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إدارة المرضى | MEDLAB</title>
+    <link rel="icon" href="../images/logo.png" type="image/x-icon">
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #0879b9;
+            --primary-dark: #075b8d;
+            --primary-light: #eaf8ff;
+            --bg: #f4f9fc;
+            --white: #ffffff;
+            --text: #17384d;
+            --muted: #718795;
+            --border: #dcecf4;
+            --success: #16864a;
+            --success-bg: #e9f8ef;
+            --warning: #a56a00;
+            --warning-bg: #fff6df;
+            --danger: #c62828;
+            --danger-bg: #fff0f0;
+            --shadow: 0 8px 30px rgba(24, 102, 145, 0.09);
+            --radius: 16px;
+        }
+
+        body {
+            font-family: Arial, Tahoma, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button, input, select { font-family: inherit; }
+        button { cursor: pointer; }
+
+        .topbar {
+            height: 70px;
+            background: linear-gradient(135deg, #0a4179, #2186c4);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 25px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 18px rgba(0, 55, 100, 0.15);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand img {
+            width: 45px;
+            height: 45px;
+            object-fit: contain;
+            background: white;
+            border-radius: 10px;
+            padding: 3px;
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-text strong {
+            font-size: 21px;
+            letter-spacing: 1px;
+        }
+
+        .brand-text span {
+            font-size: 11px;
+            opacity: 0.85;
+            margin-top: 2px;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-label {
+            font-size: 14px;
+            background: rgba(255,255,255,0.13);
+            padding: 8px 13px;
+            border-radius: 9px;
+        }
+
+        .logout-btn {
+            border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.10);
+            color: white;
+            padding: 9px 14px;
+            border-radius: 9px;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover { background: rgba(255,255,255,0.20); }
+
+        .page {
+            max-width: 1450px;
+            margin: auto;
+            padding: 28px 22px 50px;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .page-title h1 {
+            color: #0b5685;
+            font-size: 29px;
+            margin-bottom: 7px;
+        }
+
+        .page-title p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .refresh-btn {
+            border: none;
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--border);
+            padding: 11px 17px;
+            border-radius: 10px;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .refresh-btn:hover { background: var(--primary-light); }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 13px;
+            background: var(--primary-light);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 23px;
+            flex-shrink: 0;
+        }
+
+        .stat-content span {
+            display: block;
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+
+        .stat-content strong {
+            display: block;
+            font-size: 24px;
+            color: #174d6c;
+        }
+
+        .filters-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 22px;
+        }
+
+        .filters-title {
+            color: #175778;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .filters {
+            display: grid;
+            grid-template-columns: 1.1fr 0.8fr 1fr auto;
+            gap: 12px;
+            align-items: end;
+        }
+
+        .field label {
+            display: block;
+            color: #456574;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 7px;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            height: 44px;
+            border: 1px solid #cfe3ed;
+            border-radius: 10px;
+            background: #fbfeff;
+            padding: 0 12px;
+            color: #234;
+            outline: none;
+        }
+
+        .field input:focus,
+        .field select:focus {
+            border-color: #5aafd9;
+            box-shadow: 0 0 0 3px rgba(90,175,217,0.12);
+        }
+
+        .clear-btn {
+            height: 44px;
+            border: none;
+            background: #eef7fb;
+            color: #196184;
+            padding: 0 17px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+
+        .clear-btn:hover { background: #e1f2fa; }
+
+        .table-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .table-header h2 {
+            color: #175778;
+            font-size: 19px;
+        }
+
+        .results-count {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .table-wrapper { overflow-x: auto; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1050px;
+        }
+
+        th {
+            background: #f4fbff;
+            color: #416779;
+            font-size: 13px;
+            text-align: right;
+            padding: 14px 13px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 14px 13px;
+            border-bottom: 1px solid #edf4f7;
+            color: #294e61;
+            font-size: 13px;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover { background: #fbfeff; }
+
+        .patient-number {
+            width: 35px;
+            height: 35px;
+            border-radius: 10px;
+            background: #e8f6fd;
+            color: #0879b9;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .patient-name {
+            font-weight: bold;
+            color: #164f6e;
+            margin-bottom: 3px;
+        }
+
+        .patient-phone {
+            color: #7a919d;
+            direction: ltr;
+            text-align: right;
+        }
+
+        .tests-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            max-width: 290px;
+        }
+
+        .test-tag {
+            background: #f0f8fc;
+            color: #28627e;
+            border: 1px solid #dceef6;
+            padding: 4px 7px;
+            border-radius: 6px;
+            font-size: 11px;
+        }
+
+        .more-tests {
+            color: #0879b9;
+            font-size: 11px;
+            padding: 4px;
+        }
+
+        .total-price {
+            font-weight: bold;
+            color: #0879b9;
+            white-space: nowrap;
+        }
+
+        .sample-badge,
+        .status-badge {
+            display: inline-block;
+            padding: 6px 9px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: bold;
+            white-space: nowrap;
+        }
+
+        .sample-lab { background: #e8f7ff; color: #086a9f; }
+        .sample-home { background: #edf9ef; color: #21733d; }
+
+        .sync-synced { background: #e9f8ef; color: #19733e; }
+        .sync-pending { background: #fff6df; color: #996600; }
+        .sync-failed { background: #fff0f0; color: #b62929; }
+
+        .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 7px 9px;
+            border-radius: 7px;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        .details-btn { background: #e9f7ff; color: #0871a8; }
+        .upload-btn { background: #e9f8ef; color: #19733e; text-decoration: none; }
+        .delete-btn { background: #fff0f0; color: #b72c2c; }
+
+        .action-btn:hover { filter: brightness(0.96); }
+
+        .state-box {
+            text-align: center;
+            padding: 55px 20px;
+            color: var(--muted);
+        }
+
+        .state-icon {
+            font-size: 42px;
+            margin-bottom: 12px;
+        }
+
+        .state-box h3 {
+            color: #4d6877;
+            margin-bottom: 7px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 40, 60, 0.48);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.show { display: flex; }
+
+        .modal {
+            width: min(850px, 100%);
+            max-height: 90vh;
+            overflow-y: auto;
+            background: white;
+            border-radius: 18px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+        }
+
+        .modal-header {
+            padding: 19px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            color: #145779;
+            font-size: 21px;
+        }
+
+        .close-modal {
+            width: 35px;
+            height: 35px;
+            border: none;
+            background: #eef7fb;
+            color: #316277;
+            border-radius: 8px;
+            font-size: 20px;
+        }
+
+        .modal-body { padding: 22px; }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .detail-box {
+            border: 1px solid #e3eef3;
+            border-radius: 11px;
+            padding: 13px;
+            background: #fbfeff;
+        }
+
+        .detail-box.full { grid-column: 1 / -1; }
+
+        .detail-box label {
+            display: block;
+            color: #80949e;
+            font-size: 11px;
+            margin-bottom: 5px;
+        }
+
+        .detail-box strong {
+            color: #234f68;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .modal-section { margin-top: 20px; }
+
+        .modal-section h3 {
+            color: #176084;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .modal-tests {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .modal-test {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 10px 12px;
+            background: #f6fbfd;
+            border: 1px solid #e3f0f5;
+            border-radius: 9px;
+        }
+
+        .modal-test-name { color: #31586c; font-size: 13px; }
+        .modal-test-price { color: #0879b9; font-weight: bold; white-space: nowrap; }
+
+        .modal-footer {
+            padding: 16px 22px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+        }
+
+        .toast {
+            position: fixed;
+            left: 20px;
+            bottom: 20px;
+            z-index: 3000;
+            min-width: 280px;
+            max-width: 430px;
+            padding: 14px 17px;
+            border-radius: 11px;
+            background: #17384d;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.20);
+            transform: translateY(120px);
+            opacity: 0;
+            transition: 0.3s ease;
+        }
+
+        .toast.show { transform: translateY(0); opacity: 1; }
+        .toast.success { background: #177441; }
+        .toast.error { background: #b92c2c; }
+
+        @media (max-width: 1050px) {
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .filters { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media (max-width: 700px) {
+            .topbar { height: 62px; padding: 0 13px; }
+            .brand img { width: 39px; height: 39px; }
+            .brand-text strong { font-size: 18px; }
+            .brand-text span { display: none; }
+            .admin-label { display: none; }
+            .logout-btn { padding: 8px 10px; font-size: 12px; }
+            .page { padding: 20px 12px 35px; }
+            .page-header { align-items: flex-start; flex-direction: column; }
+            .page-title h1 { font-size: 25px; }
+            .refresh-btn { width: 100%; }
+            .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card { padding: 14px; gap: 10px; }
+            .stat-icon { width: 42px; height: 42px; font-size: 19px; }
+            .stat-content strong { font-size: 20px; }
+            .stat-content span { font-size: 11px; }
+            .filters { grid-template-columns: 1fr; }
+            .filters-card { padding: 15px; }
+            .table-header { padding: 15px; }
+            .details-grid { grid-template-columns: 1fr; }
+            .detail-box.full { grid-column: auto; }
+            .modal-body { padding: 15px; }
+            .modal-footer { padding: 13px 15px; }
+            .toast { left: 12px; right: 12px; bottom: 12px; min-width: auto; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="topbar">
+        <div class="brand">
+            <img src="../images/logo.png" alt="MEDLAB">
+            <div class="brand-text">
+                <strong>MEDLAB</strong>
+                <span>نظام إدارة المعمل</span>
+            </div>
+        </div>
+
+        <div class="topbar-right">
+            <div class="admin-label">إدارة المرضى</div>
+            <button class="logout-btn" id="logoutBtn" type="button">تسجيل الخروج</button>
+        </div>
+    </header>
+
+    <main class="page">
+
+        <div class="page-header">
+            <div class="page-title">
+                <h1>إدارة المرضى والحجوزات</h1>
+                <p>عرض ومتابعة جميع المرضى المسجلين في المعمل</p>
+            </div>
+            <button class="refresh-btn" id="refreshBtn" type="button">↻ تحديث البيانات</button>
+        </div>
+
+        <section class="stats">
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-content">
+                    <span>إجمالي المرضى</span>
+                    <strong id="totalPatients">0</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-content">
+                    <span>مرضى اليوم</span>
+                    <strong id="todayPatients">0</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🏠</div>
+                <div class="stat-content">
+                    <span>عينات منزلية</span>
+                    <strong id="homePatients">0</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">✓</div>
+                <div class="stat-content">
+                    <span>تمت مزامنتهم</span>
+                    <strong id="syncedPatients">0</strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="filters-card">
+            <div class="filters-title">البحث والتصفية</div>
+
+            <div class="filters">
+                <div class="field">
+                    <label for="searchInput">البحث</label>
+                    <input type="search" id="searchInput" placeholder="اسم المريض أو رقم الهاتف...">
+                </div>
+
+                <div class="field">
+                    <label for="dateFilter">تاريخ الزيارة</label>
+                    <input type="date" id="dateFilter">
+                </div>
+
+                <div class="field">
+                    <label for="sampleFilter">نوع العينة</label>
+                    <select id="sampleFilter">
+                        <option value="">كل الأنواع</option>
+                        <option value="lab">عينة في المعمل</option>
+                        <option value="home">عينة منزلية</option>
+                    </select>
+                </div>
+
+                <button class="clear-btn" id="clearFiltersBtn" type="button">مسح البحث</button>
+            </div>
+        </section>
+
+        <section class="table-card">
+            <div class="table-header">
+                <h2>قائمة المرضى</h2>
+                <span class="results-count" id="resultsCount">0 نتيجة</span>
+            </div>
+
+            <div class="table-wrapper" id="tableContainer">
+                <div class="state-box">
+                    <div class="state-icon">⏳</div>
+                    <h3>جاري تحميل البيانات</h3>
+                    <p>برجاء الانتظار...</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- DETAILS MODAL -->
+    <div class="modal-overlay" id="detailsModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>تفاصيل المريض</h2>
+                <button class="close-modal" id="closeModalBtn" type="button">×</button>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+            <div class="modal-footer">
+                <button class="clear-btn" id="closeModalFooterBtn" type="button">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/lab-storage.js"></script>
+
+    <script>
+    (function () {
+        'use strict';
+
+        const SUPABASE_NEW_URL = 'https://goxcnnzhgubggfjionyr.supabase.co';
+        const SUPABASE_NEW_KEY = 'sb_publishable_RpiQEsotdu9DifsKBf2tOA_qMzNiBge';
+        window.supabaseNew = window.supabase.createClient(SUPABASE_NEW_URL, SUPABASE_NEW_KEY);
+
+        const $ = id => document.getElementById(id);
+
+        const tableContainer = $('tableContainer');
+        const searchInput = $('searchInput');
+        const dateFilter = $('dateFilter');
+        const sampleFilter = $('sampleFilter');
+        const resultsCount = $('resultsCount');
+        const detailsModal = $('detailsModal');
+        const modalBody = $('modalBody');
+        const toast = $('toast');
+
+        let patients = [];
+        let filteredPatients = [];
+
+        /* ============================================
+           HELPERS
+        ============================================ */
+        function getTodayDate() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const day = String(now.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        function escapeHtml(value) {
+            if (value === null || value === undefined) return '';
+            return String(value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function formatDate(dateString) {
+            if (!dateString) return '-';
+            const parts = String(dateString).split('-');
+            if (parts.length !== 3) return dateString;
+            return `${parts[2]}/${parts[1]}/${parts[0]}`;
+        }
+
+        function formatMoney(value) {
+            const number = Number(value || 0);
+            return `${number.toLocaleString('ar-EG')} جنيه`;
+        }
+
+        function getSampleText(location) {
+            if (location === 'home') return 'عينة منزلية';
+            return 'عينة في المعمل';
+        }
+
+        function getSyncText(status) {
+            const map = {
+                'synced': 'تمت المزامنة',
+                'pending': 'في الانتظار',
+                'failed': 'فشلت المزامنة'
+            };
+            return map[status] || 'غير معروف';
+        }
+
+        function getSyncClass(status) {
+            return 'sync-' + (status || 'pending');
+        }
+
+        let toastTimer = null;
+        function showToast(message, type = '') {
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        /* ============================================
+           LOAD PATIENTS
+        ============================================ */
+        async function loadPatients() {
+            tableContainer.innerHTML = `
+                <div class="state-box">
+                    <div class="state-icon">⏳</div>
+                    <h3>جاري تحميل البيانات</h3>
+                    <p>برجاء الانتظار...</p>
+                </div>
+            `;
+
+            try {
+                await window.LabStorage.init();
+                
+                patients = await window.LabStorage.getAllPatients();
+                
+                // ترتيب حسب created_at تنازلياً
+                patients.sort((a, b) => {
+                    const dateA = new Date(a.created_at || 0).getTime();
+                    const dateB = new Date(b.created_at || 0).getTime();
+                    return dateB - dateA;
+                });
+
+                updateStatistics();
+                applyFilters();
+
+            } catch (error) {
+                console.error('Load patients error:', error);
+                tableContainer.innerHTML = `
+                    <div class="state-box">
+                        <div class="state-icon">⚠️</div>
+                        <h3>تعذر تحميل البيانات</h3>
+                        <p>${escapeHtml(error.message)}</p>
+                    </div>
+                `;
+                showToast(error.message || 'حدث خطأ', 'error');
+            }
+        }
+
+        /* ============================================
+           STATISTICS
+        ============================================ */
+        function updateStatistics() {
+            const today = getTodayDate();
+
+            $('totalPatients').textContent = patients.length;
+            $('todayPatients').textContent = patients.filter(p => p.visit_date === today).length;
+            $('homePatients').textContent = patients.filter(p => p.sample_location === 'home').length;
+            $('syncedPatients').textContent = patients.filter(p => p.sync_status === 'synced').length;
+        }
+
+        /* ============================================
+           FILTERS
+        ============================================ */
+        function applyFilters() {
+            const search = searchInput.value.trim().toLowerCase();
+            const date = dateFilter.value;
+            const sample = sampleFilter.value;
+
+            filteredPatients = patients.filter(p => {
+                // بحث
+                if (search) {
+                    const values = [
+                        p.full_name,
+                        p.phone,
+                        p.referring_doctor,
+                        p.referral_source
+                    ].filter(Boolean).join(' ').toLowerCase();
+
+                    if (!values.includes(search)) return false;
+                }
+
+                // تاريخ
+                if (date && p.visit_date !== date) return false;
+
+                // نوع العينة
+                if (sample && p.sample_location !== sample) return false;
+
+                return true;
+            });
+
+            renderTable();
+        }
+
+        /* ============================================
+           RENDER TABLE
+        ============================================ */
+        function renderTable() {
+            resultsCount.textContent = `${filteredPatients.length} نتيجة`;
+
+            if (!filteredPatients.length) {
+                tableContainer.innerHTML = `
+                    <div class="state-box">
+                        <div class="state-icon">🔍</div>
+                        <h3>لا توجد نتائج</h3>
+                        <p>${patients.length === 0 ? 'لم يتم تسجيل مرضى بعد' : 'لم يتم العثور على مرضى مطابقين للبحث'}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let html = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>المريض</th>
+                            <th>تاريخ الزيارة</th>
+                            <th>نوع العينة</th>
+                            <th>التحاليل</th>
+                            <th>الإجمالي</th>
+                            <th>المزامنة</th>
+                            <th>الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            filteredPatients.forEach((p, index) => {
+                const tests = p.tests || [];
+                const visibleTests = tests.slice(0, 3);
+                const remaining = Math.max(0, tests.length - 3);
+
+                const testsHtml = visibleTests.map(test =>
+                    `<span class="test-tag">${escapeHtml(test.name || 'تحليل')}</span>`
+                ).join('');
+
+                const moreHtml = remaining > 0
+                    ? `<span class="more-tests">+${remaining} أخرى</span>`
+                    : '';
+
+                html += `
+                    <tr>
+                        <td>
+                            <span class="patient-number">${index + 1}</span>
+                        </td>
+                        <td>
+                            <div class="patient-name">${escapeHtml(p.full_name || 'غير مسجل')}</div>
+                            <div class="patient-phone">${escapeHtml(p.phone || '-')}</div>
+                        </td>
+                        <td>${formatDate(p.visit_date)}</td>
+                        <td>
+                            <span class="sample-badge ${p.sample_location === 'home' ? 'sample-home' : 'sample-lab'}">
+                                ${getSampleText(p.sample_location)}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="tests-list">
+                                ${testsHtml || '<span style="color:#a4b2b9;font-size:12px;">لا توجد تحاليل</span>'}
+                                ${moreHtml}
+                            </div>
+                        </td>
+                        <td>
+                            <span class="total-price">${formatMoney(p.total)}</span>
+                        </td>
+                        <td>
+                            <span class="status-badge ${getSyncClass(p.sync_status)}">
+                                ${getSyncText(p.sync_status)}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="actions">
+                                <button type="button" class="action-btn details-btn" onclick="window.showDetails('${escapeHtml(p.local_id)}')">
+                                    التفاصيل
+                                </button>
+                               <a href="samples-admin.html?phone=${encodeURIComponent(p.phone || '')}" class="action-btn upload-btn">
+                                     رفع نتيجة
+                                </a>
+                                <button type="button" class="action-btn delete-btn" onclick="window.deletePatient('${escapeHtml(p.local_id)}', '${escapeHtml(p.full_name || '')}')">
+                                    حذف
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            tableContainer.innerHTML = html;
+        }
+
+        /* ============================================
+           SHOW DETAILS
+        ============================================ */
+        window.showDetails = function (localId) {
+            const p = patients.find(x => x.local_id === localId);
+            if (!p) return;
+
+            const tests = p.tests || [];
+            const results = p.results || [];
+
+            const testsHtml = tests.length
+                ? tests.map(test => `
+                    <div class="modal-test">
+                        <span class="modal-test-name">${escapeHtml(test.name || 'تحليل')}</span>
+                        <span class="modal-test-price">${formatMoney(test.price)}</span>
+                    </div>
+                `).join('')
+                : `<p style="color:var(--muted);">لا توجد تحاليل مسجلة.</p>`;
+
+            modalBody.innerHTML = `
+                <div class="details-grid">
+                    <div class="detail-box">
+                        <label>الاسم الكامل</label>
+                        <strong>${escapeHtml(p.full_name || '-')}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>رقم الهاتف</label>
+                        <strong dir="ltr">${escapeHtml(p.phone || '-')}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>العمر</label>
+                        <strong>${p.age ? escapeHtml(p.age) + ' سنة' : '-'}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>الجنس</label>
+                        <strong>${p.gender === 'male' ? 'ذكر' : p.gender === 'female' ? 'أنثى' : '-'}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>تاريخ الزيارة</label>
+                        <strong>${formatDate(p.visit_date)}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>نوع العينة</label>
+                        <strong>${getSampleText(p.sample_location)}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>الطبيب المحول</label>
+                        <strong>${escapeHtml(p.referring_doctor || '-')}</strong>
+                    </div>
+                    <div class="detail-box">
+                        <label>مصدر الإحالة</label>
+                        <strong>${escapeHtml(p.referral_source || '-')}</strong>
+                    </div>
+                    ${p.notes ? `
+                        <div class="detail-box full">
+                            <label>ملاحظات</label>
+                            <strong>${escapeHtml(p.notes)}</strong>
+                        </div>
+                    ` : ''}
+                </div>
+
+                <div class="modal-section">
+                    <h3>التحاليل (${tests.length})</h3>
+                    <div class="modal-tests">${testsHtml}</div>
+                </div>
+
+                <div class="modal-section">
+                    <h3>الحساب</h3>
+                    <div class="details-grid">
+                        <div class="detail-box">
+                            <label>عدد التحاليل</label>
+                            <strong>${p.tests_count || 0}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <label>الإجمالي</label>
+                            <strong style="color:#0879b9;font-size:18px;">${formatMoney(p.total)}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <label>عدد النتائج</label>
+                            <strong>${results.length}</strong>
+                        </div>
+                        <div class="detail-box">
+                            <label>حالة المزامنة</label>
+                            <strong>${getSyncText(p.sync_status)}</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            detailsModal.classList.add('show');
+        };
+
+        /* ============================================
+           DELETE PATIENT
+        ============================================ */
+        window.deletePatient = async function (localId, name) {
+            const confirmed = confirm(`هل أنت متأكد من حذف المريض "${name}"؟\n\nسيتم حذف جميع بياناته ونتائجه.`);
+            if (!confirmed) return;
+
+            try {
+                await window.LabStorage.deletePatient(localId);
+                
+                patients = patients.filter(p => p.local_id !== localId);
+                updateStatistics();
+                applyFilters();
+                
+                showToast('✅ تم حذف المريض بنجاح', 'success');
+            } catch (error) {
+                console.error(error);
+                showToast('فشل الحذف: ' + error.message, 'error');
+            }
+        };
+
+        /* ============================================
+           MODAL CONTROLS
+        ============================================ */
+        function closeModal() {
+            detailsModal.classList.remove('show');
+        }
+
+        $('closeModalBtn').addEventListener('click', closeModal);
+        $('closeModalFooterBtn').addEventListener('click', closeModal);
+
+        detailsModal.addEventListener('click', function (event) {
+            if (event.target === detailsModal) closeModal();
+        });
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') closeModal();
+        });
+
+        /* ============================================
+           EVENTS
+        ============================================ */
+        searchInput.addEventListener('input', applyFilters);
+        dateFilter.addEventListener('change', applyFilters);
+        sampleFilter.addEventListener('change', applyFilters);
+
+        $('clearFiltersBtn').addEventListener('click', function () {
+            searchInput.value = '';
+            dateFilter.value = '';
+            sampleFilter.value = '';
+            applyFilters();
+        });
+
+        $('refreshBtn').addEventListener('click', function () {
+            loadPatients();
+            showToast('تم التحديث', 'success');
+        });
+
+      $('logoutBtn').addEventListener('click', function () {
+    if (confirm('هل تريد تسجيل الخروج؟')) {
+        sessionStorage.removeItem('medlab_admin_logged_in');
+        sessionStorage.removeItem('medlab_admin_username');
+        window.location.href = 'login.html';  // الآن الملف موجود ✅
+    }
+});
+
+        /* ============================================
+           INIT
+        ============================================ */
+        loadPatients();
+
+        console.log('✅ Admin Patients page ready (IndexedDB mode)');
+
+    })();
+    </script>
+
+<!-- Dev Watermark -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="js/dev-watermark.js"></script>
+
+</body>
+</html>
