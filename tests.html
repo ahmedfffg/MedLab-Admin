@@ -2,1204 +2,4502 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#0788c7">
+  <meta name="description" content="إدارة التحاليل - معمل ميدلاب">
+
   <title>إدارة التحاليل - معمل ميدلاب</title>
-  <link href="../images/logo.png" type="image/x-icon" rel="icon">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link href="logo.png" type="image/x-icon" rel="icon">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+
+    /* =========================================================
+       MEDLAB — PREMIUM MEDICAL UI
+       تصميم طبي احترافي متجاوب بالكامل
+       التحاليل داخل صفحة فرعية (Drawer Panel) مثل الـ Select
+    ========================================================= */
+
     :root {
-      --primary: #0a7cb8;
-      --primary-dark: #085a87;
-      --primary-light: #3fa4df;
-      --blue-soft: #e8f4fb;
-      --blue-softer: #f3f9fd;
-      --border: #d8e8f2;
-      --text-dark: #143a52;
-      --text-medium: #3c6478;
-      --text-light: #6d8fa3;
-      --success: #1a7d4a;
-      --success-soft: #e8f8ef;
-      --danger: #c0392b;
-      --danger-soft: #fdecea;
-      --warning: #d97706;
-      --warning-soft: #fff4e5;
+
+      --primary: #0788c7;
+      --primary-dark: #056b9d;
+      --primary-deep: #075579;
+      --primary-light: #42b6e8;
+      --primary-glow: rgba(7,136,199,.28);
+
+      --cyan: #08a9d6;
+      --cyan-soft: #e8faff;
+
+      --blue-soft: #eaf7fd;
+      --blue-softer: #f7fcff;
+
       --white: #ffffff;
-      --shadow: 0 8px 24px -8px rgba(10, 60, 100, 0.15);
+
+      --border: #dcecf4;
+      --border-light: #edf5f9;
+
+      --text-dark: #14394d;
+      --text-medium: #486879;
+      --text-light: #7893a2;
+
+      --success: #16834d;
+      --success-soft: #e9f8f0;
+
+      --danger: #d13f35;
+      --danger-soft: #fff0ee;
+
+      --warning: #d98408;
+      --warning-soft: #fff7e8;
+
+      --purple: #7054b5;
+      --purple-soft: #f3efff;
+
+      --shadow-xs: 0 2px 8px rgba(15,80,110,.05);
+      --shadow: 0 10px 30px rgba(17,88,120,.08);
+      --shadow-hover: 0 16px 40px rgba(17,88,120,.13);
+      --shadow-lg: 0 24px 60px rgba(17,88,120,.16);
+
+      --radius-sm: 10px;
+      --radius: 16px;
+      --radius-lg: 22px;
+      --radius-xl: 30px;
+
+      --transition: .25s cubic-bezier(.4,0,.2,1);
+      --transition-slow: .45s cubic-bezier(.4,0,.2,1);
+
+      --topbar-h: 72px;
     }
-    * { margin:0; padding:0; box-sizing:border-box; }
+
+
+    /* =========================================================
+       RESET
+    ========================================================= */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
     body {
-      font-family: 'Tajawal', sans-serif;
-      background: #f4f9fc;
+      font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(66,182,232,.10), transparent 30%),
+        radial-gradient(circle at 0% 100%, rgba(8,169,214,.07), transparent 28%),
+        radial-gradient(circle at 50% 50%, rgba(7,136,199,.03), transparent 60%),
+        #f2f9fc;
       color: var(--text-dark);
       line-height: 1.7;
       min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
-    button, input, select, textarea { font-family: inherit; }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(120deg, rgba(255,255,255,.4), transparent 40%);
+      z-index: -1;
+    }
+
+    /* Animated background orbs */
+    body::after {
+      content: "";
+      position: fixed;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(66,182,232,.06), transparent 70%);
+      top: -200px;
+      left: -200px;
+      pointer-events: none;
+      z-index: -1;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(80px, 60px) scale(1.15); }
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+    }
+
     button { cursor: pointer; }
+    a { color: inherit; }
+
     .hidden { display: none !important; }
 
-    /* Topbar */
+    ::selection {
+      background: var(--primary-light);
+      color: white;
+    }
+
+
+    /* =========================================================
+       TOPBAR
+    ========================================================= */
+
     .topbar {
-      position: sticky; top:0; z-index:100;
-      height: 70px;
-      background: white;
-      border-bottom: 1px solid var(--border);
-      box-shadow: 0 2px 8px rgba(10,60,100,0.04);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      min-height: var(--topbar-h);
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(216,232,242,.8);
+      box-shadow: 0 4px 24px rgba(15,70,100,.06);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 25px;
+      gap: 16px;
+      padding: 10px clamp(14px, 3vw, 42px);
+      transition: var(--transition);
     }
+
     .brand {
-      display: flex; align-items: center; gap: 12px; text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      min-width: 0;
+      transition: var(--transition);
     }
+
     .brand-logo {
-      width: 42px; height: 42px;
-      border-radius: 12px;
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
+      border-radius: 14px;
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      display: flex; align-items: center; justify-content: center;
-      color: white; font-size: 20px;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 8px 20px rgba(7,136,199,.25);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
+
+    .brand-logo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,.3), transparent);
+      transform: translateX(-100%);
+      transition: transform .6s ease;
+    }
+
+    .brand:hover .brand-logo::after {
+      transform: translateX(100%);
+    }
+
+    .brand:hover .brand-logo {
+      transform: translateY(-2px) rotate(-3deg);
+      box-shadow: 0 12px 28px rgba(7,136,199,.32);
+    }
+
+    .brand-text { min-width: 0; }
+
     .brand-text h1 {
-      color: var(--primary-dark);
-      font-size: 1.15rem;
+      color: var(--primary-deep);
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
       line-height: 1.2;
+      white-space: nowrap;
+      font-weight: 800;
     }
+
     .brand-text span {
       color: var(--text-light);
       font-size: 12px;
+      display: block;
+      margin-top: 2px;
     }
-    .top-actions { display: flex; gap: 10px; align-items: center; }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
     .top-btn {
       border: 1px solid var(--border);
-      background: white;
+      background: rgba(255,255,255,.9);
       color: var(--primary-dark);
-      padding: 9px 14px;
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 13.5px;
+      min-height: 40px;
+      padding: 8px 14px;
+      border-radius: 11px;
+      font-size: 13px;
       font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      transition: 0.2s;
+      justify-content: center;
+      gap: 7px;
       text-decoration: none;
+      transition: var(--transition);
+      box-shadow: var(--shadow-xs);
+      position: relative;
+      overflow: hidden;
     }
-    .top-btn:hover { background: var(--blue-soft); border-color: var(--primary); }
 
-    /* Page */
-    .page {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 30px 25px 60px;
+    .top-btn:hover {
+      background: var(--blue-soft);
+      border-color: rgba(7,136,199,.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(7,136,199,.12);
     }
+
+    .top-btn:active { transform: translateY(0); }
+
+
+    /* =========================================================
+       PAGE
+    ========================================================= */
+
+    .page {
+      width: min(1500px, 100%);
+      margin: 0 auto;
+      padding: clamp(22px, 4vw, 42px) clamp(14px, 3vw, 38px) 80px;
+    }
+
+
+    /* =========================================================
+       PAGE HEAD
+    ========================================================= */
+
     .page-head {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 20px;
-      margin-bottom: 25px;
-      flex-wrap: wrap;
+      margin-bottom: 26px;
+      padding: clamp(20px, 3vw, 28px);
+      border: 1px solid rgba(220,236,244,.9);
+      border-radius: var(--radius-xl);
+      background: linear-gradient(135deg, rgba(255,255,255,.98), rgba(247,252,255,.96));
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
+
+    .page-head::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      left: -90px;
+      top: -110px;
+      background: radial-gradient(circle, rgba(66,182,232,.14), transparent 70%);
+      pointer-events: none;
+    }
+
+    .page-head::after {
+      content: "";
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      right: -50px;
+      bottom: -70px;
+      background: radial-gradient(circle, rgba(8,169,214,.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .page-head > div {
+      position: relative;
+      z-index: 1;
+    }
+
     .page-head h2 {
-      color: var(--primary-dark);
-      font-size: 1.7rem;
-      margin-bottom: 6px;
+      color: var(--primary-deep);
+      font-size: clamp(1.35rem, 2.5vw, 1.95rem);
+      font-weight: 800;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
-    .page-head p { color: var(--text-light); font-size: 14.5px; }
+
+    .page-head h2 i {
+      color: var(--primary);
+      font-size: .9em;
+    }
+
+    .page-head p {
+      color: var(--text-light);
+      font-size: clamp(13px, 1.5vw, 14.5px);
+    }
+
+    .page-head-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
 
     .add-btn {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: white;
       border: none;
-      padding: 13px 22px;
-      border-radius: 12px;
-      font-family: inherit;
-      font-size: 15px;
-      font-weight: 700;
+      min-height: 48px;
+      padding: 12px 22px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      box-shadow: 0 8px 20px -6px rgba(10,124,184,0.5);
-      transition: 0.25s;
+      justify-content: center;
+      gap: 9px;
+      box-shadow: 0 9px 24px rgba(7,136,199,.28);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
-    .add-btn:hover { transform: translateY(-2px); }
 
-    /* Stats */
+    .add-btn::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,.25), transparent);
+      transform: translateX(-100%);
+      transition: transform .6s ease;
+    }
+
+    .add-btn:hover::after {
+      transform: translateX(100%);
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 32px rgba(7,136,199,.35);
+    }
+
+    .add-btn:active { transform: translateY(0); }
+
+
+    /* =========================================================
+       STATS
+    ========================================================= */
+
     .stats {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      margin-bottom: 22px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 15px;
+      margin-bottom: 20px;
     }
+
     .stat-card {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
+      background: rgba(255,255,255,.96);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      min-width: 0;
       display: flex;
       align-items: center;
       gap: 14px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      cursor: default;
     }
+
+    .stat-card::before {
+      content: "";
+      position: absolute;
+      width: 90px;
+      height: 90px;
+      left: -30px;
+      bottom: -35px;
+      border-radius: 50%;
+      background: rgba(7,136,199,.035);
+      transition: var(--transition);
+    }
+
+    .stat-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: var(--radius-lg);
+      padding: 1px;
+      background: linear-gradient(135deg, transparent, rgba(66,182,232,.2), transparent);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: var(--transition);
+      pointer-events: none;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+      border-color: rgba(7,136,199,.2);
+    }
+
+    .stat-card:hover::before {
+      transform: scale(1.4);
+      background: rgba(7,136,199,.06);
+    }
+
+    .stat-card:hover::after {
+      opacity: 1;
+    }
+
     .stat-icon {
-      width: 50px; height: 50px;
-      border-radius: 13px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
+      width: 54px;
+      height: 54px;
       flex-shrink: 0;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      transition: var(--transition);
     }
-    .stat-icon.blue   { background: var(--blue-soft); color: var(--primary); }
-    .stat-icon.green  { background: var(--success-soft); color: var(--success); }
-    .stat-icon.orange { background: var(--warning-soft); color: var(--warning); }
-    .stat-icon.purple { background: #f1edff; color: #6950a8; }
+
+    .stat-card:hover .stat-icon {
+      transform: scale(1.08) rotate(-4deg);
+    }
+
+    .stat-icon.blue {
+      background: linear-gradient(135deg, var(--blue-soft), #d6eefa);
+      color: var(--primary);
+    }
+
+    .stat-icon.green {
+      background: linear-gradient(135deg, var(--success-soft), #d4f0e1);
+      color: var(--success);
+    }
+
+    .stat-icon.orange {
+      background: linear-gradient(135deg, var(--warning-soft), #ffedcc);
+      color: var(--warning);
+    }
+
+    .stat-icon.purple {
+      background: linear-gradient(135deg, var(--purple-soft), #e4dbfa);
+      color: var(--purple);
+    }
+
+    .stat-info { min-width: 0; }
+
     .stat-info span {
       display: block;
       color: var(--text-light);
-      font-size: 13px;
-      margin-bottom: 3px;
-    }
-    .stat-info strong {
-      display: block;
-      color: var(--primary-dark);
-      font-size: 1.6rem;
-      line-height: 1;
+      font-size: 12.5px;
+      margin-bottom: 4px;
+      white-space: nowrap;
     }
 
-    /* Filters */
+    .stat-info strong {
+      display: block;
+      color: var(--primary-deep);
+      font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+      line-height: 1;
+      font-weight: 800;
+    }
+
+
+    /* =========================================================
+       FILTERS
+    ========================================================= */
+
     .filters-card {
-      background: white;
-      border-radius: 16px;
-      padding: 18px;
+      background: rgba(255,255,255,.96);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      border-radius: var(--radius-lg);
+      padding: 16px;
       margin-bottom: 20px;
       display: grid;
-      grid-template-columns: 1.6fr 1fr auto auto;
-      gap: 12px;
+      grid-template-columns: minmax(200px, 1.7fr) minmax(170px, 1fr) auto auto;
+      gap: 10px;
       align-items: center;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
     }
+
+    .filters-card:focus-within {
+      border-color: rgba(7,136,199,.25);
+      box-shadow: 0 10px 36px rgba(7,136,199,.10);
+    }
+
     .filters-card input,
     .filters-card select {
       width: 100%;
-      padding: 11px 14px;
+      min-height: 46px;
+      padding: 10px 14px;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--blue-softer);
-      font-size: 14px;
+      font-size: 13.5px;
       outline: none;
-      transition: 0.2s;
       color: var(--text-dark);
+      transition: var(--transition);
     }
+
+    .filters-card input::placeholder { color: #91a8b5; }
+
     .filters-card input:focus,
     .filters-card select:focus {
       border-color: var(--primary);
       background: white;
-      box-shadow: 0 0 0 3px rgba(10,124,184,0.08);
+      box-shadow: 0 0 0 4px rgba(7,136,199,.08);
     }
+
     .filter-btn {
+      min-height: 46px;
       border: 1px solid var(--border);
       background: white;
       color: var(--primary-dark);
-      padding: 11px 16px;
-      border-radius: 10px;
-      font-weight: 700;
-      font-size: 13.5px;
-      transition: 0.2s;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 800;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: var(--transition);
     }
-    .filter-btn:hover { background: var(--blue-soft); border-color: var(--primary); }
 
-    /* Table */
-    .table-card {
-      background: white;
-      border-radius: 16px;
+    .filter-btn:hover {
+      background: var(--blue-soft);
+      border-color: rgba(7,136,199,.35);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(7,136,199,.10);
+    }
+
+    .filter-btn:active { transform: translateY(0); }
+
+
+    /* =========================================================
+       DRAWER — التحاليل داخل صفحة فرعية مثل الـ Select
+    ========================================================= */
+
+    /* زر فتح القائمة */
+    .open-list-card {
+      background: rgba(255,255,255,.97);
       border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
       box-shadow: var(--shadow);
       overflow: hidden;
+      transition: var(--transition);
     }
-    .table-header {
-      padding: 18px 22px;
-      border-bottom: 1px solid var(--border);
+
+    .open-list-trigger {
+      padding: 20px 24px;
+      min-height: 72px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 15px;
+      background: linear-gradient(180deg, #ffffff, #fbfdfe);
+      cursor: pointer;
+      user-select: none;
+      transition: var(--transition);
     }
-    .table-header h3 { color: var(--primary-dark); font-size: 1.1rem; }
-    .table-header .count { color: var(--text-light); font-size: 13px; }
 
-    .table-wrap { overflow-x: auto; }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      min-width: 850px;
+    .open-list-trigger:hover {
+      background: linear-gradient(180deg, #f9fdff, #f3faff);
     }
-    th {
+
+    .open-list-trigger:active {
+      transform: scale(.995);
+    }
+
+    .open-list-trigger-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .open-list-trigger-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(7,136,199,.25);
+      transition: var(--transition);
+    }
+
+    .open-list-trigger:hover .open-list-trigger-icon {
+      transform: scale(1.06) rotate(-4deg);
+      box-shadow: 0 12px 28px rgba(7,136,199,.32);
+    }
+
+    .open-list-trigger-text {
+      min-width: 0;
+    }
+
+    .open-list-trigger-text h3 {
+      color: var(--primary-deep);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 3px;
+    }
+
+    .open-list-trigger-text p {
+      color: var(--text-light);
+      font-size: 12.5px;
+    }
+
+    .open-list-trigger-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .open-list-trigger-right .count {
+      color: var(--text-light);
+      font-size: 12.5px;
       background: var(--blue-softer);
-      color: var(--primary-dark);
-      padding: 13px 15px;
-      text-align: right;
-      font-weight: 700;
-      font-size: 13px;
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
       white-space: nowrap;
-      border-bottom: 1px solid var(--border);
+      font-weight: 700;
     }
-    td {
-      padding: 13px 15px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-medium);
-      font-size: 14px;
-      vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-    tbody tr:hover { background: var(--blue-softer); }
 
-    .test-name { font-weight: 700; color: var(--text-dark); }
-    .price-tag { color: var(--success); font-weight: 700; }
-    .category-tag {
+    .open-list-trigger-arrow {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: var(--blue-soft);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      transition: var(--transition);
+      flex-shrink: 0;
+    }
+
+    .open-list-trigger:hover .open-list-trigger-arrow {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      transform: translateX(-4px);
+    }
+
+
+    /* =========================================================
+       DRAWER OVERLAY — صفحة فرعية
+    ========================================================= */
+
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(5,40,60,.5);
+      z-index: 4000;
+      display: flex;
+      align-items: stretch;
+      justify-content: flex-start;
+      padding: 0;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s ease;
+    }
+
+    .drawer-overlay.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .drawer-panel {
+      width: min(720px, 100%);
+      height: 100%;
+      background: #f7fcff;
+      box-shadow: 20px 0 80px rgba(0,0,0,.25);
+      transform: translateX(100%);
+      transition: transform .4s cubic-bezier(.4,0,.2,1);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .drawer-overlay.show .drawer-panel {
+      transform: translateX(0);
+    }
+
+    /* خلفية زخرفية للصفحة الفرعية */
+    .drawer-panel::before {
+      content: "";
+      position: absolute;
+      top: -150px;
+      right: -150px;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(66,182,232,.10), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .drawer-panel::after {
+      content: "";
+      position: absolute;
+      bottom: -150px;
+      left: -150px;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(8,169,214,.08), transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+
+    /* =========================================================
+       DRAWER HEADER
+    ========================================================= */
+
+    .drawer-header {
+      padding: 22px 26px;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 4px 20px rgba(15,70,100,.05);
+    }
+
+    .drawer-header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .drawer-header-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 21px;
+      flex-shrink: 0;
+      box-shadow: 0 8px 20px rgba(7,136,199,.25);
+    }
+
+    .drawer-header-text {
+      min-width: 0;
+    }
+
+    .drawer-header-text h2 {
+      color: var(--primary-deep);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 800;
+      line-height: 1.25;
+      margin-bottom: 2px;
+    }
+
+    .drawer-header-text p {
+      color: var(--text-light);
+      font-size: 12.5px;
+    }
+
+    .drawer-close-btn {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: 13px;
+      border: none;
       background: var(--blue-soft);
       color: var(--primary-dark);
-      padding: 4px 12px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      display: inline-block;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
     }
-    .status-badge {
-      padding: 4px 12px;
+
+    .drawer-close-btn:hover {
+      background: var(--danger-soft);
+      color: var(--danger);
+      transform: rotate(90deg) scale(1.05);
+    }
+
+    .drawer-close-btn:active {
+      transform: rotate(90deg) scale(.95);
+    }
+
+
+    /* =========================================================
+       DRAWER BODY
+    ========================================================= */
+
+    .drawer-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 22px 30px;
+      position: relative;
+      z-index: 1;
+      scrollbar-width: thin;
+      scrollbar-color: #b7d8e8 #f3f9fc;
+    }
+
+    .drawer-body::-webkit-scrollbar { width: 8px; }
+    .drawer-body::-webkit-scrollbar-track { background: #f3f9fc; }
+    .drawer-body::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, #b7d8e8, #9ecce0);
       border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       DRAWER SEARCH + FILTER (داخل الصفحة الفرعية)
+    ========================================================= */
+
+    .drawer-filters {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      margin-bottom: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: rgba(247,252,255,.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 6px 0 10px;
+      border-radius: 14px;
+    }
+
+    .drawer-filters input {
+      width: 100%;
+      min-height: 48px;
+      padding: 11px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 13px;
+      background: white;
+      font-size: 14px;
+      outline: none;
+      color: var(--text-dark);
+      transition: var(--transition);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .drawer-filters input::placeholder { color: #91a8b5; }
+
+    .drawer-filters input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(7,136,199,.08), var(--shadow-xs);
+    }
+
+    .drawer-refresh-btn {
+      min-height: 48px;
+      padding: 11px 18px;
+      border: 1px solid var(--border);
+      background: white;
+      color: var(--primary-dark);
+      border-radius: 13px;
+      font-size: 13px;
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
+      justify-content: center;
+      gap: 7px;
+      transition: var(--transition);
+      box-shadow: var(--shadow-xs);
+      white-space: nowrap;
     }
-    .status-badge.active {
+
+    .drawer-refresh-btn:hover {
+      background: var(--blue-soft);
+      border-color: rgba(7,136,199,.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(7,136,199,.12);
+    }
+
+
+    /* =========================================================
+       DRAWER — بطاقات التحاليل
+    ========================================================= */
+
+    .tests-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .test-card-item {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      animation: cardIn .35s ease backwards;
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .test-card-item::before {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--primary), var(--primary-light));
+      transform: scaleY(0);
+      transform-origin: center;
+      transition: transform .3s ease;
+      border-radius: 0 16px 16px 0;
+    }
+
+    .test-card-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .test-card-item:hover {
+      border-color: rgba(7,136,199,.25);
+      transform: translateX(-4px);
+      box-shadow: 0 10px 28px rgba(17,88,120,.10);
+    }
+
+    .test-card-item.inactive-item {
+      opacity: .75;
+    }
+
+    .test-card-item.inactive-item::before {
+      background: linear-gradient(180deg, var(--warning), #f0b254);
+    }
+
+    .test-card-main {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .test-card-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      background: linear-gradient(135deg, var(--blue-soft), #d6eefa);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .test-card-item:hover .test-card-avatar {
+      transform: scale(1.08) rotate(-4deg);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+
+    .test-card-item.inactive-item .test-card-avatar {
+      background: linear-gradient(135deg, var(--warning-soft), #ffedcc);
+      color: var(--warning);
+    }
+
+    .test-card-info {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .test-card-name {
+      font-weight: 800;
+      color: var(--text-dark);
+      font-size: 14.5px;
+      margin-bottom: 4px;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .test-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      font-size: 12px;
+      color: var(--text-light);
+    }
+
+    .test-card-meta .meta-cat {
+      background: var(--blue-soft);
+      color: var(--primary-dark);
+      padding: 2px 9px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 11px;
+      border: 1px solid rgba(7,136,199,.08);
+    }
+
+    .test-card-meta .meta-price {
+      color: var(--success);
+      font-weight: 800;
+      font-size: 12.5px;
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .test-card-meta .meta-status {
+      padding: 2px 9px;
+      border-radius: 10px;
+      font-weight: 800;
+      font-size: 11px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .test-card-meta .meta-status.active {
       background: var(--success-soft);
       color: var(--success);
     }
-    .status-badge.inactive {
+
+    .test-card-meta .meta-status.inactive {
       background: var(--warning-soft);
       color: var(--warning);
     }
 
-    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
-    .act-btn {
-      width: 34px; height: 34px;
-      border-radius: 9px;
+    .test-card-meta .meta-status i {
+      font-size: 6px;
+    }
+
+    .test-card-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .test-card-actions .act-btn {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
       border: 1px solid var(--border);
       background: white;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       font-size: 13px;
-      transition: 0.2s;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
     }
-    .act-btn.edit { color: var(--primary); }
-    .act-btn.toggle { color: var(--warning); }
-    .act-btn.delete { color: var(--danger); }
-    .act-btn:hover { transform: translateY(-2px); background: var(--blue-soft); }
 
-    .loading { text-align: center; padding: 45px; }
+    .test-card-actions .act-btn.edit { color: var(--primary); }
+    .test-card-actions .act-btn.toggle { color: var(--warning); }
+    .test-card-actions .act-btn.delete { color: var(--danger); }
+
+    .test-card-actions .act-btn:hover {
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 6px 16px rgba(20,90,120,.12);
+    }
+
+    .test-card-actions .act-btn.edit:hover {
+      background: var(--blue-soft);
+      border-color: rgba(7,136,199,.3);
+    }
+
+    .test-card-actions .act-btn.toggle:hover {
+      background: var(--warning-soft);
+      border-color: rgba(217,132,8,.3);
+    }
+
+    .test-card-actions .act-btn.delete:hover {
+      background: var(--danger-soft);
+      border-color: rgba(209,63,53,.3);
+    }
+
+    .test-card-actions .act-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+
+    /* =========================================================
+       DRAWER FOOTER
+    ========================================================= */
+
+    .drawer-footer {
+      padding: 16px 22px;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .drawer-footer-info {
+      color: var(--text-light);
+      font-size: 12.5px;
+      font-weight: 700;
+    }
+
+    .drawer-footer-info strong {
+      color: var(--primary-deep);
+      font-weight: 800;
+    }
+
+
+    /* =========================================================
+       LOADING
+    ========================================================= */
+
+    .loading {
+      text-align: center;
+      padding: 70px 20px;
+    }
+
     .spinner {
       display: inline-block;
-      width: 38px; height: 38px;
+      width: 44px;
+      height: 44px;
       border: 4px solid var(--border);
       border-top-color: var(--primary);
+      border-right-color: var(--primary-light);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin .8s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+
+    /* =========================================================
+       EMPTY
+    ========================================================= */
 
     .empty-state {
       text-align: center;
-      padding: 60px 20px;
+      padding: 70px 20px;
       color: var(--text-light);
     }
-    .empty-state i {
-      font-size: 50px;
-      margin-bottom: 15px;
-      color: var(--border);
-      display: block;
-    }
-    .empty-state h3 { color: var(--text-dark); margin-bottom: 6px; }
 
-    /* Modal */
+    .empty-state i {
+      font-size: 52px;
+      margin-bottom: 16px;
+      color: #cfe2eb;
+      display: block;
+      animation: floatIcon 3s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .empty-state h3 {
+      color: var(--text-dark);
+      margin-bottom: 6px;
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+
+    .empty-state p { font-size: 13px; }
+
+
+    /* =========================================================
+       MODAL
+    ========================================================= */
+
     .modal-overlay {
       position: fixed;
       inset: 0;
-      background: rgba(10, 40, 60, 0.5);
-      z-index: 2000;
+      background: rgba(5,40,60,.5);
+      z-index: 5000;
       display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      backdrop-filter: blur(4px);
+      padding: 15px;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      opacity: 0;
+      transition: opacity .25s ease;
     }
-    .modal-overlay.show { display: flex; }
+
+    .modal-overlay.show {
+      display: flex;
+      opacity: 1;
+    }
+
     .modal {
       background: white;
-      border-radius: 20px;
+      border-radius: clamp(18px, 3vw, 24px);
       width: 100%;
-      max-width: 620px;
+      max-width: 640px;
       max-height: 92vh;
       overflow-y: auto;
-      box-shadow: 0 30px 80px rgba(0,0,0,0.3);
-      animation: modalIn 0.25s ease;
+      box-shadow: 0 30px 100px rgba(0,0,0,.28);
+      animation: modalIn .35s cubic-bezier(.34,1.56,.64,1);
+      scrollbar-width: thin;
+      scrollbar-color: #b7d8e8 #f3f9fc;
     }
+
+    .modal::-webkit-scrollbar { width: 7px; }
+    .modal::-webkit-scrollbar-track { background: #f3f9fc; }
+    .modal::-webkit-scrollbar-thumb {
+      background: #b7d8e8;
+      border-radius: 20px;
+    }
+
     @keyframes modalIn {
-      from { opacity: 0; transform: translateY(20px) scale(0.98); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(.96);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
     }
+
     .modal-header {
       padding: 20px 24px;
       border-bottom: 1px solid var(--border);
       display: flex;
       justify-content: space-between;
       align-items: center;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2;
+      border-radius: 24px 24px 0 0;
     }
+
     .modal-header h3 {
-      color: var(--primary-dark);
-      font-size: 1.2rem;
+      color: var(--primary-deep);
+      font-size: 1.15rem;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 9px;
+      font-weight: 800;
     }
+
     .modal-header h3 i { color: var(--primary); }
+
     .close-btn {
-      width: 36px; height: 36px;
-      border-radius: 10px;
+      width: 38px;
+      height: 38px;
+      flex-shrink: 0;
+      border-radius: 11px;
       border: none;
       background: var(--blue-soft);
       color: var(--text-light);
-      font-size: 18px;
+      font-size: 20px;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: 0.2s;
+      transition: var(--transition);
+      line-height: 1;
     }
-    .close-btn:hover { background: var(--danger-soft); color: var(--danger); }
+
+    .close-btn:hover {
+      background: var(--danger-soft);
+      color: var(--danger);
+      transform: rotate(90deg);
+    }
+
     .modal-body { padding: 24px; }
+
     .modal-footer {
       padding: 16px 24px;
       border-top: 1px solid var(--border);
       display: flex;
       gap: 10px;
       justify-content: flex-end;
+      position: sticky;
+      bottom: 0;
+      background: rgba(255,255,255,.97);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 2;
+      border-radius: 0 0 24px 24px;
     }
+
+
+    /* =========================================================
+       FORMS
+    ========================================================= */
 
     .form-group {
       margin-bottom: 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 7px;
     }
+
     .form-group label {
-      font-size: 13.5px;
-      font-weight: 700;
+      font-size: 13px;
+      font-weight: 800;
       color: var(--text-dark);
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
-    .form-group label i { color: var(--primary); font-size: 12px; }
+
+    .form-group label i {
+      color: var(--primary);
+      font-size: 12px;
+      width: 14px;
+      text-align: center;
+    }
+
     .form-group label .required { color: var(--danger); }
+
     .form-group input,
     .form-group select,
     .form-group textarea {
       width: 100%;
-      padding: 11px 13px;
+      padding: 11px 14px;
+      min-height: 46px;
       border: 1.5px solid var(--border);
-      border-radius: 10px;
+      border-radius: 12px;
       background: var(--blue-softer);
-      font-family: inherit;
-      font-size: 14px;
+      font-size: 13.5px;
       outline: none;
-      transition: 0.2s;
+      transition: var(--transition);
       color: var(--text-dark);
     }
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 85px;
+    }
+
     .form-group input:focus,
     .form-group select:focus,
     .form-group textarea:focus {
       border-color: var(--primary);
       background: white;
-      box-shadow: 0 0 0 3px rgba(10,124,184,0.08);
+      box-shadow: 0 0 0 4px rgba(7,136,199,.08);
     }
-    .form-group small { color: var(--text-light); font-size: 12px; }
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+    .form-group small {
+      color: var(--text-light);
+      font-size: 11.5px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
 
     .btn {
-      padding: 12px 22px;
-      border-radius: 10px;
+      min-height: 46px;
+      padding: 11px 22px;
+      border-radius: 12px;
       border: none;
-      font-family: inherit;
-      font-size: 14.5px;
-      font-weight: 700;
+      font-size: 13.5px;
+      font-weight: 800;
       cursor: pointer;
-      transition: 0.2s;
+      transition: var(--transition);
       display: inline-flex;
       align-items: center;
-      gap: 7px;
+      justify-content: center;
+      gap: 8px;
     }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary), var(--primary-light));
       color: white;
-      box-shadow: 0 6px 18px -6px rgba(10,124,184,0.5);
+      box-shadow: 0 8px 20px rgba(7,136,199,.25);
+      position: relative;
+      overflow: hidden;
     }
-    .btn-primary:hover { transform: translateY(-2px); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .btn-primary::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent, rgba(255,255,255,.2), transparent);
+      transform: translateX(-100%);
+      transition: transform .6s ease;
+    }
+
+    .btn-primary:hover::after {
+      transform: translateX(100%);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(7,136,199,.32);
+    }
+
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-primary:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
     .btn-ghost {
       background: var(--blue-soft);
       color: var(--primary-dark);
       border: 1px solid var(--border);
     }
-    .btn-ghost:hover { background: var(--blue-softer); }
+
+    .btn-ghost:hover {
+      background: var(--blue-softer);
+      transform: translateY(-1px);
+    }
+
     .btn-danger {
       background: var(--danger-soft);
       color: var(--danger);
       border: 1px solid var(--danger);
     }
-    .btn-danger:hover { background: var(--danger); color: white; }
 
-    /* Category list */
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+      transform: translateY(-1px);
+    }
+
+
+    /* =========================================================
+       CATEGORY LIST
+    ========================================================= */
+
     .category-list {
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      max-height: 350px;
+      gap: 9px;
+      max-height: 380px;
       overflow-y: auto;
       margin-top: 15px;
+      padding-left: 2px;
+      scrollbar-width: thin;
+      scrollbar-color: #b7d8e8 #f3f9fc;
     }
+
+    .category-list::-webkit-scrollbar { width: 6px; }
+    .category-list::-webkit-scrollbar-track { background: #f3f9fc; }
+    .category-list::-webkit-scrollbar-thumb {
+      background: #b7d8e8;
+      border-radius: 20px;
+    }
+
     .category-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 14px;
+      gap: 10px;
+      padding: 12px 15px;
       border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--blue-softer);
-    }
-    .category-item .cat-name {
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-    .category-item .cat-count {
-      font-size: 12px;
-      color: var(--text-light);
-      background: white;
-      padding: 3px 10px;
       border-radius: 12px;
-      margin-right: 8px;
+      background: linear-gradient(135deg, #f9fdff, #f3faff);
+      transition: var(--transition);
     }
 
-    /* Toast */
+    .category-item:hover {
+      border-color: rgba(7,136,199,.25);
+      transform: translateX(-3px);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .category-item .cat-name {
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+
+    .category-item .cat-count {
+      font-size: 11px;
+      color: var(--text-light);
+      background: white;
+      border: 1px solid var(--border);
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-right: 7px;
+      white-space: nowrap;
+      font-weight: 700;
+    }
+
+
+    /* =========================================================
+       TOAST
+    ========================================================= */
+
     .toast-container {
       position: fixed;
-      top: 90px;
-      left: 20px;
+      top: calc(var(--topbar-h) + 16px);
+      left: 18px;
       z-index: 9999;
       display: flex;
       flex-direction: column;
       gap: 10px;
       pointer-events: none;
     }
+
     .toast {
-      background: white;
-      border-radius: 12px;
-      padding: 14px 18px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+      background: rgba(255,255,255,.98);
+      border-radius: 14px;
+      padding: 14px 17px;
+      box-shadow: 0 16px 48px rgba(0,0,0,.15);
       display: flex;
       align-items: center;
       gap: 10px;
       min-width: 280px;
-      max-width: 420px;
+      max-width: 440px;
       border-right: 4px solid var(--primary);
-      animation: toastIn 0.3s ease;
+      animation: toastIn .4s cubic-bezier(.34,1.56,.64,1);
       pointer-events: all;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
-    .toast.success { border-right-color: var(--success); color: var(--success); }
-    .toast.error   { border-right-color: var(--danger);  color: var(--danger); }
-    .toast.warning { border-right-color: var(--warning); color: var(--warning); }
+
+    .toast.success {
+      border-right-color: var(--success);
+      color: var(--success);
+    }
+
+    .toast.error {
+      border-right-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .toast.warning {
+      border-right-color: var(--warning);
+      color: var(--warning);
+    }
+
     @keyframes toastIn {
-      from { opacity: 0; transform: translateX(-20px); }
-      to   { opacity: 1; transform: translateX(0); }
+      from {
+        opacity: 0;
+        transform: translateX(-24px) scale(.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
     }
+
+
+    /* =========================================================
+       RESPONSIVE — VERY LARGE SCREENS (TV / CINEMA)
+    ========================================================= */
+
+    @media (min-width: 2200px) {
+
+      :root {
+        --topbar-h: 88px;
+      }
+
+      .page {
+        max-width: 2000px;
+        padding-left: 60px;
+        padding-right: 60px;
+      }
+
+      .brand-logo {
+        width: 58px;
+        height: 58px;
+        font-size: 26px;
+        border-radius: 18px;
+      }
+
+      .brand-text h1 { font-size: 1.5rem; }
+      .brand-text span { font-size: 14px; }
+
+      .top-btn {
+        min-height: 48px;
+        padding: 12px 22px;
+        font-size: 15px;
+        border-radius: 14px;
+      }
+
+      .page-head { padding: 36px; }
+      .page-head h2 { font-size: 2.4rem; }
+      .page-head p { font-size: 17px; }
+
+      .add-btn {
+        min-height: 56px;
+        padding: 16px 32px;
+        font-size: 17px;
+        border-radius: 18px;
+      }
+
+      .stat-card { padding: 28px; gap: 18px; }
+      .stat-icon { width: 68px; height: 68px; font-size: 28px; border-radius: 20px; }
+      .stat-info span { font-size: 15px; }
+      .stat-info strong { font-size: 2.2rem; }
+
+      .filters-card { padding: 22px; gap: 14px; }
+      .filters-card input,
+      .filters-card select { min-height: 54px; font-size: 16px; padding: 14px 18px; }
+      .filter-btn { min-height: 54px; font-size: 15px; padding: 14px 24px; }
+
+      .open-list-trigger { padding: 26px 32px; min-height: 88px; }
+      .open-list-trigger-icon { width: 64px; height: 64px; font-size: 28px; border-radius: 20px; }
+      .open-list-trigger-text h3 { font-size: 1.5rem; }
+      .open-list-trigger-text p { font-size: 15px; }
+      .open-list-trigger-right .count { font-size: 15px; padding: 8px 18px; }
+      .open-list-trigger-arrow { width: 52px; height: 52px; font-size: 18px; border-radius: 15px; }
+
+      .drawer-panel { width: min(900px, 100%); }
+      .drawer-header { padding: 28px 34px; }
+      .drawer-header-icon { width: 60px; height: 60px; font-size: 26px; border-radius: 18px; }
+      .drawer-header-text h2 { font-size: 1.7rem; }
+      .drawer-header-text p { font-size: 15px; }
+      .drawer-close-btn { width: 52px; height: 52px; font-size: 22px; border-radius: 15px; }
+
+      .drawer-body { padding: 26px 30px 40px; }
+      .drawer-filters input { min-height: 58px; font-size: 16px; padding: 14px 20px; }
+      .drawer-refresh-btn { min-height: 58px; font-size: 15px; padding: 14px 24px; }
+
+      .test-card-item { padding: 22px 26px; gap: 18px; }
+      .test-card-avatar { width: 58px; height: 58px; font-size: 24px; border-radius: 16px; }
+      .test-card-name { font-size: 17px; }
+      .test-card-meta { font-size: 14px; gap: 10px; }
+      .test-card-meta .meta-cat,
+      .test-card-meta .meta-status { font-size: 13px; padding: 4px 12px; }
+      .test-card-meta .meta-price { font-size: 15px; }
+      .test-card-actions .act-btn { width: 48px; height: 48px; font-size: 16px; border-radius: 13px; }
+    }
+
+
+    @media (min-width: 1600px) and (max-width: 2199px) {
+
+      .page { max-width: 1700px; }
+
+      .stat-card { padding: 24px; }
+      .stat-icon { width: 60px; height: 60px; font-size: 25px; }
+
+      .drawer-panel { width: min(820px, 100%); }
+      .test-card-item { padding: 18px 22px; }
+    }
+
+
+    /* =========================================================
+       RESPONSIVE — TABLETS / SMALL LAPTOP
+    ========================================================= */
+
+    @media (max-width: 1050px) {
+
+      .stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .filters-card {
+        grid-template-columns: 1.5fr 1fr;
+      }
+
+      .filter-btn { width: 100%; }
+
+      .drawer-panel { width: min(640px, 100%); }
+    }
+
 
     @media (max-width: 900px) {
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .filters-card { grid-template-columns: 1fr 1fr; }
-      .topbar { padding: 0 15px; height: 64px; }
+
+      .page-head {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 18px;
+      }
+
+      .page-head-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 100%;
+      }
+
+      .add-btn { width: 100%; }
+    }
+
+
+    /* =========================================================
+       RESPONSIVE — MOBILE
+    ========================================================= */
+
+    @media (max-width: 700px) {
+
+      :root {
+        --topbar-h: 62px;
+      }
+
+      .topbar {
+        min-height: var(--topbar-h);
+        padding: 8px 12px;
+        gap: 10px;
+      }
+
+      .brand-logo {
+        width: 40px;
+        height: 40px;
+        border-radius: 12px;
+        font-size: 17px;
+      }
+
       .brand-text span { display: none; }
-      .page { padding: 20px 15px 50px; }
-      .page-head h2 { font-size: 1.4rem; }
-    }
-    @media (max-width: 600px) {
-      .stats { grid-template-columns: 1fr; }
-      .filters-card { grid-template-columns: 1fr; }
-      .page-head { flex-direction: column; align-items: stretch; }
-      .add-btn { justify-content: center; }
-      .form-row { grid-template-columns: 1fr; }
+      .brand-text h1 { font-size: 1rem; }
+
+      .top-actions { gap: 5px; }
+
+      .top-btn {
+        width: 40px;
+        min-height: 40px;
+        padding: 0;
+        border-radius: 11px;
+      }
+
       .top-btn span { display: none; }
+
+      .page { padding: 16px 12px 55px; }
+
+      .page-head {
+        padding: 20px;
+        border-radius: 20px;
+        gap: 16px;
+      }
+
+      .page-head h2 { font-size: 1.3rem; }
+      .page-head p { font-size: 12.5px; }
+
+      .add-btn {
+        min-height: 48px;
+        font-size: 14px;
+        border-radius: 14px;
+      }
+
+      .stats {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 14px;
+        gap: 10px;
+        border-radius: 16px;
+      }
+
+      .stat-icon {
+        width: 46px;
+        height: 46px;
+        border-radius: 13px;
+        font-size: 18px;
+      }
+
+      .stat-info span { font-size: 11px; }
+      .stat-info strong { font-size: 1.35rem; }
+
+      .filters-card {
+        grid-template-columns: 1fr;
+        padding: 13px;
+        gap: 9px;
+        border-radius: 16px;
+      }
+
+      .filters-card input,
+      .filters-card select { min-height: 46px; font-size: 13.5px; }
+
+      .filter-btn { min-height: 46px; font-size: 13.5px; }
+
+      .open-list-trigger {
+        padding: 16px 18px;
+        min-height: 66px;
+        gap: 12px;
+      }
+
+      .open-list-trigger-icon {
+        width: 46px;
+        height: 46px;
+        font-size: 19px;
+        border-radius: 14px;
+      }
+
+      .open-list-trigger-text h3 { font-size: 1rem; }
+      .open-list-trigger-text p { font-size: 11.5px; }
+
+      .open-list-trigger-right .count {
+        font-size: 11px;
+        padding: 4px 10px;
+      }
+
+      .open-list-trigger-arrow {
+        width: 36px;
+        height: 36px;
+        font-size: 13px;
+        border-radius: 10px;
+      }
+
+      .drawer-panel { width: 100%; }
+
+      .drawer-header {
+        padding: 16px 18px;
+        gap: 12px;
+      }
+
+      .drawer-header-icon {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+        border-radius: 13px;
+      }
+
+      .drawer-header-text h2 { font-size: 1.05rem; }
+      .drawer-header-text p { font-size: 11.5px; }
+
+      .drawer-close-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+
+      .drawer-body { padding: 14px 14px 24px; }
+
+      .drawer-filters {
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+
+      .drawer-filters input {
+        min-height: 46px;
+        font-size: 13.5px;
+        padding: 10px 14px;
+      }
+
+      .drawer-refresh-btn {
+        min-height: 46px;
+        font-size: 13px;
+        padding: 10px 14px;
+      }
+
+      .drawer-refresh-btn span { display: none; }
+
+      .test-card-item {
+        padding: 13px 14px;
+        gap: 10px;
+        border-radius: 14px;
+      }
+
+      .test-card-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 16px;
+        border-radius: 12px;
+      }
+
+      .test-card-name { font-size: 13.5px; }
+
+      .test-card-meta { font-size: 11px; gap: 5px; }
+
+      .test-card-meta .meta-cat,
+      .test-card-meta .meta-status {
+        font-size: 10px;
+        padding: 2px 8px;
+      }
+
+      .test-card-meta .meta-price { font-size: 11.5px; }
+
+      .test-card-actions { gap: 4px; }
+
+      .test-card-actions .act-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+        border-radius: 9px;
+      }
+
+      .drawer-footer {
+        padding: 12px 16px;
+        gap: 10px;
+      }
+
+      .drawer-footer-info { font-size: 11.5px; }
+
+      .modal-overlay { padding: 10px; }
+      .modal { max-height: 96vh; border-radius: 20px; }
+      .modal-header { padding: 16px 18px; border-radius: 20px 20px 0 0; }
+      .modal-header h3 { font-size: 1.05rem; }
+      .modal-body { padding: 18px; }
+      .modal-footer {
+        padding: 14px 18px;
+        flex-direction: column-reverse;
+        border-radius: 0 0 20px 20px;
+      }
+      .modal-footer .btn { width: 100%; }
+
+      .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .form-group input,
+      .form-group select,
+      .form-group textarea { min-height: 46px; font-size: 14px; }
+
+      .toast-container {
+        top: calc(var(--topbar-h) + 12px);
+        left: 10px;
+        right: 10px;
+      }
+
+      .toast {
+        min-width: 0;
+        width: 100%;
+        max-width: none;
+        font-size: 12.5px;
+      }
     }
+
+
+    /* =========================================================
+       RESPONSIVE — VERY SMALL PHONES
+    ========================================================= */
+
+    @media (max-width: 420px) {
+
+      .stats { grid-template-columns: 1fr; }
+      .stat-card { min-height: 66px; }
+
+      .page-head h2 { font-size: 1.2rem; }
+      .page-head p { font-size: 12px; }
+
+      .add-btn { font-size: 13px; padding: 10px 18px; }
+
+      .open-list-trigger {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+      }
+
+      .open-list-trigger-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .test-card-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .test-card-actions {
+        justify-content: flex-end;
+      }
+
+      .drawer-footer {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .drawer-footer .btn {
+        width: 100%;
+      }
+    }
+
+
+    @media (max-width: 360px) {
+
+      .page { padding-left: 8px; padding-right: 8px; }
+      .topbar { padding-left: 8px; padding-right: 8px; }
+
+      .brand { gap: 8px; }
+      .brand-logo { width: 36px; height: 36px; font-size: 15px; border-radius: 10px; }
+      .brand-text h1 { font-size: .9rem; }
+
+      .top-btn { width: 36px; min-height: 36px; border-radius: 10px; }
+
+      .stat-card { padding: 12px; gap: 8px; }
+      .stat-icon { width: 40px; height: 40px; font-size: 16px; border-radius: 11px; }
+      .stat-info strong { font-size: 1.2rem; }
+
+      .test-card-avatar { width: 38px; height: 38px; font-size: 15px; }
+      .test-card-actions .act-btn { width: 32px; height: 32px; font-size: 11px; }
+    }
+
+
+    /* =========================================================
+       FOLDABLE / NARROW DEVICES
+    ========================================================= */
+
+    @media (max-width: 320px) {
+
+      .page { padding-left: 6px; padding-right: 6px; }
+      .topbar { padding-left: 6px; padding-right: 6px; }
+
+      .brand { gap: 6px; }
+      .brand-logo { width: 34px; height: 34px; font-size: 14px; border-radius: 9px; }
+      .brand-text h1 { font-size: .85rem; }
+
+      .top-btn { width: 34px; min-height: 34px; }
+    }
+
+
+    /* =========================================================
+       REDUCE MOTION
+    ========================================================= */
+
+    @media (prefers-reduced-motion: reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+
+    /* =========================================================
+       PRINT
+    ========================================================= */
+
+    @media print {
+
+      .topbar,
+      .filters-card,
+      .page-head-actions,
+      .actions,
+      .toast-container,
+      .open-list-trigger-arrow,
+      .drawer-close-btn,
+      .drawer-refresh-btn,
+      .test-card-actions {
+        display: none !important;
+      }
+
+      .drawer-overlay {
+        position: static;
+        background: white;
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      .drawer-panel {
+        transform: none;
+        box-shadow: none;
+        width: 100%;
+      }
+
+      .stat-card {
+        box-shadow: none;
+        border: 1px solid #ddd;
+      }
+
+      body {
+        background: white;
+      }
+    }
+
   </style>
 </head>
+
 <body>
 
+  <!-- =======================================================
+       TOPBAR
+  ======================================================= -->
+
   <header class="topbar">
+
     <a href="admin.html" class="brand">
-      <div class="brand-logo"><i class="fas fa-flask"></i></div>
+
+      <div class="brand-logo">
+        <i class="fas fa-flask"></i>
+      </div>
+
       <div class="brand-text">
         <h1>معمل ميدلاب</h1>
         <span>إدارة التحاليل</span>
       </div>
+
     </a>
+
+
     <div class="top-actions">
-      <button class="top-btn" onclick="openCategoryModal()">
-        <i class="fas fa-layer-group"></i> <span>التصنيفات</span>
+
+      <button
+        class="top-btn"
+        type="button"
+        onclick="openCategoryModal()"
+        title="إدارة التصنيفات">
+
+        <i class="fas fa-layer-group"></i>
+        <span>التصنيفات</span>
+
       </button>
-      <a href="admin.html" class="top-btn">
-        <i class="fas fa-arrow-right"></i> <span>لوحة التحكم</span>
+
+
+      <a
+        href="admin.html"
+        class="top-btn"
+        title="العودة إلى الصفحة الرئيسية">
+
+        <i class="fas fa-house"></i>
+        <span>الرئيسية</span>
+
       </a>
+
     </div>
+
   </header>
+
+
+  <!-- =======================================================
+       MAIN
+  ======================================================= -->
 
   <main class="page">
 
+
+    <!-- PAGE HEADER -->
+
     <div class="page-head">
+
       <div>
-        <h2><i class="fas fa-vials"></i> إدارة التحاليل</h2>
-        <p>إضافة وتعديل وحذف التحاليل والأسعار والتصنيفات</p>
+
+        <h2>
+          <i class="fas fa-vials"></i>
+          إدارة التحاليل
+        </h2>
+
+        <p>
+          إضافة وتعديل وحذف التحاليل والأسعار والتصنيفات
+        </p>
+
       </div>
-      <button class="add-btn" onclick="openTestModal()">
-        <i class="fas fa-plus"></i> إضافة تحليل جديد
-      </button>
+
+
+      <div class="page-head-actions">
+
+        <button
+          class="add-btn"
+          type="button"
+          onclick="openTestModal()">
+
+          <i class="fas fa-plus"></i>
+          إضافة تحليل جديد
+
+        </button>
+
+      </div>
+
     </div>
 
-    <!-- Stats -->
+
+    <!-- =====================================================
+         STATS
+    ====================================================== -->
+
     <div class="stats">
+
+
       <div class="stat-card">
-        <div class="stat-icon blue"><i class="fas fa-vials"></i></div>
+
+        <div class="stat-icon blue">
+          <i class="fas fa-vials"></i>
+        </div>
+
         <div class="stat-info">
           <span>إجمالي التحاليل</span>
           <strong id="totalTests">0</strong>
         </div>
+
       </div>
+
+
       <div class="stat-card">
-        <div class="stat-icon green"><i class="fas fa-check-circle"></i></div>
+
+        <div class="stat-icon green">
+          <i class="fas fa-check-circle"></i>
+        </div>
+
         <div class="stat-info">
           <span>التحاليل النشطة</span>
           <strong id="activeTests">0</strong>
         </div>
+
       </div>
+
+
       <div class="stat-card">
-        <div class="stat-icon orange"><i class="fas fa-pause-circle"></i></div>
+
+        <div class="stat-icon orange">
+          <i class="fas fa-pause-circle"></i>
+        </div>
+
         <div class="stat-info">
           <span>التحاليل الموقوفة</span>
           <strong id="inactiveTests">0</strong>
         </div>
+
       </div>
+
+
       <div class="stat-card">
-        <div class="stat-icon purple"><i class="fas fa-layer-group"></i></div>
+
+        <div class="stat-icon purple">
+          <i class="fas fa-layer-group"></i>
+        </div>
+
         <div class="stat-info">
           <span>التصنيفات</span>
           <strong id="totalCategories">0</strong>
         </div>
+
       </div>
+
     </div>
 
-    <!-- Filters -->
+
+    <!-- =====================================================
+         FILTERS
+    ====================================================== -->
+
     <div class="filters-card">
-      <input type="text" id="searchInput" placeholder="🔍 ابحث باسم التحليل...">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 ابحث باسم التحليل...">
+
+
       <select id="categoryFilter">
         <option value="">كل التصنيفات</option>
       </select>
-      <button class="filter-btn" onclick="loadData()">
-        <i class="fas fa-sync"></i> تحديث
+
+
+      <button
+        class="filter-btn"
+        type="button"
+        onclick="loadData()">
+
+        <i class="fas fa-sync"></i>
+        تحديث
+
       </button>
-      <button class="filter-btn" onclick="clearFilters()">
-        <i class="fas fa-times"></i> مسح
+
+
+      <button
+        class="filter-btn"
+        type="button"
+        onclick="clearFilters()">
+
+        <i class="fas fa-times"></i>
+        مسح
+
       </button>
+
     </div>
 
-    <!-- Table -->
-    <div class="table-card">
-      <div class="table-header">
-        <h3><i class="fas fa-list"></i> قائمة التحاليل</h3>
-        <span class="count" id="resultsCount">0 تحليل</span>
+
+    <!-- =====================================================
+         زر فتح قائمة التحاليل (مثل الـ Select)
+    ====================================================== -->
+
+    <div class="open-list-card">
+
+      <div
+        class="open-list-trigger"
+        onclick="openTestsDrawer()">
+
+        <div class="open-list-trigger-left">
+
+          <div class="open-list-trigger-icon">
+            <i class="fas fa-list"></i>
+          </div>
+
+          <div class="open-list-trigger-text">
+
+            <h3>
+              <i class="fas fa-vials"></i>
+              عرض قائمة التحاليل
+            </h3>
+
+            <p>
+              اضغط لعرض وإدارة جميع التحاليل
+            </p>
+
+          </div>
+
+        </div>
+
+
+        <div class="open-list-trigger-right">
+
+          <span
+            class="count"
+            id="resultsCount">
+
+            0 تحليل
+
+          </span>
+
+          <div class="open-list-trigger-arrow">
+            <i class="fas fa-arrow-left"></i>
+          </div>
+
+        </div>
+
       </div>
-      <div class="table-wrap" id="tableContainer">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
+
     </div>
 
   </main>
 
-  <!-- ============================================
-       Test Modal
-  ============================================ -->
-  <div class="modal-overlay" id="testModal">
-    <div class="modal">
-      <div class="modal-header">
-        <h3 id="testModalTitle"><i class="fas fa-vial"></i> إضافة تحليل</h3>
-        <button class="close-btn" onclick="closeModal('testModal')">×</button>
+
+  <!-- =======================================================
+       DRAWER — صفحة فرعية لعرض التحاليل
+  ======================================================= -->
+
+  <div
+    class="drawer-overlay"
+    id="testsDrawer"
+    onclick="handleDrawerOverlayClick(event)">
+
+    <div
+      class="drawer-panel"
+      onclick="event.stopPropagation()">
+
+
+      <!-- DRAWER HEADER -->
+
+      <div class="drawer-header">
+
+        <div class="drawer-header-left">
+
+          <div class="drawer-header-icon">
+            <i class="fas fa-vials"></i>
+          </div>
+
+          <div class="drawer-header-text">
+
+            <h2>قائمة التحاليل</h2>
+
+            <p>إدارة وعرض جميع التحاليل المتاحة</p>
+
+          </div>
+
+        </div>
+
+
+        <button
+          class="drawer-close-btn"
+          type="button"
+          onclick="closeTestsDrawer()"
+          title="إغلاق">
+
+          <i class="fas fa-times"></i>
+
+        </button>
+
       </div>
+
+
+      <!-- DRAWER BODY -->
+
+      <div class="drawer-body">
+
+
+        <!-- بحث داخل الصفحة الفرعية -->
+
+        <div class="drawer-filters">
+
+          <input
+            type="text"
+            id="drawerSearchInput"
+            placeholder="🔍 ابحث عن تحليل...">
+
+
+          <button
+            class="drawer-refresh-btn"
+            type="button"
+            onclick="loadData()"
+            title="تحديث">
+
+            <i class="fas fa-sync"></i>
+            <span>تحديث</span>
+
+          </button>
+
+        </div>
+
+
+        <!-- قائمة التحاليل -->
+
+        <div
+          class="tests-list"
+          id="testsListContainer">
+
+          <div class="loading">
+            <div class="spinner"></div>
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- DRAWER FOOTER -->
+
+      <div class="drawer-footer">
+
+        <div class="drawer-footer-info">
+
+          <i class="fas fa-info-circle"></i>
+          إجمالي:
+          <strong id="drawerTotalCount">0</strong>
+          تحليل
+
+        </div>
+
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          onclick="openTestModal()">
+
+          <i class="fas fa-plus"></i>
+          إضافة تحليل
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =======================================================
+       TEST MODAL
+  ======================================================= -->
+
+  <div
+    class="modal-overlay"
+    id="testModal">
+
+    <div class="modal">
+
+
+      <div class="modal-header">
+
+        <h3 id="testModalTitle">
+
+          <i class="fas fa-vial"></i>
+          إضافة تحليل
+
+        </h3>
+
+
+        <button
+          class="close-btn"
+          type="button"
+          onclick="closeModal('testModal')">
+
+          ×
+
+        </button>
+
+      </div>
+
+
       <form id="testForm">
+
         <div class="modal-body">
-          <input type="hidden" id="testId">
+
+          <input
+            type="hidden"
+            id="testId">
+
 
           <div class="form-group">
-            <label><i class="fas fa-vial"></i> اسم التحليل <span class="required">*</span></label>
-            <input type="text" id="testName" required>
+
+            <label>
+              <i class="fas fa-vial"></i>
+              اسم التحليل
+              <span class="required">*</span>
+            </label>
+
+            <input
+              type="text"
+              id="testName"
+              required>
+
           </div>
+
 
           <div class="form-row">
+
+
             <div class="form-group">
-              <label><i class="fas fa-money-bill"></i> السعر (ج.م) <span class="required">*</span></label>
-              <input type="number" id="testPrice" min="0" step="0.5" required>
+
+              <label>
+                <i class="fas fa-money-bill"></i>
+                السعر (ج.م)
+                <span class="required">*</span>
+              </label>
+
+              <input
+                type="number"
+                id="testPrice"
+                min="0"
+                step="0.5"
+                required>
+
             </div>
+
+
             <div class="form-group">
-              <label><i class="fas fa-layer-group"></i> التصنيف <span class="required">*</span></label>
-              <select id="testCategory" required></select>
+
+              <label>
+                <i class="fas fa-layer-group"></i>
+                التصنيف
+                <span class="required">*</span>
+              </label>
+
+              <select
+                id="testCategory"
+                required>
+
+              </select>
+
             </div>
+
           </div>
 
-          <div class="form-group">
-            <label><i class="fas fa-align-right"></i> وصف التحليل</label>
-            <textarea id="testDescription" rows="2" placeholder="اختياري..."></textarea>
-          </div>
 
           <div class="form-group">
-            <label><i class="fas fa-toggle-on"></i> حالة التحليل</label>
+
+            <label>
+              <i class="fas fa-align-right"></i>
+              وصف التحليل
+            </label>
+
+            <textarea
+              id="testDescription"
+              rows="2"
+              placeholder="اختياري..."></textarea>
+
+          </div>
+
+
+          <div class="form-group">
+
+            <label>
+              <i class="fas fa-toggle-on"></i>
+              حالة التحليل
+            </label>
+
             <select id="testActive">
+
               <option value="true">نشط - يظهر للمرضى</option>
               <option value="false">موقوف - لا يظهر</option>
+
             </select>
+
           </div>
+
         </div>
+
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" onclick="closeModal('testModal')">إلغاء</button>
-          <button type="submit" class="btn btn-primary" id="saveTestBtn">
-            <i class="fas fa-save"></i> حفظ
+
+          <button
+            type="button"
+            class="btn btn-ghost"
+            onclick="closeModal('testModal')">
+
+            إلغاء
+
           </button>
+
+
+          <button
+            type="submit"
+            class="btn btn-primary"
+            id="saveTestBtn">
+
+            <i class="fas fa-save"></i>
+            حفظ
+
+          </button>
+
         </div>
+
       </form>
+
     </div>
+
   </div>
 
-  <!-- ============================================
-       Category Modal
-  ============================================ -->
-  <div class="modal-overlay" id="categoryModal">
+
+  <!-- =======================================================
+       CATEGORY MODAL
+  ======================================================= -->
+
+  <div
+    class="modal-overlay"
+    id="categoryModal">
+
     <div class="modal">
+
+
       <div class="modal-header">
-        <h3><i class="fas fa-layer-group"></i> إدارة التصنيفات</h3>
-        <button class="close-btn" onclick="closeModal('categoryModal')">×</button>
+
+        <h3>
+
+          <i class="fas fa-layer-group"></i>
+          إدارة التصنيفات
+
+        </h3>
+
+
+        <button
+          class="close-btn"
+          type="button"
+          onclick="closeModal('categoryModal')">
+
+          ×
+
+        </button>
+
       </div>
+
+
       <div class="modal-body">
+
+
         <div class="form-group">
-          <label><i class="fas fa-plus"></i> إضافة تصنيف جديد</label>
-          <div style="display: grid; grid-template-columns: 1fr auto; gap: 8px;">
-            <input type="text" id="newCategoryName" placeholder="مثال: تحاليل المناعة">
-            <button class="btn btn-primary" onclick="addCategory()">
-              <i class="fas fa-plus"></i> إضافة
+
+          <label>
+            <i class="fas fa-plus"></i>
+            إضافة تصنيف جديد
+          </label>
+
+
+          <div
+            style="
+              display:grid;
+              grid-template-columns:1fr auto;
+              gap:8px;
+            ">
+
+            <input
+              type="text"
+              id="newCategoryName"
+              placeholder="مثال: تحاليل المناعة">
+
+
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addCategory()">
+
+              <i class="fas fa-plus"></i>
+              إضافة
+
             </button>
+
           </div>
+
         </div>
 
-        <div style="margin-top: 20px;">
-          <label style="font-weight: 700; color: var(--primary-dark); display: block; margin-bottom: 10px;">
-            <i class="fas fa-list"></i> التصنيفات الحالية
+
+        <div style="margin-top:22px;">
+
+          <label
+            style="
+              font-weight:800;
+              color:var(--primary-dark);
+              display:block;
+              margin-bottom:12px;
+            ">
+
+            <i class="fas fa-list"></i>
+            التصنيفات الحالية
+
           </label>
-          <div class="category-list" id="categoryList"></div>
+
+
+          <div
+            class="category-list"
+            id="categoryList">
+
+          </div>
+
         </div>
+
       </div>
+
+
       <div class="modal-footer">
-        <button class="btn btn-ghost" onclick="closeModal('categoryModal')">إغلاق</button>
+
+        <button
+          type="button"
+          class="btn btn-ghost"
+          onclick="closeModal('categoryModal')">
+
+          إغلاق
+
+        </button>
+
       </div>
+
     </div>
+
   </div>
 
-  <!-- Toast -->
-  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- =======================================================
+       TOAST
+  ======================================================= -->
+
+  <div
+    class="toast-container"
+    id="toastContainer">
+
+  </div>
+
+
+  <!-- =======================================================
+       SUPABASE
+  ======================================================= -->
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
-    const SUPABASE_URL = 'https://rlkqifdteyccagpdtdmu.supabase.co';
-    const SUPABASE_KEY = 'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    if (sessionStorage.getItem('medlab_admin_logged_in') !== '1') {
-      window.location.href = 'admin.html';
+  <script>
+
+    /* =========================================================
+       SUPABASE
+    ========================================================= */
+
+    const SUPABASE_URL =
+      'https://rlkqifdteyccagpdtdmu.supabase.co';
+
+    const SUPABASE_KEY =
+      'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    /* =========================================================
+       LOGIN CHECK
+    ========================================================= */
+
+    if (
+      sessionStorage.getItem(
+        'medlab_admin_logged_in'
+      ) !== '1'
+    ) {
+
+      window.location.href =
+        'admin.html';
+
     }
+
 
     let allTests = [];
     let allCategories = [];
     let filteredTests = [];
 
-    // ============================================
-    // HELPERS
-    // ============================================
+
+    /* =========================================================
+       HELPERS
+    ========================================================= */
+
     function escapeHtml(v) {
+
       return String(v ?? '')
+
         .replace(/&/g, '&amp;')
+
         .replace(/</g, '&lt;')
+
         .replace(/>/g, '&gt;')
+
         .replace(/"/g, '&quot;')
+
         .replace(/'/g, '&#039;');
+
     }
 
-    function showToast(msg, type = 'success') {
-      const c = document.getElementById('toastContainer');
-      const t = document.createElement('div');
-      t.className = `toast ${type}`;
 
-      let icon = 'fa-check-circle';
-      if (type === 'error') icon = 'fa-exclamation-circle';
-      else if (type === 'warning') icon = 'fa-exclamation-triangle';
+    function showToast(
+      msg,
+      type = 'success'
+    ) {
 
-      t.innerHTML = `<i class="fas ${icon}"></i> <span>${escapeHtml(msg)}</span>`;
+      const c =
+        document.getElementById(
+          'toastContainer'
+        );
+
+      const t =
+        document.createElement(
+          'div'
+        );
+
+      t.className =
+        `toast ${type}`;
+
+
+      let icon =
+        'fa-check-circle';
+
+
+      if (type === 'error') {
+
+        icon =
+          'fa-exclamation-circle';
+
+      }
+
+      else if (type === 'warning') {
+
+        icon =
+          'fa-exclamation-triangle';
+
+      }
+
+
+      t.innerHTML =
+        `<i class="fas ${icon}"></i>
+         <span>${escapeHtml(msg)}</span>`;
+
+
       c.appendChild(t);
+
+
       setTimeout(() => {
+
         t.style.opacity = '0';
-        t.style.transform = 'translateX(-20px)';
-        setTimeout(() => t.remove(), 300);
+
+        t.style.transform =
+          'translateX(-20px)';
+
+        t.style.transition =
+          'all .3s ease';
+
+        setTimeout(
+          () => t.remove(),
+          300
+        );
+
       }, 3500);
+
     }
 
-    function openModal(id) { document.getElementById(id).classList.add('show'); }
-    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    function openModal(id) {
+
+      document
+        .getElementById(id)
+        .classList.add('show');
+
+      document.body.style.overflow = 'hidden';
+
+    }
+
+
+    function closeModal(id) {
+
+      document
+        .getElementById(id)
+        .classList.remove('show');
+
+      document.body.style.overflow = '';
+
+    }
+
 
     function formatPrice(p) {
-      return Number(p || 0).toLocaleString('ar-EG', { maximumFractionDigits: 2 });
+
+      return Number(p || 0)
+        .toLocaleString(
+          'ar-EG',
+          {
+            maximumFractionDigits: 2
+          }
+        );
+
     }
 
-    // ============================================
-    // LOAD DATA
-    // ============================================
+
+    /* =========================================================
+       DRAWER
+    ========================================================= */
+
+    function openTestsDrawer() {
+
+      document
+        .getElementById('testsDrawer')
+        .classList.add('show');
+
+      document.body.style.overflow = 'hidden';
+
+      renderTestsList();
+
+    }
+
+
+    function closeTestsDrawer() {
+
+      document
+        .getElementById('testsDrawer')
+        .classList.remove('show');
+
+      document.body.style.overflow = '';
+
+    }
+
+
+    function handleDrawerOverlayClick(e) {
+
+      if (e.target.id === 'testsDrawer') {
+
+        closeTestsDrawer();
+
+      }
+
+    }
+
+
+    /* =========================================================
+       LOAD DATA
+    ========================================================= */
+
     async function loadData() {
-      const container = document.getElementById('tableContainer');
-      container.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+
+      const container =
+        document.getElementById(
+          'testsListContainer'
+        );
+
+
+      container.innerHTML = `
+        <div class="loading">
+          <div class="spinner"></div>
+        </div>
+      `;
+
 
       try {
-        // Categories
-        const { data: cats, error: catErr } = await supabaseClient
+
+        /* Categories */
+
+        const {
+          data: cats,
+          error: catErr
+        } = await supabaseClient
+
           .from('test_categories')
+
           .select('*')
+
           .order('name');
 
-        if (catErr) throw catErr;
-        allCategories = cats || [];
 
-        // Tests
-        const { data: tests, error: testErr } = await supabaseClient
+        if (catErr)
+          throw catErr;
+
+
+        allCategories =
+          cats || [];
+
+
+        /* Tests */
+
+        const {
+          data: tests,
+          error: testErr
+        } = await supabaseClient
+
           .from('tests')
+
           .select('*')
+
           .order('name');
 
-        if (testErr) throw testErr;
-        allTests = tests || [];
+
+        if (testErr)
+          throw testErr;
+
+
+        allTests =
+          tests || [];
+
 
         renderCategoryFilters();
+
         renderCategorySelect();
+
         updateStats();
+
         applyFilters();
 
-      } catch (error) {
-        console.error(error);
-        container.innerHTML = `
-          <div class="empty-state">
-            <i class="fas fa-exclamation-circle" style="color: var(--danger);"></i>
-            <h3>حدث خطأ</h3>
-            <p>${escapeHtml(error.message)}</p>
-          </div>`;
-        showToast('فشل تحميل البيانات', 'error');
+
       }
+
+      catch (error) {
+
+        console.error(error);
+
+
+        container.innerHTML = `
+
+          <div class="empty-state">
+
+            <i
+              class="fas fa-exclamation-circle"
+              style="color:var(--danger);">
+            </i>
+
+            <h3>
+              حدث خطأ
+            </h3>
+
+            <p>
+              ${escapeHtml(error.message)}
+            </p>
+
+          </div>
+
+        `;
+
+
+        showToast(
+          'فشل تحميل البيانات',
+          'error'
+        );
+
+      }
+
     }
+
+
+    /* =========================================================
+       STATS
+    ========================================================= */
 
     function updateStats() {
-      document.getElementById('totalTests').textContent = allTests.length;
-      document.getElementById('activeTests').textContent = allTests.filter(t => t.is_active !== false).length;
-      document.getElementById('inactiveTests').textContent = allTests.filter(t => t.is_active === false).length;
-      document.getElementById('totalCategories').textContent = allCategories.length;
+
+      document.getElementById(
+        'totalTests'
+      ).textContent =
+        allTests.length;
+
+
+      document.getElementById(
+        'activeTests'
+      ).textContent =
+        allTests.filter(
+          t => t.is_active !== false
+        ).length;
+
+
+      document.getElementById(
+        'inactiveTests'
+      ).textContent =
+        allTests.filter(
+          t => t.is_active === false
+        ).length;
+
+
+      document.getElementById(
+        'totalCategories'
+      ).textContent =
+        allCategories.length;
+
     }
+
+
+    /* =========================================================
+       CATEGORY FILTER
+    ========================================================= */
 
     function renderCategoryFilters() {
-      const sel = document.getElementById('categoryFilter');
-      const current = sel.value;
-      sel.innerHTML = '<option value="">كل التصنيفات</option>';
+
+      const sel =
+        document.getElementById(
+          'categoryFilter'
+        );
+
+
+      const current =
+        sel.value;
+
+
+      sel.innerHTML =
+        '<option value="">كل التصنيفات</option>';
+
+
       allCategories.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c.id;
-        o.textContent = c.name;
+
+        const o =
+          document.createElement(
+            'option'
+          );
+
+        o.value =
+          c.id;
+
+        o.textContent =
+          c.name;
+
         sel.appendChild(o);
+
       });
-      if (current) sel.value = current;
+
+
+      if (current)
+        sel.value =
+          current;
+
     }
+
 
     function renderCategorySelect() {
-      const sel = document.getElementById('testCategory');
-      const current = sel.value;
-      sel.innerHTML = '<option value="">اختر التصنيف</option>';
+
+      const sel =
+        document.getElementById(
+          'testCategory'
+        );
+
+
+      const current =
+        sel.value;
+
+
+      sel.innerHTML =
+        '<option value="">اختر التصنيف</option>';
+
+
       allCategories.forEach(c => {
-        const o = document.createElement('option');
-        o.value = c.id;
-        o.textContent = c.name;
+
+        const o =
+          document.createElement(
+            'option'
+          );
+
+        o.value =
+          c.id;
+
+        o.textContent =
+          c.name;
+
         sel.appendChild(o);
+
       });
-      if (current) sel.value = current;
+
+
+      if (current)
+        sel.value =
+          current;
+
     }
+
+
+    /* =========================================================
+       CATEGORY LIST
+    ========================================================= */
 
     function renderCategoryList() {
-      const container = document.getElementById('categoryList');
-      if (allCategories.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:20px; color:var(--text-light);">لا توجد تصنيفات</div>';
+
+      const container =
+        document.getElementById(
+          'categoryList'
+        );
+
+
+      if (
+        allCategories.length === 0
+      ) {
+
+        container.innerHTML = `
+
+          <div
+            style="
+              text-align:center;
+              padding:24px;
+              color:var(--text-light);
+            ">
+
+            لا توجد تصنيفات
+
+          </div>
+
+        `;
+
         return;
+
       }
 
-      container.innerHTML = allCategories.map(c => {
-        const count = allTests.filter(t => Number(t.category_id) === Number(c.id)).length;
-        return `
-          <div class="category-item">
-            <div>
-              <span class="cat-name">${escapeHtml(c.name)}</span>
-              <span class="cat-count">${count} تحليل</span>
+
+      container.innerHTML =
+        allCategories.map(c => {
+
+          const count =
+            allTests.filter(
+              t =>
+                Number(t.category_id)
+                ===
+                Number(c.id)
+            ).length;
+
+
+          return `
+
+            <div class="category-item">
+
+              <div>
+
+                <span class="cat-name">
+                  ${escapeHtml(c.name)}
+                </span>
+
+                <span class="cat-count">
+                  ${count} تحليل
+                </span>
+
+              </div>
+
+
+              <button
+                class="act-btn delete"
+
+                ${count > 0
+                  ? 'disabled'
+                  : ''}
+
+                onclick="deleteCategory(${c.id})"
+
+                title="${
+                  count > 0
+                    ? 'لا يمكن الحذف - مرتبط بتحاليل'
+                    : 'حذف'
+                }">
+
+                <i class="fas fa-trash"></i>
+
+              </button>
+
             </div>
-            <button class="act-btn delete" 
-                    ${count > 0 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}
-                    onclick="deleteCategory(${c.id})"
-                    title="${count > 0 ? 'لا يمكن الحذف - مرتبط بتحاليل' : 'حذف'}">
-              <i class="fas fa-trash"></i>
-            </button>
-          </div>`;
-      }).join('');
+
+          `;
+
+        }).join('');
+
     }
 
-    // ============================================
-    // FILTERS
-    // ============================================
+
+    /* =========================================================
+       FILTERS
+    ========================================================= */
+
     function applyFilters() {
-      const search = document.getElementById('searchInput').value.trim().toLowerCase();
-      const catId = document.getElementById('categoryFilter').value;
 
-      filteredTests = allTests.filter(t => {
-        if (search && !String(t.name || '').toLowerCase().includes(search)) return false;
-        if (catId && String(t.category_id) !== String(catId)) return false;
-        return true;
-      });
+      const search =
+        document
+          .getElementById(
+            'searchInput'
+          )
+          .value
+          .trim()
+          .toLowerCase();
 
-      renderTable();
+
+      const drawerSearch =
+        document
+          .getElementById(
+            'drawerSearchInput'
+          )
+          .value
+          .trim()
+          .toLowerCase();
+
+
+      const catId =
+        document.getElementById(
+          'categoryFilter'
+        ).value;
+
+
+      filteredTests =
+        allTests.filter(t => {
+
+          const name =
+            String(t.name || '')
+              .toLowerCase();
+
+
+          /* فلتر البحث الرئيسي */
+
+          if (
+            search &&
+            !name.includes(search)
+          ) {
+
+            return false;
+
+          }
+
+
+          /* فلتر البحث داخل الصفحة الفرعية */
+
+          if (
+            drawerSearch &&
+            !name.includes(drawerSearch)
+          ) {
+
+            return false;
+
+          }
+
+
+          /* فلتر التصنيف */
+
+          if (
+            catId &&
+            String(t.category_id)
+            !==
+            String(catId)
+          ) {
+
+            return false;
+
+          }
+
+
+          return true;
+
+        });
+
+
+      renderTestsList();
+
     }
+
 
     function clearFilters() {
-      document.getElementById('searchInput').value = '';
-      document.getElementById('categoryFilter').value = '';
+
+      document.getElementById(
+        'searchInput'
+      ).value = '';
+
+
+      document.getElementById(
+        'drawerSearchInput'
+      ).value = '';
+
+
+      document.getElementById(
+        'categoryFilter'
+      ).value = '';
+
+
       applyFilters();
+
     }
 
-    // ============================================
-    // RENDER TABLE
-    // ============================================
-    function renderTable() {
-      const container = document.getElementById('tableContainer');
-      document.getElementById('resultsCount').textContent = `${filteredTests.length} تحليل`;
 
-      if (filteredTests.length === 0) {
+    /* =========================================================
+       RENDER TESTS LIST — البطاقات داخل الصفحة الفرعية
+    ========================================================= */
+
+    function renderTestsList() {
+
+      const container =
+        document.getElementById(
+          'testsListContainer'
+        );
+
+
+      document.getElementById(
+        'resultsCount'
+      ).textContent =
+        `${filteredTests.length} تحليل`;
+
+
+      document.getElementById(
+        'drawerTotalCount'
+      ).textContent =
+        filteredTests.length;
+
+
+      if (
+        filteredTests.length === 0
+      ) {
+
         container.innerHTML = `
+
           <div class="empty-state">
+
             <i class="fas fa-vials"></i>
-            <h3>لا توجد تحاليل</h3>
-            <p>${allTests.length === 0 ? 'ابدأ بإضافة تحليل جديد' : 'جرّب تغيير الفلاتر'}</p>
-          </div>`;
+
+            <h3>
+              لا توجد تحاليل
+            </h3>
+
+            <p>
+              ${
+                allTests.length === 0
+                  ? 'ابدأ بإضافة تحليل جديد'
+                  : 'جرّب تغيير الفلاتر'
+              }
+            </p>
+
+          </div>
+
+        `;
+
         return;
+
       }
 
-      let html = `
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>اسم التحليل</th>
-              <th>التصنيف</th>
-              <th>السعر</th>
-              <th>الحالة</th>
-              <th>إجراءات</th>
-            </tr>
-          </thead>
-          <tbody>`;
 
-      filteredTests.forEach((t, i) => {
-        const cat = allCategories.find(c => Number(c.id) === Number(t.category_id));
-        const catName = cat ? cat.name : 'بدون تصنيف';
-        const isActive = t.is_active !== false;
+      let html = '';
 
-        html += `
-          <tr>
-            <td>${i + 1}</td>
-            <td><span class="test-name">${escapeHtml(t.name || '-')}</span></td>
-            <td><span class="category-tag">${escapeHtml(catName)}</span></td>
-            <td><span class="price-tag">${formatPrice(t.price)} ج</span></td>
-            <td>
-              <span class="status-badge ${isActive ? 'active' : 'inactive'}">
-                <i class="fas fa-circle" style="font-size: 8px;"></i>
-                ${isActive ? 'نشط' : 'موقوف'}
-              </span>
-            </td>
-            <td>
-              <div class="actions">
-                <button class="act-btn edit" onclick="openTestModal(${t.id})" title="تعديل">
-                  <i class="fas fa-edit"></i>
-                </button>
-                <button class="act-btn toggle" onclick="toggleTest(${t.id})" title="${isActive ? 'إيقاف' : 'تفعيل'}">
-                  <i class="fas fa-${isActive ? 'pause' : 'play'}"></i>
-                </button>
-                <button class="act-btn delete" onclick="deleteTest(${t.id})" title="حذف">
-                  <i class="fas fa-trash"></i>
-                </button>
+
+      filteredTests.forEach(
+        (t, i) => {
+
+          const cat =
+            allCategories.find(
+              c =>
+                Number(c.id)
+                ===
+                Number(t.category_id)
+            );
+
+
+          const catName =
+            cat
+              ? cat.name
+              : 'بدون تصنيف';
+
+
+          const isActive =
+            t.is_active !== false;
+
+
+          html += `
+
+            <div
+              class="test-card-item ${isActive ? '' : 'inactive-item'}"
+              style="animation-delay: ${Math.min(i * 0.03, 0.4)}s">
+
+
+              <div class="test-card-main">
+
+
+                <div class="test-card-avatar">
+                  <i class="fas fa-vial"></i>
+                </div>
+
+
+                <div class="test-card-info">
+
+
+                  <div class="test-card-name">
+                    ${escapeHtml(t.name || '-')}
+                  </div>
+
+
+                  <div class="test-card-meta">
+
+
+                    <span class="meta-cat">
+                      <i class="fas fa-layer-group"></i>
+                      ${escapeHtml(catName)}
+                    </span>
+
+
+                    <span class="meta-price">
+                      <i class="fas fa-money-bill"></i>
+                      ${formatPrice(t.price)} ج
+                    </span>
+
+
+                    <span
+                      class="meta-status
+                      ${isActive ? 'active' : 'inactive'}">
+
+                      <i class="fas fa-circle"></i>
+
+                      ${isActive ? 'نشط' : 'موقوف'}
+
+                    </span>
+
+
+                  </div>
+
+
+                </div>
+
+
               </div>
-            </td>
-          </tr>`;
-      });
 
-      html += `</tbody></table>`;
-      container.innerHTML = html;
+
+              <div class="test-card-actions">
+
+
+                <button
+                  class="act-btn edit"
+
+                  onclick="openTestModal(${t.id})"
+
+                  title="تعديل">
+
+                  <i class="fas fa-edit"></i>
+
+                </button>
+
+
+                <button
+                  class="act-btn toggle"
+
+                  onclick="toggleTest(${t.id})"
+
+                  title="${
+                    isActive
+                      ? 'إيقاف'
+                      : 'تفعيل'
+                  }">
+
+                  <i
+                    class="fas fa-${
+                      isActive
+                        ? 'pause'
+                        : 'play'
+                    }">
+                  </i>
+
+                </button>
+
+
+                <button
+                  class="act-btn delete"
+
+                  onclick="deleteTest(${t.id})"
+
+                  title="حذف">
+
+                  <i class="fas fa-trash"></i>
+
+                </button>
+
+
+              </div>
+
+
+            </div>
+
+          `;
+
+        }
+      );
+
+
+      container.innerHTML =
+        html;
+
     }
 
-    // ============================================
-    // TEST MODAL
-    // ============================================
-    function openTestModal(id = null) {
-      const form = document.getElementById('testForm');
+
+    /* =========================================================
+       TEST MODAL
+    ========================================================= */
+
+    function openTestModal(
+      id = null
+    ) {
+
+      const form =
+        document.getElementById(
+          'testForm'
+        );
+
+
       form.reset();
+
+
       renderCategorySelect();
 
+
       if (id) {
-        const t = allTests.find(x => x.id === id);
-        if (!t) return;
 
-        document.getElementById('testModalTitle').innerHTML = '<i class="fas fa-edit"></i> تعديل التحليل';
-        document.getElementById('testId').value = t.id;
-        document.getElementById('testName').value = t.name || '';
-        document.getElementById('testPrice').value = t.price || 0;
-        document.getElementById('testCategory').value = t.category_id || '';
-        document.getElementById('testDescription').value = t.description || '';
-        document.getElementById('testActive').value = String(t.is_active !== false);
-      } else {
-        document.getElementById('testModalTitle').innerHTML = '<i class="fas fa-plus"></i> إضافة تحليل';
-        document.getElementById('testId').value = '';
-        document.getElementById('testActive').value = 'true';
-      }
+        const t =
+          allTests.find(
+            x => x.id === id
+          );
 
-      openModal('testModal');
-    }
 
-    document.getElementById('testForm').addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const id = document.getElementById('testId').value;
-      const name = document.getElementById('testName').value.trim();
-      const price = Number(document.getElementById('testPrice').value);
-      const categoryId = document.getElementById('testCategory').value;
-      const description = document.getElementById('testDescription').value.trim();
-      const isActive = document.getElementById('testActive').value === 'true';
-
-      if (!name || !categoryId || !Number.isFinite(price) || price < 0) {
-        return showToast('الرجاء ملء كل الحقول المطلوبة', 'warning');
-      }
-
-      const btn = document.getElementById('saveTestBtn');
-      btn.disabled = true;
-      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
-
-      try {
-        const payload = {
-          name,
-          category_id: Number(categoryId),
-          price,
-          description: description || null,
-          is_active: isActive,
-          updated_at: new Date().toISOString()
-        };
-
-        if (id) {
-          const { error } = await supabaseClient
-            .from('tests')
-            .update(payload)
-            .eq('id', Number(id));
-          if (error) throw error;
-          showToast('✅ تم تعديل التحليل', 'success');
-        } else {
-          const { error } = await supabaseClient
-            .from('tests')
-            .insert(payload);
-          if (error) throw error;
-          showToast('✅ تم إضافة التحليل', 'success');
-        }
-
-        closeModal('testModal');
-        await loadData();
-
-      } catch (error) {
-        console.error(error);
-        if (error.code === '23505') showToast('هذا الاسم موجود بالفعل', 'error');
-        else showToast('فشل الحفظ: ' + error.message, 'error');
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-save"></i> حفظ';
-      }
-    });
-
-    // ============================================
-    // DELETE / TOGGLE
-    // ============================================
-    async function deleteTest(id) {
-      const t = allTests.find(x => x.id === id);
-      if (!t) return;
-
-      if (!confirm(`هل تريد حذف التحليل "${t.name}"؟`)) return;
-
-      try {
-        // فحص إذا مستخدم في باقة
-        const { data: inPackage } = await supabaseClient
-          .from('package_tests')
-          .select('id')
-          .eq('test_id', id)
-          .limit(1);
-
-        if (inPackage && inPackage.length > 0) {
-          showToast('لا يمكن الحذف - التحليل مستخدم في باقة. أوقفه بدل الحذف.', 'warning');
+        if (!t)
           return;
+
+
+        document.getElementById(
+          'testModalTitle'
+        ).innerHTML =
+          '<i class="fas fa-edit"></i> تعديل التحليل';
+
+
+        document.getElementById(
+          'testId'
+        ).value =
+          t.id;
+
+
+        document.getElementById(
+          'testName'
+        ).value =
+          t.name || '';
+
+
+        document.getElementById(
+          'testPrice'
+        ).value =
+          t.price || 0;
+
+
+        document.getElementById(
+          'testCategory'
+        ).value =
+          t.category_id || '';
+
+
+        document.getElementById(
+          'testDescription'
+        ).value =
+          t.description || '';
+
+
+        document.getElementById(
+          'testActive'
+        ).value =
+          String(
+            t.is_active !== false
+          );
+
+      }
+
+      else {
+
+        document.getElementById(
+          'testModalTitle'
+        ).innerHTML =
+          '<i class="fas fa-plus"></i> إضافة تحليل';
+
+
+        document.getElementById(
+          'testId'
+        ).value =
+          '';
+
+
+        document.getElementById(
+          'testActive'
+        ).value =
+          'true';
+
+      }
+
+
+      openModal(
+        'testModal'
+      );
+
+    }
+
+
+    /* =========================================================
+       SAVE TEST
+    ========================================================= */
+
+    document
+      .getElementById('testForm')
+      .addEventListener(
+        'submit',
+        async function(e) {
+
+          e.preventDefault();
+
+
+          const id =
+            document.getElementById(
+              'testId'
+            ).value;
+
+
+          const name =
+            document.getElementById(
+              'testName'
+            ).value.trim();
+
+
+          const price =
+            Number(
+              document.getElementById(
+                'testPrice'
+              ).value
+            );
+
+
+          const categoryId =
+            document.getElementById(
+              'testCategory'
+            ).value;
+
+
+          const description =
+            document.getElementById(
+              'testDescription'
+            ).value.trim();
+
+
+          const isActive =
+            document.getElementById(
+              'testActive'
+            ).value === 'true';
+
+
+          if (
+            !name ||
+            !categoryId ||
+            !Number.isFinite(price) ||
+            price < 0
+          ) {
+
+            return showToast(
+              'الرجاء ملء كل الحقول المطلوبة',
+              'warning'
+            );
+
+          }
+
+
+          const btn =
+            document.getElementById(
+              'saveTestBtn'
+            );
+
+
+          btn.disabled =
+            true;
+
+
+          btn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+
+          try {
+
+            const payload = {
+
+              name,
+
+              category_id:
+                Number(categoryId),
+
+              price,
+
+              description:
+                description || null,
+
+              is_active:
+                isActive,
+
+              updated_at:
+                new Date().toISOString()
+
+            };
+
+
+            if (id) {
+
+              const {
+                error
+              } =
+                await supabaseClient
+
+                  .from('tests')
+
+                  .update(payload)
+
+                  .eq(
+                    'id',
+                    Number(id)
+                  );
+
+
+              if (error)
+                throw error;
+
+
+              showToast(
+                '✅ تم تعديل التحليل',
+                'success'
+              );
+
+            }
+
+            else {
+
+              const {
+                error
+              } =
+                await supabaseClient
+
+                  .from('tests')
+
+                  .insert(
+                    payload
+                  );
+
+
+              if (error)
+                throw error;
+
+
+              showToast(
+                '✅ تم إضافة التحليل',
+                'success'
+              );
+
+            }
+
+
+            closeModal(
+              'testModal'
+            );
+
+
+            await loadData();
+
+
+          }
+
+          catch (error) {
+
+            console.error(
+              error
+            );
+
+
+            if (
+              error.code ===
+              '23505'
+            ) {
+
+              showToast(
+                'هذا الاسم موجود بالفعل',
+                'error'
+              );
+
+            }
+
+            else {
+
+              showToast(
+                'فشل الحفظ: ' +
+                error.message,
+                'error'
+              );
+
+            }
+
+          }
+
+          finally {
+
+            btn.disabled =
+              false;
+
+
+            btn.innerHTML =
+              '<i class="fas fa-save"></i> حفظ';
+
+          }
+
+        }
+      );
+
+
+    /* =========================================================
+       DELETE TEST
+    ========================================================= */
+
+    async function deleteTest(id) {
+
+      const t =
+        allTests.find(
+          x => x.id === id
+        );
+
+
+      if (!t)
+        return;
+
+
+      if (
+        !confirm(
+          `هل تريد حذف التحليل "${t.name}"؟`
+        )
+      ) {
+
+        return;
+
+      }
+
+
+      try {
+
+        const {
+          data: inPackage
+        } =
+          await supabaseClient
+
+            .from('package_tests')
+
+            .select('id')
+
+            .eq(
+              'test_id',
+              id
+            )
+
+            .limit(1);
+
+
+        if (
+          inPackage &&
+          inPackage.length > 0
+        ) {
+
+          showToast(
+            'لا يمكن الحذف - التحليل مستخدم في باقة. أوقفه بدل الحذف.',
+            'warning'
+          );
+
+          return;
+
         }
 
-        const { error } = await supabaseClient
-          .from('tests')
-          .delete()
-          .eq('id', id);
 
-        if (error) throw error;
-        showToast('✅ تم الحذف', 'success');
+        const {
+          error
+        } =
+          await supabaseClient
+
+            .from('tests')
+
+            .delete()
+
+            .eq(
+              'id',
+              id
+            );
+
+
+        if (error)
+          throw error;
+
+
+        showToast(
+          '✅ تم الحذف',
+          'success'
+        );
+
+
         await loadData();
 
-      } catch (error) {
-        console.error(error);
-        showToast('فشل الحذف: ' + error.message, 'error');
+
       }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          'فشل الحذف: ' +
+          error.message,
+          'error'
+        );
+
+      }
+
     }
+
+
+    /* =========================================================
+       TOGGLE TEST
+    ========================================================= */
 
     async function toggleTest(id) {
-      const t = allTests.find(x => x.id === id);
-      if (!t) return;
 
-      const newStatus = t.is_active === false;
+      const t =
+        allTests.find(
+          x => x.id === id
+        );
+
+
+      if (!t)
+        return;
+
+
+      const newStatus =
+        t.is_active === false;
+
 
       try {
-        const { error } = await supabaseClient
-          .from('tests')
-          .update({ is_active: newStatus, updated_at: new Date().toISOString() })
-          .eq('id', id);
 
-        if (error) throw error;
-        showToast(newStatus ? '✅ تم التفعيل' : '✅ تم الإيقاف', 'success');
+        const {
+          error
+        } =
+          await supabaseClient
+
+            .from('tests')
+
+            .update({
+
+              is_active:
+                newStatus,
+
+              updated_at:
+                new Date().toISOString()
+
+            })
+
+            .eq(
+              'id',
+              id
+            );
+
+
+        if (error)
+          throw error;
+
+
+        showToast(
+
+          newStatus
+            ? '✅ تم التفعيل'
+            : '✅ تم الإيقاف',
+
+          'success'
+
+        );
+
+
         await loadData();
 
-      } catch (error) {
-        console.error(error);
-        showToast('فشل التعديل', 'error');
+
       }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          'فشل التعديل',
+          'error'
+        );
+
+      }
+
     }
 
-    // ============================================
-    // CATEGORIES
-    // ============================================
+
+    /* =========================================================
+       CATEGORIES
+    ========================================================= */
+
     function openCategoryModal() {
+
       renderCategoryList();
-      openModal('categoryModal');
+
+      openModal(
+        'categoryModal'
+      );
+
     }
+
 
     async function addCategory() {
-      const name = document.getElementById('newCategoryName').value.trim();
-      if (!name) return showToast('اكتب اسم التصنيف', 'warning');
+
+      const name =
+        document
+          .getElementById(
+            'newCategoryName'
+          )
+          .value
+          .trim();
+
+
+      if (!name) {
+
+        return showToast(
+          'اكتب اسم التصنيف',
+          'warning'
+        );
+
+      }
+
 
       try {
-        const { error } = await supabaseClient
-          .from('test_categories')
-          .insert({ name });
+
+        const {
+          error
+        } =
+          await supabaseClient
+
+            .from(
+              'test_categories'
+            )
+
+            .insert({
+              name
+            });
+
 
         if (error) {
-          if (error.code === '23505') throw new Error('هذا التصنيف موجود بالفعل');
+
+          if (
+            error.code ===
+            '23505'
+          ) {
+
+            throw new Error(
+              'هذا التصنيف موجود بالفعل'
+            );
+
+          }
+
           throw error;
+
         }
 
-        document.getElementById('newCategoryName').value = '';
-        showToast('✅ تم إضافة التصنيف', 'success');
+
+        document.getElementById(
+          'newCategoryName'
+        ).value = '';
+
+
+        showToast(
+          '✅ تم إضافة التصنيف',
+          'success'
+        );
+
+
         await loadData();
+
+
         renderCategoryList();
 
-      } catch (error) {
-        console.error(error);
-        showToast(error.message || 'فشل الإضافة', 'error');
+
       }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          error.message ||
+          'فشل الإضافة',
+          'error'
+        );
+
+      }
+
     }
+
 
     async function deleteCategory(id) {
-      const c = allCategories.find(x => x.id === id);
-      if (!c) return;
 
-      const count = allTests.filter(t => Number(t.category_id) === Number(id)).length;
+      const c =
+        allCategories.find(
+          x => x.id === id
+        );
+
+
+      if (!c)
+        return;
+
+
+      const count =
+        allTests.filter(
+          t =>
+            Number(t.category_id)
+            ===
+            Number(id)
+        ).length;
+
+
       if (count > 0) {
-        return showToast('لا يمكن حذف تصنيف مرتبط بتحاليل', 'warning');
+
+        return showToast(
+          'لا يمكن حذف تصنيف مرتبط بتحاليل',
+          'warning'
+        );
+
       }
 
-      if (!confirm(`هل تريد حذف التصنيف "${c.name}"؟`)) return;
+
+      if (
+        !confirm(
+          `هل تريد حذف التصنيف "${c.name}"؟`
+        )
+      ) {
+
+        return;
+
+      }
+
 
       try {
-        const { error } = await supabaseClient
-          .from('test_categories')
-          .delete()
-          .eq('id', id);
 
-        if (error) throw error;
-        showToast('✅ تم حذف التصنيف', 'success');
+        const {
+          error
+        } =
+          await supabaseClient
+
+            .from(
+              'test_categories'
+            )
+
+            .delete()
+
+            .eq(
+              'id',
+              id
+            );
+
+
+        if (error)
+          throw error;
+
+
+        showToast(
+          '✅ تم حذف التصنيف',
+          'success'
+        );
+
+
         await loadData();
+
+
         renderCategoryList();
 
-      } catch (error) {
-        console.error(error);
-        showToast('فشل الحذف', 'error');
+
       }
+
+      catch (error) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          'فشل الحذف',
+          'error'
+        );
+
+      }
+
     }
 
-    // ============================================
-    // EVENTS
-    // ============================================
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('categoryFilter').addEventListener('change', applyFilters);
 
-    ['testModal', 'categoryModal'].forEach(id => {
-      document.getElementById(id).addEventListener('click', function (e) {
-        if (e.target === this) closeModal(id);
-      });
+    /* =========================================================
+       EVENTS
+    ========================================================= */
+
+    document
+      .getElementById(
+        'searchInput'
+      )
+      .addEventListener(
+        'input',
+        applyFilters
+      );
+
+
+    document
+      .getElementById(
+        'drawerSearchInput'
+      )
+      .addEventListener(
+        'input',
+        applyFilters
+      );
+
+
+    document
+      .getElementById(
+        'categoryFilter'
+      )
+      .addEventListener(
+        'change',
+        applyFilters
+      );
+
+
+    [
+      'testModal',
+      'categoryModal'
+    ].forEach(id => {
+
+      document
+        .getElementById(id)
+        .addEventListener(
+          'click',
+          function(e) {
+
+            if (
+              e.target === this
+            ) {
+
+              closeModal(id);
+
+            }
+
+          }
+        );
+
     });
 
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        closeModal('testModal');
-        closeModal('categoryModal');
+
+    document.addEventListener(
+      'keydown',
+      e => {
+
+        if (
+          e.key ===
+          'Escape'
+        ) {
+
+          closeModal(
+            'testModal'
+          );
+
+          closeModal(
+            'categoryModal'
+          );
+
+          closeTestsDrawer();
+
+        }
+
       }
-    });
+    );
 
-    // Start
+
+    /* =========================================================
+       START
+    ========================================================= */
+
     loadData();
 
-    console.log('✅ صفحة إدارة التحاليل جاهزة');
+
+    console.log(
+      '✅ صفحة إدارة التحاليل جاهزة'
+    );
+
   </script>
 
-<!-- Dev Watermark -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
-<script src="js/dev-watermark.js"></script>
+
+  <!-- Dev Watermark -->
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap"
+    rel="stylesheet">
+
+  <script src="js/dev-watermark.js"></script>
 
 </body>
 </html>
