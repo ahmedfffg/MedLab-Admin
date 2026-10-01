@@ -2,83 +2,318 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a4179">
 <title>تسجيل الدخول - معمل ميدلاب</title>
 <link href="logo.png" type="image/x-icon" rel="icon">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{
-  font-family:'Tajawal',sans-serif;min-height:100vh;
-  background:linear-gradient(135deg,#0a4179 0%,#499bda 100%);
-  display:flex;align-items:center;justify-content:center;padding:20px;
-  position:relative;overflow:hidden;
+:root{
+  --primary:#0a4179;
+  --primary-light:#499bda;
+  --primary-hover:#0a7cb8;
+  --text-dark:#143a52;
+  --text-muted:#6d8fa3;
+  --border:#e8ecf0;
+  --bg-input:#f8fafc;
+  --error:#c0392b;
+  --success:#1a7d4a;
 }
-body::before,body::after{content:'';position:absolute;border-radius:50%}
-body::before{width:600px;height:600px;background:radial-gradient(circle,rgba(255,255,255,.1) 0%,transparent 70%);top:-200px;right:-200px}
-body::after{width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);bottom:-150px;left:-150px}
+
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+html,body{height:100%}
+
+body{
+  font-family:'Tajawal',sans-serif;
+  min-height:100vh;
+  min-height:100dvh;
+  background:linear-gradient(135deg,#0a4179 0%,#499bda 100%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  position:relative;
+  overflow:hidden;
+}
+
+/* خلفية زخرفية */
+body::before,body::after{
+  content:'';
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+}
+body::before{
+  width:min(600px,90vw);
+  height:min(600px,90vw);
+  background:radial-gradient(circle,rgba(255,255,255,.12) 0%,transparent 70%);
+  top:-30%;
+  right:-20%;
+}
+body::after{
+  width:min(450px,70vw);
+  height:min(450px,70vw);
+  background:radial-gradient(circle,rgba(255,255,255,.08) 0%,transparent 70%);
+  bottom:-25%;
+  left:-15%;
+}
 
 .login-card{
-  position:relative;z-index:2;background:#fff;border-radius:24px;
-  box-shadow:0 30px 80px rgba(0,0,0,.35);padding:45px 40px;
-  width:100%;max-width:440px;animation:cardIn .5s ease;
+  position:relative;
+  z-index:2;
+  background:#fff;
+  border-radius:24px;
+  box-shadow:0 30px 80px rgba(0,0,0,.35);
+  padding:clamp(24px,4vw,48px) clamp(20px,4vw,44px);
+  width:100%;
+  max-width:440px;
+  animation:cardIn .55s cubic-bezier(.22,1,.36,1);
+  backdrop-filter:blur(10px);
 }
-@keyframes cardIn{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
 
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(30px) scale(.98)}
+  to{opacity:1;transform:translateY(0) scale(1)}
+}
+
+/* الشعار */
 .login-logo{
-  width:80px;height:80px;margin:0 auto 18px;border-radius:22px;
-  background:linear-gradient(135deg,#0a4179,#499bda);
-  display:flex;align-items:center;justify-content:center;
-  color:#fff;font-size:36px;box-shadow:0 10px 25px rgba(10,65,121,.35);
+  width:clamp(64px,16vw,84px);
+  height:clamp(64px,16vw,84px);
+  margin:0 auto 16px;
+  border-radius:22px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:clamp(28px,7vw,38px);
+  box-shadow:0 12px 28px -8px rgba(10,65,121,.5);
+  transition:transform .3s ease;
 }
-.login-title{text-align:center;font-size:1.7rem;font-weight:900;color:#0a4179;margin-bottom:6px}
-.login-subtitle{text-align:center;color:#6d8fa3;font-size:14px;margin-bottom:32px}
+.login-logo:hover{transform:scale(1.05) rotate(-3deg)}
 
-.form-group{margin-bottom:18px;display:flex;flex-direction:column;gap:7px}
-.form-group label{font-size:13.5px;font-weight:700;color:#143a52;display:flex;align-items:center;gap:7px}
-.form-group label i{color:#0a7cb8;font-size:13px}
+.login-title{
+  text-align:center;
+  font-size:clamp(1.35rem,4vw,1.7rem);
+  font-weight:900;
+  color:var(--primary);
+  margin-bottom:6px;
+  letter-spacing:-.5px;
+}
+.login-subtitle{
+  text-align:center;
+  color:var(--text-muted);
+  font-size:clamp(12.5px,3vw,14px);
+  margin-bottom:clamp(22px,4vw,32px);
+}
+
+/* الحقول */
+.form-group{
+  margin-bottom:18px;
+  display:flex;
+  flex-direction:column;
+  gap:7px;
+}
+.form-group label{
+  font-size:clamp(12.5px,3vw,13.5px);
+  font-weight:700;
+  color:var(--text-dark);
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+.form-group label i{color:var(--primary-hover);font-size:12.5px}
 
 .input-wrapper{position:relative;display:flex;align-items:center}
 .input-wrapper input{
-  width:100%;padding:14px 46px 14px 16px;border:2px solid #e8ecf0;
-  border-radius:12px;background:#f8fafc;font-family:inherit;font-size:15px;
-  font-weight:600;color:#143a52;outline:none;transition:.2s;
+  width:100%;
+  padding:14px 44px 14px 46px;
+  border:2px solid var(--border);
+  border-radius:12px;
+  background:var(--bg-input);
+  font-family:inherit;
+  font-size:15px;
+  font-weight:600;
+  color:var(--text-dark);
+  outline:none;
+  transition:border-color .2s, background .2s, box-shadow .2s;
+  -webkit-appearance:none;
 }
-.input-wrapper input:focus{border-color:#0a7cb8;background:#fff;box-shadow:0 0 0 4px rgba(10,124,184,.08)}
-.input-wrapper .input-icon{position:absolute;right:16px;color:#a0aab5;font-size:16px;pointer-events:none}
+.input-wrapper input::placeholder{
+  color:#a0aab5;
+  font-weight:500;
+}
+.input-wrapper input:focus{
+  border-color:var(--primary-hover);
+  background:#fff;
+  box-shadow:0 0 0 4px rgba(10,124,184,.1);
+}
+.input-wrapper input:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.input-wrapper .input-icon{
+  position:absolute;
+  right:16px;
+  color:#a0aab5;
+  font-size:15px;
+  pointer-events:none;
+  transition:color .2s;
+}
+.input-wrapper:focus-within .input-icon{color:var(--primary-hover)}
+
 .toggle-password{
-  position:absolute;left:14px;background:none;border:none;color:#a0aab5;
-  cursor:pointer;font-size:15px;padding:4px;transition:.2s;
+  position:absolute;
+  left:10px;
+  background:none;
+  border:none;
+  color:#a0aab5;
+  cursor:pointer;
+  font-size:15px;
+  padding:8px;
+  border-radius:8px;
+  transition:color .2s, background .2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-.toggle-password:hover{color:#0a7cb8}
+.toggle-password:hover{color:var(--primary-hover);background:rgba(10,124,184,.08)}
+.toggle-password:active{transform:scale(.95)}
 
+/* التنبيهات */
 .alert{
-  padding:12px 14px;border-radius:10px;margin-bottom:18px;
-  font-size:13.5px;font-weight:600;display:none;align-items:center;gap:8px;
+  padding:12px 14px;
+  border-radius:10px;
+  margin-bottom:18px;
+  font-size:clamp(12.5px,3vw,13.5px);
+  font-weight:600;
+  display:none;
+  align-items:center;
+  gap:8px;
+  line-height:1.5;
 }
-.alert.show{display:flex;animation:shake .4s}
-.alert.error{background:#fdecea;color:#c0392b;border-right:3px solid #c0392b}
-.alert.success{background:#e8f8ef;color:#1a7d4a;border-right:3px solid #1a7d4a}
-@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.alert.show{display:flex;animation:shake .4s ease}
+.alert.error{
+  background:#fdecea;
+  color:var(--error);
+  border-right:3px solid var(--error);
+}
+.alert.success{
+  background:#e8f8ef;
+  color:var(--success);
+  border-right:3px solid var(--success);
+}
+@keyframes shake{
+  0%,100%{transform:translateX(0)}
+  25%{transform:translateX(-6px)}
+  75%{transform:translateX(6px)}
+}
 
+/* زر الدخول */
 .login-btn{
-  width:100%;padding:15px;border:none;border-radius:12px;
-  background:linear-gradient(135deg,#0a4179,#499bda);color:#fff;
-  font-family:inherit;font-size:16px;font-weight:700;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  box-shadow:0 8px 20px -6px rgba(10,65,121,.5);transition:.25s;margin-top:6px;
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(135deg,var(--primary),var(--primary-light));
+  color:#fff;
+  font-family:inherit;
+  font-size:clamp(14.5px,3.5vw,16px);
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  box-shadow:0 10px 24px -8px rgba(10,65,121,.55);
+  transition:transform .2s, box-shadow .25s, opacity .2s;
+  margin-top:6px;
+  position:relative;
+  overflow:hidden;
 }
-.login-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 26px -6px rgba(10,65,121,.6)}
-.login-btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+.login-btn::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(135deg,transparent,rgba(255,255,255,.25),transparent);
+  transform:translateX(-100%);
+  transition:transform .6s;
+}
+.login-btn:hover:not(:disabled)::before{transform:translateX(100%)}
+.login-btn:hover:not(:disabled){
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px -8px rgba(10,65,121,.65);
+}
+.login-btn:active:not(:disabled){transform:translateY(0)}
+.login-btn:disabled{opacity:.75;cursor:not-allowed;transform:none}
 
-.login-footer{text-align:center;margin-top:20px;font-size:12px;color:#6d8fa3}
+/* الفوتر */
+.login-footer{
+  text-align:center;
+  margin-top:20px;
+  font-size:clamp(11px,2.8vw,12px);
+  color:var(--text-muted);
+  line-height:1.6;
+}
 
+/* شاشات متوسطة */
 @media (max-width:480px){
-  .login-card{padding:32px 24px}
-  .login-title{font-size:1.4rem}
-  .login-logo{width:68px;height:68px;font-size:30px}
+  body{padding:12px}
+  .login-card{border-radius:20px;padding:28px 22px}
+  .input-wrapper input{padding:13px 42px 13px 44px;font-size:15px}
+  .toggle-password{left:8px;padding:7px}
+}
+
+/* شاشات صغيرة جدًا */
+@media (max-width:360px){
+  .login-card{padding:24px 18px;border-radius:16px}
+  .form-group{margin-bottom:14px}
+  .login-btn{padding:13px}
+}
+
+/* شاشات كبيرة */
+@media (min-width:1200px){
+  .login-card{max-width:460px;padding:52px 48px}
+}
+
+/* شاشات أفقية قصيرة */
+@media (max-height:620px) and (orientation:landscape){
+  body{align-items:flex-start;padding-top:20px;padding-bottom:20px}
+  .login-card{padding:24px 28px}
+  .login-logo{width:56px;height:56px;font-size:24px;margin-bottom:10px;border-radius:16px}
+  .login-title{font-size:1.25rem}
+  .login-subtitle{margin-bottom:16px;font-size:12px}
+  .form-group{margin-bottom:12px}
+  .input-wrapper input{padding:11px 40px 11px 42px;font-size:14px}
+  .login-btn{padding:12px;font-size:14px}
+  .login-footer{margin-top:12px}
+}
+
+/* دعم تقليل الحركة */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.01ms !important;
+  }
+}
+
+/* دعم الوضع الداكن (اختياري) */
+@media (prefers-color-scheme:dark){
+  /* لو حابب تفعّل الوضع الداكن، شيل التعليق عن الكود ده */
+  /*
+  .login-card{background:#1a2332;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+  .login-title{color:#7cb8e8}
+  .login-subtitle,.login-footer{color:#8a9bb0}
+  .form-group label{color:#c5d4e0}
+  .input-wrapper input{background:#0f1823;border-color:#2a3a4d;color:#e0e8f0}
+  .input-wrapper input:focus{background:#0a121b}
+  */
 }
 </style>
 </head>
@@ -89,13 +324,13 @@ body::after{width:400px;height:400px;background:radial-gradient(circle,rgba(255,
   <h1 class="login-title">معمل ميدلاب</h1>
   <p class="login-subtitle">نظام إدارة المعمل - تسجيل الدخول</p>
 
-  <div class="alert" id="alertBox"></div>
+  <div class="alert" id="alertBox" role="alert" aria-live="polite"></div>
 
-  <form id="loginForm" autocomplete="off">
+  <form id="loginForm" autocomplete="off" novalidate>
     <div class="form-group">
       <label for="username"><i class="fas fa-user"></i> اسم المستخدم</label>
       <div class="input-wrapper">
-        <input type="text" id="username" placeholder="أدخل اسم المستخدم" required autofocus>
+        <input type="text" id="username" name="username" placeholder="أدخل اسم المستخدم" required autofocus aria-label="اسم المستخدم">
         <i class="fas fa-user input-icon"></i>
       </div>
     </div>
@@ -103,9 +338,9 @@ body::after{width:400px;height:400px;background:radial-gradient(circle,rgba(255,
     <div class="form-group">
       <label for="password"><i class="fas fa-lock"></i> كلمة المرور</label>
       <div class="input-wrapper">
-        <input type="password" id="password" placeholder="أدخل كلمة المرور" required>
+        <input type="password" id="password" name="password" placeholder="أدخل كلمة المرور" required aria-label="كلمة المرور">
         <i class="fas fa-lock input-icon"></i>
-        <button type="button" class="toggle-password" id="togglePassword" title="إظهار/إخفاء">
+        <button type="button" class="toggle-password" id="togglePassword" title="إظهار/إخفاء كلمة المرور" aria-label="إظهار كلمة المرور">
           <i class="fas fa-eye"></i>
         </button>
       </div>
@@ -133,24 +368,27 @@ const alertBox=$('alertBox');
 const togglePassword=$('togglePassword');
 
 // لو مسجل دخول بالفعل → انتقل للصفحة المطلوبة أو index
-if(MedlabAuth.isLoggedIn()){
+if(typeof MedlabAuth!=='undefined' && MedlabAuth.isLoggedIn()){
   const redirect=MedlabAuth.getRedirectTarget();
   window.location.replace(redirect||'index.html');
   return;
 }
 
+// زر إظهار/إخفاء كلمة المرور
 togglePassword.addEventListener('click',function(){
   const type=passwordInput.type==='password'?'text':'password';
   passwordInput.type=type;
   const icon=this.querySelector('i');
   icon.className=type==='password'?'fas fa-eye':'fas fa-eye-slash';
+  this.setAttribute('aria-label',type==='password'?'إظهار كلمة المرور':'إخفاء كلمة المرور');
 });
 
 function showAlert(msg,type){
   alertBox.className='alert '+type+' show';
-  alertBox.innerHTML=`<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> ${msg}`;
+  alertBox.innerHTML=`<i class="fas ${type==='success'?'fa-check-circle':'fa-exclamation-circle'}"></i> <span>${msg}</span>`;
   if(type==='error'){
-    setTimeout(()=>alertBox.classList.remove('show'),4000);
+    clearTimeout(showAlert._t);
+    showAlert._t=setTimeout(()=>alertBox.classList.remove('show'),4000);
   }
 }
 
@@ -163,36 +401,43 @@ form.addEventListener('submit',async function(e){
 
   if(!username||!password){
     showAlert('الرجاء ملء جميع الحقول','error');
+    (!username?usernameInput:passwordInput).focus();
     return;
   }
 
   loginBtn.disabled=true;
   loginBtn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري التحقق...';
 
-  // تحقق عبر auth.js
-  const ok=await MedlabAuth.login(username,password);
+  try{
+    // تحقق عبر auth.js
+    const ok=await MedlabAuth.login(username,password);
 
-  if(ok){
-    showAlert('✅ تم تسجيل الدخول بنجاح، جاري التحويل...','success');
-    loginBtn.innerHTML='<i class="fas fa-check"></i> تم بنجاح';
+    if(ok){
+      showAlert('✅ تم تسجيل الدخول بنجاح، جاري التحويل...','success');
+      loginBtn.innerHTML='<i class="fas fa-check"></i> تم بنجاح';
 
-    setTimeout(()=>{
-      const redirect=MedlabAuth.getRedirectTarget();
-      window.location.replace(redirect||'index.html');
-    },700);
-  }else{
-    showAlert('❌ بيانات الدخول غير صحيحة','error');
+      setTimeout(()=>{
+        const redirect=MedlabAuth.getRedirectTarget();
+        window.location.replace(redirect||'index.html');
+      },700);
+    }else{
+      showAlert('❌ بيانات الدخول غير صحيحة','error');
+      loginBtn.disabled=false;
+      loginBtn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
+      passwordInput.value='';
+      passwordInput.focus();
+    }
+  }catch(err){
+    console.error(err);
+    showAlert('❌ حدث خطأ، حاول مرة أخرى','error');
     loginBtn.disabled=false;
     loginBtn.innerHTML='<i class="fas fa-sign-in-alt"></i> تسجيل الدخول';
-    passwordInput.value='';
-    passwordInput.focus();
   }
 });
 
 console.log('✅ Login page ready');
 })();
 </script>
-<!-- قبل إغلاق body -->
 <script src="auth.js"></script>
 <script src="guard.js"></script>
 </body>
