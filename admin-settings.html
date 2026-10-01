@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إعدادات الأمان | معمل ميدلاب</title>
+<link href="logo.png" type="image/x-icon" rel="icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Tajawal',sans-serif;min-height:100vh;
+  background:#f2f9fc;padding:24px;
+}
+.wrap{max-width:640px;margin:0 auto}
+.head{
+  display:flex;align-items:center;gap:14px;margin-bottom:22px;
+  background:#fff;padding:20px 24px;border-radius:20px;
+  box-shadow:0 10px 30px rgba(17,88,120,.08);
+}
+.head-logo{
+  width:54px;height:54px;border-radius:16px;
+  background:linear-gradient(135deg,#0a4179,#499bda);
+  color:#fff;display:flex;align-items:center;justify-content:center;
+  font-size:24px;box-shadow:0 8px 20px rgba(10,65,121,.3);
+}
+.head-text h1{color:#0a4179;font-size:1.3rem;font-weight:900}
+.head-text p{color:#6d8fa3;font-size:13px}
+
+.card{
+  background:#fff;border-radius:20px;padding:26px;
+  box-shadow:0 10px 30px rgba(17,88,120,.08);margin-bottom:18px;
+}
+.card h2{
+  color:#0a4179;font-size:1.1rem;font-weight:800;margin-bottom:18px;
+  display:flex;align-items:center;gap:9px;padding-bottom:10px;
+  border-bottom:2px solid #eaf7fd;
+}
+.card h2 i{color:#0a7cb8}
+
+.form-group{margin-bottom:16px;display:flex;flex-direction:column;gap:7px}
+.form-group label{font-size:13.5px;font-weight:700;color:#143a52;display:flex;align-items:center;gap:7px}
+.form-group label i{color:#0a7cb8;font-size:13px}
+.form-group input{
+  width:100%;padding:13px 15px;border:2px solid #e8ecf0;border-radius:12px;
+  background:#f8fafc;font-family:inherit;font-size:14.5px;font-weight:600;
+  color:#143a52;outline:none;transition:.2s;
+}
+.form-group input:focus{border-color:#0a7cb8;background:#fff;box-shadow:0 0 0 4px rgba(10,124,184,.08)}
+
+.alert{
+  padding:12px 14px;border-radius:10px;margin-bottom:16px;
+  font-size:13.5px;font-weight:600;display:none;align-items:center;gap:8px;
+}
+.alert.show{display:flex}
+.alert.error{background:#fdecea;color:#c0392b;border-right:3px solid #c0392b}
+.alert.success{background:#e8f8ef;color:#1a7d4a;border-right:3px solid #1a7d4a}
+.alert.info{background:#eaf7fd;color:#0a5b87;border-right:3px solid #0a7cb8}
+
+.btn{
+  width:100%;padding:14px;border:none;border-radius:12px;
+  background:linear-gradient(135deg,#0a4179,#499bda);color:#fff;
+  font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 8px 20px -6px rgba(10,65,121,.5);transition:.25s;
+}
+.btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 12px 26px -6px rgba(10,65,121,.6)}
+.btn:disabled{opacity:.7;cursor:not-allowed;transform:none}
+
+.btn-ghost{
+  background:#eaf7fd;color:#0a5b87;
+  border:1px solid #dcecf4;box-shadow:none;margin-top:10px;
+}
+.btn-ghost:hover:not(:disabled){background:#dff0fa;transform:translateY(-1px);box-shadow:none}
+
+.btn-danger{
+  background:linear-gradient(135deg,#b3281f,#e25549);
+  box-shadow:0 8px 20px -6px rgba(178,40,31,.5);
+}
+
+.back-link{
+  display:inline-flex;align-items:center;gap:7px;
+  color:#0a7cb8;text-decoration:none;font-weight:700;font-size:13.5px;
+  margin-bottom:16px;
+}
+.back-link:hover{color:#0a4179}
+
+.warning-box{
+  background:#fff7e8;border:1px solid #f4d896;border-radius:12px;
+  padding:14px 16px;color:#8a6a10;font-size:13px;font-weight:600;
+  line-height:1.8;display:flex;gap:10px;align-items:flex-start;
+}
+.warning-box i{color:#d98408;font-size:16px;flex-shrink:0;margin-top:3px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <a href="index.html" class="back-link">
+    <i class="fas fa-arrow-right"></i> العودة للوحة التحكم
+  </a>
+
+  <div class="head">
+    <div class="head-logo"><i class="fas fa-shield-halved"></i></div>
+    <div class="head-text">
+      <h1>إعدادات الأمان</h1>
+      <p>تغيير اسم المستخدم وكلمة المرور</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-info-circle"></i> معلومات الحساب الحالي</h2>
+    <div class="form-group">
+      <label><i class="fas fa-user"></i> اسم المستخدم الحالي</label>
+      <input type="text" id="currentUsername" readonly>
+    </div>
+    <div class="alert info show" style="margin-bottom:0">
+      <i class="fas fa-lock"></i>
+      كلمة المرور مخزّنة مشفّرة بـ SHA-256 ولا يمكن استرجاعها — يمكنك فقط تغييرها.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-key"></i> تغيير بيانات الدخول</h2>
+
+    <div class="alert" id="alertBox"></div>
+
+    <form id="changeForm" autocomplete="off">
+      <div class="form-group">
+        <label><i class="fas fa-lock"></i> كلمة المرور الحالية *</label>
+        <input type="password" id="currentPassword" required>
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-user-pen"></i> اسم المستخدم الجديد *</label>
+        <input type="text" id="newUsername" required minlength="3">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-key"></i> كلمة المرور الجديدة *</label>
+        <input type="password" id="newPassword" required minlength="4">
+      </div>
+
+      <div class="form-group">
+        <label><i class="fas fa-key"></i> تأكيد كلمة المرور الجديدة *</label>
+        <input type="password" id="confirmPassword" required minlength="4">
+      </div>
+
+      <button type="submit" class="btn" id="saveBtn">
+        <i class="fas fa-save"></i> حفظ التعديلات
+      </button>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2><i class="fas fa-triangle-exclamation"></i> منطقة الخطر</h2>
+    <div class="warning-box">
+      <i class="fas fa-exclamation-triangle"></i>
+      <div>
+        إعادة التعيين ستُرجع بيانات الدخول إلى الافتراضية (<code>admin</code> / <code>123</code>) وتُسجّل خروجك فوراً. استخدمها فقط إذا نسيت كلمة المرور.
+      </div>
+    </div>
+    <button type="button" class="btn btn-ghost btn-danger" id="resetBtn" style="margin-top:14px">
+      <i class="fas fa-rotate-left"></i> إعادة تعيين لبيانات الدخول الافتراضية
+    </button>
+  </div>
+
+</div>
+
+<script src="auth.js"></script>
+<script src="guard.js"></script>
+<script>
+(function(){
+'use strict';
+
+const $=id=>document.getElementById(id);
+
+// املأ اسم المستخدم الحالي
+$('currentUsername').value=MedlabAuth.getCurrentUsername()||'admin';
+
+function showAlert(msg,type){
+  const box=$('alertBox');
+  box.className='alert '+type+' show';
+  const icon=type==='success'?'fa-check-circle':type==='info'?'fa-info-circle':'fa-exclamation-circle';
+  box.innerHTML=`<i class="fas ${icon}"></i> ${msg}`;
+  if(type!=='success'){
+    setTimeout(()=>box.classList.remove('show'),4500);
+  }
+}
+
+$('changeForm').addEventListener('submit',async function(e){
+  e.preventDefault();
+
+  const currentPassword=$('currentPassword').value;
+  const newUsername=$('newUsername').value.trim();
+  const newPassword=$('newPassword').value;
+  const confirmPassword=$('confirmPassword').value;
+
+  if(newPassword!==confirmPassword){
+    showAlert('كلمة المرور الجديدة وتأكيدها غير متطابقين','error');
+    return;
+  }
+
+  const btn=$('saveBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  const result=await MedlabAuth.changeCredentials(currentPassword,newUsername,newPassword);
+
+  btn.disabled=false;
+  btn.innerHTML='<i class="fas fa-save"></i> حفظ التعديلات';
+
+  if(result.ok){
+    showAlert('✅ تم تحديث بيانات الدخول بنجاح. سيتم تحويلك لصفحة الدخول...','success');
+    setTimeout(()=>{
+      MedlabAuth.logout();
+    },1500);
+  }else{
+    showAlert('❌ '+(result.error||'فشل التحديث'),'error');
+  }
+});
+
+$('resetBtn').addEventListener('click',async function(){
+  if(!confirm('هل أنت متأكد؟ سيتم إرجاع بيانات الدخول إلى admin / 123'))return;
+  if(!confirm('تأكيد نهائي: سيتم تسجيل خروجك الآن.'))return;
+
+  await MedlabAuth.resetToDefaults();
+  alert('✅ تم إعادة التعيين. سيتم تحويلك لصفحة الدخول.');
+  window.location.replace('login.html');
+});
+
+console.log('✅ Admin settings ready');
+})();
+</script>
+
+</body>
+</html>
