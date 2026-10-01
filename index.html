@@ -581,149 +581,93 @@
 });
 </script>
 
-<!-- ============================================
-     زر عائم — توليد أكواد
-============================================ -->
-<a href="code.html" class="floating-code-btn" title="توليد أكواد">
-  <span class="floating-icon">
-    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<div class="floating-actions">
+
+  <!-- زر توليد الأكواد -->
+  <a href="code.html" class="floating-action floating-code" title="توليد أكواد">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="11" width="18" height="11" rx="2"/>
       <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
       <circle cx="12" cy="16" r="1.5" fill="currentColor" stroke="none"/>
     </svg>
-  </span>
-  <span class="floating-text">توليد أكواد</span>
-</a>
+    <span>توليد أكواد</span>
+  </a>
+
+  <!-- يمكنك إضافة أزرار أخرى هنا -->
+  <!--
+  <a href="other.html" class="floating-action" title="...">
+    ...
+  </a>
+  -->
+
+</div>
 
 <style>
-/* ============================================
-   الزر العائم — توليد أكواد
-============================================ */
-.floating-code-btn{
+.floating-actions{
   position:fixed;
   bottom:24px;
   left:24px;
   z-index:9999;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 
+.floating-action{
   display:inline-flex;
   align-items:center;
   gap:10px;
-
-  padding:14px 20px 14px 16px;
+  padding:13px 20px;
   border-radius:50px;
-
-  background:linear-gradient(135deg,#1597d4,#0c6fa8);
-  color:#fff;
+  background:#fff;
+  color:#0c6fa8;
   text-decoration:none;
   font-family:'Tajawal',Tahoma,sans-serif;
-  font-size:14px;
+  font-size:13.5px;
   font-weight:800;
-  letter-spacing:.2px;
-
-  box-shadow:
-    0 10px 30px rgba(21,151,212,.4),
-    0 4px 12px rgba(0,0,0,.15);
-
+  box-shadow:0 10px 30px rgba(17,88,120,.18),0 4px 12px rgba(0,0,0,.08);
   transition:all .3s cubic-bezier(.4,0,.2,1);
-
-  animation:floatBtnIn .5s ease .3s backwards;
-}
-
-@keyframes floatBtnIn{
-  from{opacity:0;transform:translateY(30px) scale(.8)}
-  to{opacity:1;transform:translateY(0) scale(1)}
-}
-
-.floating-code-btn:hover{
-  transform:translateY(-4px);
-  box-shadow:
-    0 16px 40px rgba(21,151,212,.5),
-    0 6px 16px rgba(0,0,0,.2);
-  background:linear-gradient(135deg,#1aa5e5,#0d7ab8);
-}
-
-.floating-code-btn:active{
-  transform:translateY(-1px) scale(.98);
-}
-
-.floating-icon{
-  width:36px;
-  height:36px;
-  border-radius:50%;
-  background:rgba(255,255,255,.22);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-shrink:0;
-  transition:transform .4s ease;
-}
-
-.floating-code-btn:hover .floating-icon{
-  transform:rotate(-12deg) scale(1.08);
-}
-
-.floating-icon svg{
-  width:20px;
-  height:20px;
-  stroke-width:2.2;
-}
-
-.floating-text{
   white-space:nowrap;
 }
 
-/* نبضة صغيرة للفت الانتباه */
-.floating-code-btn::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border-radius:50px;
-  border:2px solid rgba(21,151,212,.5);
-  animation:pulseRing 2.5s ease-out infinite;
-  pointer-events:none;
+.floating-action svg{
+  width:20px;
+  height:20px;
+  flex-shrink:0;
 }
 
-@keyframes pulseRing{
-  0%{transform:scale(1);opacity:.7}
-  100%{transform:scale(1.35);opacity:0}
+.floating-action:hover{
+  transform:translateY(-3px);
+  box-shadow:0 16px 40px rgba(17,88,120,.24),0 6px 16px rgba(0,0,0,.12);
 }
 
-/* الموبايل */
+.floating-action.floating-code{
+  background:linear-gradient(135deg,#1597d4,#0c6fa8);
+  color:#fff;
+  box-shadow:0 10px 30px rgba(21,151,212,.4),0 4px 12px rgba(0,0,0,.15);
+}
+
+.floating-action.floating-code:hover{
+  background:linear-gradient(135deg,#1aa5e5,#0d7ab8);
+  box-shadow:0 16px 40px rgba(21,151,212,.5),0 6px 16px rgba(0,0,0,.2);
+}
+
 @media (max-width:700px){
-  .floating-code-btn{
+  .floating-actions{
     bottom:18px;
     left:18px;
-    padding:0;
-    width:56px;
-    height:56px;
-    justify-content:center;
   }
-  .floating-code-btn .floating-text{
+  .floating-action{
+    padding:0;
+    width:54px;
+    height:54px;
+    justify-content:center;
+    border-radius:50%;
+  }
+  .floating-action span{
     display:none;
   }
-  .floating-icon{
-    width:56px;
-    height:56px;
-    background:transparent;
-  }
-  .floating-icon svg{
-    width:24px;
-    height:24px;
-  }
-}
-
-@media (max-width:360px){
-  .floating-code-btn{
-    bottom:14px;
-    left:14px;
-    width:50px;
-    height:50px;
-  }
-  .floating-icon{
-    width:50px;
-    height:50px;
-  }
-  .floating-icon svg{
+  .floating-action svg{
     width:22px;
     height:22px;
   }
