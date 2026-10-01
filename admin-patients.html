@@ -133,7 +133,7 @@ a{color:inherit}
 }
 .filter-btn:hover{background:var(--blue-soft);border-color:rgba(7,136,199,.35)}
 
-/* SEARCH RESULTS INFO */
+/* SEARCH INFO */
 .search-info{
   display:none;align-items:center;gap:10px;padding:12px 16px;margin-bottom:16px;
   background:linear-gradient(135deg,#fff8e8,#fffdf7);border:1px solid #f4e0b8;
@@ -162,51 +162,68 @@ a{color:inherit}
   border:1px solid var(--border);padding:5px 14px;border-radius:20px;font-weight:700;
 }
 
-/* ALPHABET INDEX — محسّن */
+/* DATE INDEX */
 .alpha-wrapper{
   background:var(--white);border:1px solid var(--border);border-radius:var(--radius);
-  padding:10px 12px;margin-bottom:16px;box-shadow:var(--shadow-xs);
+  padding:12px 14px;margin-bottom:16px;box-shadow:var(--shadow-xs);
 }
 .alpha-label{
   display:flex;align-items:center;gap:7px;color:var(--text-light);
-  font-size:11.5px;font-weight:800;margin-bottom:8px;padding-right:4px;
+  font-size:11.5px;font-weight:800;margin-bottom:10px;padding-right:4px;
 }
-.alpha-label i{color:var(--primary);font-size:11px}
-.alphabet-index{
-  display:flex;flex-wrap:wrap;gap:5px;
-  max-height:130px;overflow-y:auto;padding:2px;
+.alpha-label i{color:var(--primary);font-size:12px}
+.date-index{
+  display:flex;flex-wrap:wrap;gap:7px;
+  max-height:150px;overflow-y:auto;padding:2px;
   scrollbar-width:thin;scrollbar-color:#b7d8e8 transparent;
 }
-.alphabet-index::-webkit-scrollbar{width:6px;height:6px}
-.alphabet-index::-webkit-scrollbar-thumb{background:#b7d8e8;border-radius:20px}
-.alpha-btn{
-  min-width:36px;height:36px;padding:0 8px;
-  border-radius:9px;border:1.5px solid var(--border);
+.date-index::-webkit-scrollbar{width:6px;height:6px}
+.date-index::-webkit-scrollbar-thumb{background:#b7d8e8;border-radius:20px}
+
+.date-btn{
+  display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;min-width:78px;padding:8px 12px;
+  border-radius:12px;border:1.5px solid var(--border);
   background:#fff;color:var(--text-medium);
-  font-size:13px;font-weight:800;
-  display:inline-flex;align-items:center;justify-content:center;
-  transition:var(--transition);position:relative;
+  font-size:11.5px;font-weight:800;line-height:1.3;
+  transition:var(--transition);position:relative;cursor:pointer;
 }
-.alpha-btn:hover{
+.date-btn:hover{
   background:var(--blue-soft);border-color:rgba(7,136,199,.35);
   color:var(--primary);transform:translateY(-2px);
 }
-.alpha-btn.active{
+.date-btn.active{
   background:linear-gradient(135deg,var(--primary),var(--primary-light));
   color:#fff;border-color:transparent;
   box-shadow:0 6px 16px rgba(7,136,199,.3);transform:translateY(-1px);
 }
-.alpha-btn.all{min-width:auto;padding:0 16px}
-.alpha-btn .cnt{
-  position:absolute;top:-4px;left:-4px;
-  background:var(--primary-deep);color:#fff;
-  font-size:9px;font-weight:800;min-width:16px;height:16px;
-  border-radius:8px;display:flex;align-items:center;justify-content:center;
-  padding:0 4px;border:1.5px solid #fff;
+.date-btn.active .date-btn-count{background:rgba(255,255,255,.25);color:#fff}
+.date-btn .date-btn-day{
+  font-size:13px;font-weight:900;letter-spacing:.3px;
 }
-.alpha-btn.active .cnt{background:#fff;color:var(--primary-deep)}
-.alpha-btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
-.alpha-btn:disabled:hover{background:#fff;border-color:var(--border);color:var(--text-medium)}
+.date-btn .date-btn-label{
+  font-size:10px;font-weight:700;opacity:.75;
+}
+.date-btn.active .date-btn-label{opacity:.95}
+.date-btn .date-btn-count{
+  position:absolute;top:-5px;left:-5px;
+  background:var(--primary-deep);color:#fff;
+  font-size:9px;font-weight:800;min-width:18px;height:18px;
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  padding:0 5px;border:1.5px solid #fff;
+}
+.date-btn.today .date-btn-day::after{
+  content:"";display:inline-block;width:5px;height:5px;border-radius:50%;
+  background:var(--success);margin-right:4px;vertical-align:middle;
+}
+.date-btn.active.today .date-btn-day::after{background:#fff}
+.date-btn.all{min-width:auto;padding:10px 18px;flex-direction:row;gap:6px;font-size:12px}
+.date-btn.all .date-btn-count{position:static;border:none;margin-right:2px}
+
+.date-empty-note{
+  color:var(--text-light);font-size:12px;font-weight:700;
+  padding:8px 4px;text-align:center;width:100%;
+}
 
 /* APPOINTMENTS GRID */
 .appointments-grid{
@@ -529,10 +546,11 @@ a{color:inherit}
   .appointment-card-name{font-size:13.5px}
   .appointment-card-details{grid-template-columns:1fr;gap:6px;padding:10px}
   .appointment-detail-item{font-size:11.5px}
-  .alpha-wrapper{padding:8px 10px}
-  .alphabet-index{max-height:96px;gap:4px}
-  .alpha-btn{min-width:32px;height:32px;font-size:12px;border-radius:8px}
-  .alpha-btn.all{padding:0 12px}
+  .alpha-wrapper{padding:10px 12px}
+  .date-index{max-height:130px;gap:5px}
+  .date-btn{min-width:68px;padding:7px 9px}
+  .date-btn .date-btn-day{font-size:12px}
+  .date-btn .date-btn-label{font-size:9px}
   .drawer-panel{width:100%}
   .drawer-header{padding:14px 16px}
   .drawer-body{padding:12px 12px 22px}
@@ -636,15 +654,15 @@ a{color:inherit}
     </button>
   </div>
 
-  <!-- ALPHABET INDEX -->
+  <!-- DATE INDEX -->
   <div class="alpha-wrapper">
-    <div class="alpha-label"><i class="fas fa-filter"></i> تصفح بالحرف الأول من الاسم</div>
-    <div class="alphabet-index" id="alphabetIndex"></div>
+    <div class="alpha-label"><i class="fas fa-calendar-days"></i> تصفح حسب التاريخ</div>
+    <div class="date-index" id="dateIndex"></div>
   </div>
 
-  <!-- TODAY -->
+  <!-- TODAY / SELECTED DATE -->
   <div class="section-title">
-    <h3><i class="fas fa-calendar-day"></i> حجوزات اليوم</h3>
+    <h3 id="mainSectionTitle"><i class="fas fa-calendar-day"></i> حجوزات اليوم</h3>
     <span class="count-badge" id="todayCountBadge">0 حجز</span>
   </div>
   <div class="appointments-grid" id="todayAppointmentsGrid">
@@ -696,8 +714,8 @@ a{color:inherit}
       </div>
 
       <div class="alpha-wrapper">
-        <div class="alpha-label"><i class="fas fa-filter"></i> تصفح بالحرف الأول</div>
-        <div class="alphabet-index" id="drawerAlphabetIndex"></div>
+        <div class="alpha-label"><i class="fas fa-calendar-days"></i> تصفح حسب التاريخ</div>
+        <div class="date-index" id="drawerDateIndex"></div>
       </div>
 
       <div class="appointments-grid" id="appointmentsListContainer">
@@ -755,14 +773,14 @@ if(sessionStorage.getItem('medlab_admin_logged_in')!=='1'){
 
 /* =========================================================
    STATE
-======================================================== */
-let allAppointments=[];      // كل الحجوزات
-let visibleAppointments=[];  // بعد تطبيق الفلاتر
-let todayList=[];            // حجوزات اليوم
-let otherList=[];            // باقي الحجوزات
+========================================================= */
+let allAppointments=[];        // كل الحجوزات
+let visibleAppointments=[];    // بعد تطبيق الفلاتر العامة
+let todayList=[];              // حجوزات اليوم
+let otherList=[];              // باقي الحجوزات
 
-let selectedLetter='all';    // الحرف الرئيسي
-let selectedDrawerLetter='all'; // حرف الدرج
+let selectedDate='all';        // التاريخ المختار في الصفحة الرئيسية
+let selectedDrawerDate='all';  // التاريخ المختار في الدرج
 
 let loaded=false;
 
@@ -811,32 +829,46 @@ function normalizeArabic(str){
     .replace(/ؤ/g,'و')
     .replace(/ئ/g,'ي')
     .replace(/ة/g,'ه')
-    .replace(/[\u064B-\u065F\u0670]/g,'') // تشكيل
+    .replace(/[\u064B-\u065F\u0670]/g,'') // إزالة التشكيل
     .replace(/\s+/g,' ');
 }
 
-// استخراج أول حرف من الاسم بعد التطبيع + توحيد
-function getFirstLetter(name){
-  if(!name)return '#';
-  let n=String(name).trim();
-  // إزالة "ال" التعريف في البداية
-  n=n.replace(/^(ال|أل)/,'');
-  const first=n.charAt(0);
-  const map={
-    'إ':'ا','أ':'ا','آ':'ا','ٱ':'ا','ا':'ا',
-    'ة':'ه','ه':'ه',
-    'ى':'ي','ي':'ي','ئ':'ي',
-    'ؤ':'و','و':'و'
+/* =========================================================
+   DATE HELPERS
+========================================================= */
+function getDateKey(dateStr){
+  if(!dateStr)return '';
+  return String(dateStr).split('T')[0];
+}
+
+function getDayName(dateStr){
+  const days=['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+  const d=new Date(dateStr+'T00:00:00');
+  if(isNaN(d.getTime()))return '';
+  return days[d.getDay()]||'';
+}
+
+function getMonthName(month){
+  const months=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  return months[month]||'';
+}
+
+function formatDateLabel(dateStr){
+  const d=new Date(dateStr+'T00:00:00');
+  if(isNaN(d.getTime()))return {day:'',label:'',dayName:''};
+  const day=String(d.getDate()).padStart(2,'0');
+  const month=getMonthName(d.getMonth());
+  const year=d.getFullYear();
+  return {
+    day:day,
+    label:`${month} ${year}`,
+    dayName:getDayName(dateStr)
   };
-  const normalized=map[first]||first;
-  return normalized;
 }
 
 /* =========================================================
-   ALPHABET — الأبجدية العربية
+   TOAST
 ========================================================= */
-const ARABIC_LETTERS=['ا','ب','ت','ث','ج','ح','خ','د','ذ','ر','ز','س','ش','ص','ض','ط','ظ','ع','غ','ف','ق','ك','ل','م','ن','ه','و','ي'];
-
 let toastTimer=null;
 function showToast(message,type=''){
   const c=$('toastContainer');
@@ -859,7 +891,7 @@ function showToast(message,type=''){
 }
 
 /* =========================================================
-   BUILD SEARCHABLE TEXT لكل حجز
+   BUILD SEARCHABLE TEXT
 ========================================================= */
 function buildSearchText(p){
   const patient=p.patient||{};
@@ -878,51 +910,68 @@ function buildSearchText(p){
 }
 
 /* =========================================================
-   ALPHABET BUILDER
+   BUILD DATE INDEX
 ========================================================= */
-function buildAlphabetIndex(containerId,sourceList,activeLetter,onSelect){
+function buildDateIndex(containerId,sourceList,activeDate,onSelect){
   const container=$(containerId);
   if(!container)return;
 
-  // احسب عدد الحجوزات لكل حرف
+  // احسب عدد الحجوزات لكل تاريخ
   const counts={};
-  let totalCount=0;
+  let total=0;
   sourceList.forEach(p=>{
-    const name=(p.patient&&p.patient.full_name)||'';
-    const letter=getFirstLetter(name);
-    counts[letter]=(counts[letter]||0)+1;
-    totalCount++;
+    const key=getDateKey(p.appointment_date);
+    if(!key)return;
+    counts[key]=(counts[key]||0)+1;
+    total++;
   });
 
-  let html=`<button class="alpha-btn all ${activeLetter==='all'?'active':''}" data-letter="all">الكل<span class="cnt">${totalCount}</span></button>`;
+  // رتب التواريخ تنازلياً (الأحدث أولاً)
+  const sortedDates=Object.keys(counts).sort((a,b)=>b.localeCompare(a));
 
-  ARABIC_LETTERS.forEach(letter=>{
-    const cnt=counts[letter]||0;
-    const disabled=cnt===0?'disabled':'';
-    html+=`<button class="alpha-btn ${activeLetter===letter?'active':''}" data-letter="${letter}" ${disabled} title="${letter} (${cnt})">${letter}${cnt>0?`<span class="cnt">${cnt}</span>`:''}</button>`;
-  });
-
-  // حرف # للأسماء غير المعروفة أو الأرقام
-  const hashCount=counts['#']||0;
-  if(hashCount>0){
-    html+=`<button class="alpha-btn ${activeLetter==='#'?'active':''}" data-letter="#" title="# (${hashCount})">#<span class="cnt">${hashCount}</span></button>`;
+  if(sortedDates.length===0){
+    container.innerHTML=`<div class="date-empty-note">لا توجد تواريخ متاحة</div>`;
+    return;
   }
+
+  const today=getTodayDate();
+
+  let html=`<button class="date-btn all ${activeDate==='all'?'active':''}" data-date="all">
+    <i class="fas fa-calendar-days"></i>
+    الكل
+    <span class="date-btn-count">${total}</span>
+  </button>`;
+
+  sortedDates.forEach(dateKey=>{
+    const info=formatDateLabel(dateKey);
+    const isToday=dateKey===today;
+    const isActive=activeDate===dateKey;
+    const cnt=counts[dateKey];
+
+    html+=`
+      <button class="date-btn ${isActive?'active':''} ${isToday?'today':''}"
+              data-date="${dateKey}"
+              title="${info.dayName} ${dateKey} — ${cnt} حجز">
+        <span class="date-btn-day">${info.day}</span>
+        <span class="date-btn-label">${info.label}</span>
+        <span class="date-btn-count">${cnt}</span>
+      </button>`;
+  });
 
   container.innerHTML=html;
 
-  container.querySelectorAll('.alpha-btn').forEach(btn=>{
+  container.querySelectorAll('.date-btn').forEach(btn=>{
     btn.addEventListener('click',function(){
-      if(this.disabled)return;
-      const letter=this.dataset.letter;
-      container.querySelectorAll('.alpha-btn').forEach(b=>b.classList.remove('active'));
+      const date=this.dataset.date;
+      container.querySelectorAll('.date-btn').forEach(b=>b.classList.remove('active'));
       this.classList.add('active');
-      onSelect(letter);
+      onSelect(date);
     });
   });
 }
 
 /* =========================================================
-   LOAD
+   LOAD APPOINTMENTS
 ========================================================= */
 async function loadAppointments(){
   const todayGrid=$('todayAppointmentsGrid');
@@ -997,7 +1046,7 @@ function updateStatistics(){
   const today=getTodayDate();
   $('totalAppointments').textContent=allAppointments.length;
   $('todayAppointments').textContent=allAppointments.filter(
-    p=>String(p.appointment_date||'').split('T')[0]===today
+    p=>getDateKey(p.appointment_date)===today
   ).length;
   $('homeAppointments').textContent=allAppointments.filter(
     p=>p.sample_location==='home'
@@ -1007,20 +1056,19 @@ function updateStatistics(){
 }
 
 /* =========================================================
-   MAIN FILTER FUNCTION
+   MAIN FILTER
 ========================================================= */
 function getFilteredAppointments(){
   const search=normalizeArabic($('searchInput').value);
-  const date=$('dateFilter').value;
+  const dateFilterVal=$('dateFilter').value;
   const sample=$('sampleFilter').value;
 
   return allAppointments.filter(p=>{
     // بحث
     if(search&&!(p._searchText||'').includes(search))return false;
-    // تاريخ
-    if(date){
-      const visitDate=String(p.appointment_date||'').split('T')[0];
-      if(visitDate!==date)return false;
+    // تاريخ (من الحقل date)
+    if(dateFilterVal){
+      if(getDateKey(p.appointment_date)!==dateFilterVal)return false;
     }
     // نوع العينة
     if(sample&&p.sample_location!==sample)return false;
@@ -1029,47 +1077,46 @@ function getFilteredAppointments(){
 }
 
 /* =========================================================
-   SPLIT: اليوم / الباقي
+   SPLIT TODAY / OTHER
 ========================================================= */
 function splitByToday(list){
   const today=getTodayDate();
   const todayList=[];
   const otherList=[];
   list.forEach(p=>{
-    const d=String(p.appointment_date||'').split('T')[0];
-    if(d===today)todayList.push(p);
+    if(getDateKey(p.appointment_date)===today)todayList.push(p);
     else otherList.push(p);
   });
   return {todayList,otherList};
 }
 
 /* =========================================================
-   REFRESH UI (بعد أي تغيير)
+   REFRESH UI
 ========================================================= */
 function refreshUI(){
-  // احسب الفلترة الرئيسية
+  // الفلترة الرئيسية
   visibleAppointments=getFilteredAppointments();
 
   const split=splitByToday(visibleAppointments);
   todayList=split.todayList;
   otherList=split.otherList;
 
-  // اعرض فهرس الحروف - الصفحة الرئيسية (يعتمد على كل الحجوزات للحفاظ على الاستقرار)
-  buildAlphabetIndex('alphabetIndex',allAppointments,selectedLetter,function(letter){
-    selectedLetter=letter;
+  // فهرس التواريخ — الصفحة الرئيسية (من كل الحجوزات للاستقرار)
+  buildDateIndex('dateIndex',allAppointments,selectedDate,function(date){
+    selectedDate=date;
     renderTodaySection();
   });
 
-  // اعرض فهرس الحروف - الدرج (يعتمد على otherList للحفاظ على الاستقرار)
-  buildAlphabetIndex('drawerAlphabetIndex',getFilteredAppointmentsOther(),selectedDrawerLetter,function(letter){
-    selectedDrawerLetter=letter;
+  // فهرس التواريخ — الدرج (من باقي الحجوزات)
+  buildDateIndex('drawerDateIndex',otherList,selectedDrawerDate,function(date){
+    selectedDrawerDate=date;
     renderDrawerSection();
   });
 
   renderTodaySection();
   renderDrawerSection();
 
-  // بحث info
+  // شريط نتائج البحث
   const search=$('searchInput').value.trim();
   if(search){
     const total=visibleAppointments.length;
@@ -1081,30 +1128,43 @@ function refreshUI(){
     $('searchInfo').classList.remove('show');
   }
 
+  // عدّادات
   const totalVisible=todayList.length+otherList.length;
   $('resultsCount').textContent=`${totalVisible} حجز`;
   $('todayCountBadge').textContent=`${todayList.length} حجز`;
   $('drawerTotalCount').textContent=otherList.length;
 }
 
-// نفس الفلترة الرئيسية لكن بدون النظر لحرف الدرج
-function getFilteredAppointmentsOther(){
-  return getFilteredAppointments();
-}
-
 /* =========================================================
-   RENDER TODAY SECTION (مع مراعاة الحرف)
+   RENDER MAIN SECTION
 ========================================================= */
 function renderTodaySection(){
   const grid=$('todayAppointmentsGrid');
+  const titleEl=$('mainSectionTitle');
 
-  // فلترة بالحرف الرئيسي
-  let list=todayList;
-  if(selectedLetter!=='all'){
-    list=list.filter(p=>{
-      const name=(p.patient&&p.patient.full_name)||'';
-      return getFirstLetter(name)===selectedLetter;
-    });
+  let list;
+  let titleText;
+  let emptyTitle;
+  let emptySubtitle;
+
+  if(selectedDate!=='all'){
+    // عرض حجوزات التاريخ المختار
+    list=visibleAppointments.filter(p=>getDateKey(p.appointment_date)===selectedDate);
+
+    const info=formatDateLabel(selectedDate);
+    titleText=`حجوزات ${info.dayName} ${info.day} ${info.label}`;
+    emptyTitle=`لا توجد حجوزات في ${info.day} ${info.label}`;
+    emptySubtitle='جرّب اختيار تاريخ آخر';
+  }else{
+    // عرض حجوزات اليوم
+    list=todayList;
+    titleText='حجوزات اليوم';
+    emptyTitle='لا توجد حجوزات اليوم';
+    emptySubtitle=allAppointments.length===0?'لم يتم تسجيل حجوزات بعد':'جرّب تغيير الفلاتر';
+  }
+
+  if(titleEl){
+    titleEl.innerHTML=`<i class="fas fa-calendar-day"></i> ${titleText}`;
   }
 
   if(!loaded&&allAppointments.length===0){
@@ -1116,35 +1176,34 @@ function renderTodaySection(){
     grid.innerHTML=`
       <div class="empty-state">
         <i class="fas fa-calendar-times"></i>
-        <h3>لا توجد حجوزات اليوم</h3>
-        <p>${allAppointments.length===0?'لم يتم تسجيل حجوزات بعد':selectedLetter!=='all'?`لا يوجد مرضى بحرف "${selectedLetter}" اليوم`:'جرّب تغيير الفلاتر'}</p>
+        <h3>${emptyTitle}</h3>
+        <p>${emptySubtitle}</p>
       </div>`;
+    $('todayCountBadge').textContent='0 حجز';
     return;
   }
 
   let html='';
   list.forEach((p,i)=>{html+=buildAppointmentCard(p,i,true);});
   grid.innerHTML=html;
+
+  $('todayCountBadge').textContent=`${list.length} حجز`;
 }
 
 /* =========================================================
-   RENDER DRAWER SECTION (مع مراعاة الحرف)
+   RENDER DRAWER SECTION
 ========================================================= */
 function renderDrawerSection(){
   const grid=$('appointmentsListContainer');
 
-  // فلترة الدرج بالبحث الخاص بالدرج
   const drawerSearch=normalizeArabic($('drawerSearchInput').value);
 
   let list=otherList;
   if(drawerSearch){
     list=list.filter(p=>(p._searchText||'').includes(drawerSearch));
   }
-  if(selectedDrawerLetter!=='all'){
-    list=list.filter(p=>{
-      const name=(p.patient&&p.patient.full_name)||'';
-      return getFirstLetter(name)===selectedDrawerLetter;
-    });
+  if(selectedDrawerDate!=='all'){
+    list=list.filter(p=>getDateKey(p.appointment_date)===selectedDrawerDate);
   }
 
   if(!loaded&&allAppointments.length===0){
@@ -1153,12 +1212,16 @@ function renderDrawerSection(){
   }
 
   if(list.length===0){
+    const info=selectedDrawerDate!=='all'?formatDateLabel(selectedDrawerDate):null;
     grid.innerHTML=`
       <div class="empty-state">
         <i class="fas fa-calendar-times"></i>
         <h3>لا توجد حجوزات</h3>
-        <p>${allAppointments.length===0?'لم يتم تسجيل حجوزات بعد':selectedDrawerLetter!=='all'?`لا يوجد مرضى بحرف "${selectedDrawerLetter}"`:'جرّب تغيير الفلاتر'}</p>
+        <p>${allAppointments.length===0?'لم يتم تسجيل حجوزات بعد':
+            info?`لا توجد حجوزات في ${info.day} ${info.label}`:
+            'جرّب تغيير الفلاتر'}</p>
       </div>`;
+    $('drawerTotalCount').textContent='0';
     return;
   }
 
@@ -1172,16 +1235,16 @@ function renderDrawerSection(){
 /* =========================================================
    BUILD CARD
 ========================================================= */
-function buildAppointmentCard(p,index,isToday){
+function buildAppointmentCard(p,index,isHighlight){
   const patient=p.patient||{};
   const patientName=patient.full_name||'غير معروف';
   const patientPhone=patient.phone||'-';
   const patientCode=patient.patient_code||'-';
-  const visitDate=String(p.appointment_date||'').split('T')[0];
+  const visitDate=getDateKey(p.appointment_date);
   const visitTime=p.appointment_time?String(p.appointment_time).slice(0,5):'-';
   const isHome=p.sample_location==='home';
 
-  const highlight=isToday?'highlight':'';
+  const highlight=isHighlight?'highlight':'';
 
   return `
     <div class="appointment-card ${highlight}" style="animation-delay:${Math.min(index*0.03,0.4)}s">
@@ -1354,7 +1417,15 @@ $('searchInput').addEventListener('input',function(){
   clearTimeout(searchDebounce);
   searchDebounce=setTimeout(()=>refreshUI(),200);
 });
-$('dateFilter').addEventListener('change',refreshUI);
+
+$('dateFilter').addEventListener('change',function(){
+  // إذا كان المستخدم يستخدم حقل التاريخ، نُلغي التاريخ المختار من الفهرس
+  if(this.value){
+    selectedDate='all';
+  }
+  refreshUI();
+});
+
 $('sampleFilter').addEventListener('change',refreshUI);
 
 let drawerSearchDebounce=null;
@@ -1368,8 +1439,8 @@ $('clearFiltersBtn').addEventListener('click',()=>{
   $('drawerSearchInput').value='';
   $('dateFilter').value='';
   $('sampleFilter').value='';
-  selectedLetter='all';
-  selectedDrawerLetter='all';
+  selectedDate='all';
+  selectedDrawerDate='all';
   refreshUI();
   showToast('تم مسح الفلاتر','success');
 });
@@ -1406,9 +1477,9 @@ document.addEventListener('keydown',e=>{
 /* =========================================================
    INIT
 ========================================================= */
-// بناء فهرس الحروف مبدئياً (فارغ)
-buildAlphabetIndex('alphabetIndex',[],'all',()=>{});
-buildAlphabetIndex('drawerAlphabetIndex',[],'all',()=>{});
+// بناء فهرس التواريخ مبدئياً (فارغ قبل التحميل)
+buildDateIndex('dateIndex',[],'all',()=>{});
+buildDateIndex('drawerDateIndex',[],'all',()=>{});
 
 // ابدأ التحميل
 loadAppointments();
