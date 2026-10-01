@@ -2469,11 +2469,6 @@
     const SUPABASE_KEY = 'sb_publishable_XibO6Ri8DLKHG-rUEp4Bnw_bDzm67Xf';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    if (sessionStorage.getItem('medlab_admin_logged_in') !== '1') {
-      window.location.href = 'index.html';
-    }
-
-
     let allPatients = [];
     let filteredPatients = [];
     let deleteTargetId = null;
